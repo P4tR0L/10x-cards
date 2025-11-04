@@ -1,94 +1,163 @@
-# 10x Astro Starter
+# 10x Cards
 
-A modern, opinionated starter template for building fast, accessible, and AI-friendly web applications.
+Nowoczesna aplikacja do nauki z fiszkami wspomagana sztuczną inteligencją. Twórz fiszki ręcznie lub generuj je automatycznie z dowolnego tekstu przy użyciu AI.
 
-## Tech Stack
+## ✨ Funkcje
 
-- [Astro](https://astro.build/) v5.5.5 - Modern web framework for building fast, content-focused websites
-- [React](https://react.dev/) v19.0.0 - UI library for building interactive components
-- [TypeScript](https://www.typescriptlang.org/) v5 - Type-safe JavaScript
-- [Tailwind CSS](https://tailwindcss.com/) v4.0.17 - Utility-first CSS framework
+- 🤖 **Generowanie fiszek z AI** - Automatycznie generuj fiszki z tekstu źródłowego
+- ✍️ **Ręczne tworzenie** - Twórz własne fiszki od podstaw
+- 📚 **Zarządzanie fiszkami** - Edytuj, usuwaj i organizuj swoje fiszki
+- 🔄 **Tryb nauki** - Przeglądaj fiszki z intuicyjnym interfejsem
+- 👆 **Gesty dotykowe** - Nawigacja swipe na urządzeniach mobilnych
+- 📊 **Metryki** - Śledzenie skuteczności generowania AI
+- 🔐 **Autentykacja** - Bezpieczne konta użytkowników z Supabase Auth
 
-## Prerequisites
+## 🛠️ Stack Technologiczny
 
-- Node.js v22.14.0 (as specified in `.nvmrc`)
-- npm (comes with Node.js)
+- [Astro](https://astro.build/) v5 - Nowoczesny framework dla szybkich aplikacji webowych
+- [React](https://react.dev/) v19 - Biblioteka do tworzenia interaktywnych komponentów
+- [TypeScript](https://www.typescriptlang.org/) v5 - Typebezpieczny JavaScript
+- [Tailwind CSS](https://tailwindcss.com/) v4 - Utility-first CSS framework
+- [Shadcn/ui](https://ui.shadcn.com/) - Komponenty UI oparte na Radix UI
+- [Supabase](https://supabase.com/) - Backend-as-a-Service (baza danych, autentykacja)
+- [OpenRouter](https://openrouter.ai/) - API do modeli AI
 
-## Getting Started
+## 📋 Wymagania
 
-1. Clone the repository:
+- Node.js v22.14.0 (lub nowszy)
+- npm (dostarczany z Node.js)
+- Konto Supabase
+- Klucz API OpenRouter (do generowania fiszek z AI)
+
+## 🚀 Rozpoczęcie Pracy
+
+1. Sklonuj repozytorium:
 
 ```bash
-git clone https://github.com/przeprogramowani/10x-astro-starter.git
-cd 10x-astro-starter
+git clone <repository-url>
+cd 10x-cards
 ```
 
-2. Install dependencies:
+2. Zainstaluj zależności:
 
 ```bash
 npm install
 ```
 
-3. Run the development server:
+3. Skonfiguruj zmienne środowiskowe:
+
+Utwórz plik `.env` w głównym katalogu projektu:
+
+```env
+PUBLIC_SUPABASE_URL=twoj-supabase-url
+PUBLIC_SUPABASE_ANON_KEY=twoj-supabase-anon-key
+OPENROUTER_API_KEY=twoj-openrouter-api-key
+SITE_URL=twoj_site_url
+```
+
+4. Uruchom migracje bazy danych:
+
+```bash
+npx supabase db push
+```
+
+5. Uruchom serwer deweloperski:
 
 ```bash
 npm run dev
 ```
 
-4. Build for production:
+6. Otwórz [http://localhost:4321](http://localhost:4321) w przeglądarce
 
-```bash
-npm run build
-```
+## 📦 Dostępne Skrypty
 
-## Available Scripts
+- `npm run dev` - Uruchamia serwer deweloperski
+- `npm run build` - Buduje aplikację dla produkcji
+- `npm run preview` - Podgląd wersji produkcyjnej
+- `npm run lint` - Sprawdza kod za pomocą ESLint
+- `npm run lint:fix` - Naprawia problemy ESLint
+- `npm run format` - Formatuje kod za pomocą Prettier
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
-
-## Project Structure
+## 📁 Struktura Projektu
 
 ```md
 .
 ├── src/
-│   ├── layouts/    # Astro layouts
-│   ├── pages/      # Astro pages
-│   │   └── api/    # API endpoints
-│   ├── components/ # UI components (Astro & React)
-│   └── assets/     # Static assets
-├── public/         # Public assets
+│   ├── components/         # Komponenty UI (Astro & React)
+│   │   └── ui/            # Komponenty Shadcn/ui
+│   ├── db/                # Klienty Supabase i typy bazy danych
+│   ├── hooks/             # Custom React hooks
+│   ├── layouts/           # Layouty Astro
+│   ├── lib/               # Serwisy i helpery
+│   │   ├── services/      # Logika biznesowa (flashcards, AI generation)
+│   │   ├── utils/         # Funkcje pomocnicze
+│   │   └── validation/    # Schematy walidacji Zod
+│   ├── middleware/        # Middleware Astro (autentykacja)
+│   ├── pages/             # Strony Astro
+│   │   └── api/          # Endpointy API
+│   ├── styles/            # Globalne style
+│   └── types.ts           # Wspólne typy TypeScript
+├── supabase/
+│   ├── migrations/        # Migracje bazy danych
+│   └── config.toml        # Konfiguracja Supabase
+└── public/                # Assety publiczne
 ```
 
-## AI Development Support
+## 🗄️ Baza Danych
 
-This project is configured with AI development tools to enhance the development experience, providing guidelines for:
+Projekt wykorzystuje Supabase PostgreSQL z następującymi tabelami:
 
-- Project structure
-- Coding practices
-- Frontend development
-- Styling with Tailwind
-- Accessibility best practices
-- Astro and React guidelines
+- **flashcards** - Przechowuje fiszki użytkowników (ręczne i generowane AI)
+- **generations** - Metryki sesji generowania AI
+- **generation_error_logs** - Logi błędów generowania AI
 
-### Cursor IDE
+Row Level Security (RLS) jest włączone dla wszystkich tabel zapewniając bezpieczeństwo danych.
 
-The project includes AI rules in `.cursor/rules/` directory that help Cursor IDE understand the project structure and provide better code suggestions.
+## 🔐 Autentykacja
 
-### GitHub Copilot
+Aplikacja używa Supabase Auth do zarządzania użytkownikami. Middleware Astro chroni chronione trasy i automatycznie przekierowuje niezalogowanych użytkowników.
 
-AI instructions for GitHub Copilot are available in `.github/copilot-instructions.md`
+## 🤖 Generowanie AI
 
-### Windsurf
+Fiszki mogą być generowane automatycznie z tekstu źródłowego przy użyciu różnych modeli AI przez OpenRouter. Aplikacja śledzi:
+- Liczbę wygenerowanych fiszek
+- Akceptację bez edycji
+- Akceptację po edycji
+- Czas generowania
+- Długość tekstu źródłowego
 
-The `.windsurfrules` file contains AI configuration for Windsurf.
+## 🎨 Stylowanie
 
-## Contributing
+Projekt wykorzystuje Tailwind CSS 4 z komponentami Shadcn/ui. Wszystkie komponenty są w pełni dostosowywalne i responsywne.
 
-Please follow the AI guidelines and coding practices defined in the AI configuration files when contributing to this project.
+## 🧪 Najlepsze Praktyki
 
-## License
+Projekt przestrzega najlepszych praktyk zdefiniowanych w regułach AI:
+
+- Clean code z wczesnym zwracaniem i obsługą błędów
+- Rozdzielenie logiki biznesowej (services) od UI (components)
+- Walidacja danych z Zod
+- Typebezpieczeństwo z TypeScript
+- Dostępność (ARIA, semantyczny HTML)
+- Responsywność (mobile-first)
+
+## 📝 Wsparcie AI Development
+
+Projekt jest skonfigurowany do pracy z narzędziami AI development:
+
+- **Cursor IDE** - Reguły AI w `.cursor/rules/`
+- Spójne konwencje nazewnictwa i struktury
+- Obszerna dokumentacja w kodzie
+
+## 🤝 Contributing
+
+Podczas dodawania zmian:
+
+1. Przestrzegaj struktury projektu zdefiniowanej w regułach AI
+2. Dodawaj testy dla nowej funkcjonalności
+3. Upewnij się, że linter przechodzi (`npm run lint`)
+4. Formatuj kod (`npm run format`)
+
+## 📄 License
 
 MIT
