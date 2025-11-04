@@ -185,8 +185,8 @@ export const GET: APIRoute = async (context) => {
     const queryParams = {
       page: url.searchParams.get("page"),
       limit: url.searchParams.get("limit"),
-      search: url.searchParams.get("search"),
-      source: url.searchParams.get("source"),
+      search: url.searchParams.get("search") ?? undefined,
+      source: url.searchParams.get("source") ?? undefined,
       sort: url.searchParams.get("sort"),
       order: url.searchParams.get("order"),
     };
