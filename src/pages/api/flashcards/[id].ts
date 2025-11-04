@@ -1,39 +1,42 @@
 /**
- * Flashcards API Endpoint
+ * Flashcard Update API Endpoint
  *
- * POST /api/flashcards - Create a single manual flashcard
- * GET /api/flashcards - List flashcards with pagination and filtering (TODO)
+ * PUT /api/flashcards/{id} - Update an existing flashcard
  *
  * Authentication required: JWT Bearer token in Authorization header
  */
 
 import type { APIRoute } from "astro";
 import { FlashcardService } from "@/lib/services/flashcard.service";
-import { createFlashcardSchema } from "@/lib/validation/flashcard.validation";
+import { updateFlashcardSchema } from "@/lib/validation/flashcard.validation";
 import type { FlashcardResponse, ErrorResponse } from "@/types";
 
 // Disable prerendering for this API route (SSR required for dynamic data)
 export const prerender = false;
 
 /**
- * POST /api/flashcards
+ * PUT /api/flashcards/{id}
  *
- * Creates a new manual flashcard for the authenticated user.
+ * Updates an existing flashcard for the authenticated user.
+ *
+ * Path parameters:
+ * - id: Flashcard ID (positive integer)
  *
  * Request body:
  * {
- *   "front": "Question or concept (1-5000 chars)",
- *   "back": "Answer or definition (1-5000 chars)"
+ *   "front": "Updated question or concept (1-5000 chars)",
+ *   "back": "Updated answer or definition (1-5000 chars)"
  * }
  *
  * Response codes:
- * - 201 Created: Flashcard created successfully
- * - 400 Bad Request: Invalid request body or JSON
+ * - 200 OK: Flashcard updated successfully
+ * - 400 Bad Request: Invalid flashcard ID or malformed JSON
  * - 401 Unauthorized: Missing or invalid authentication token
+ * - 404 Not Found: Flashcard not found or access denied
  * - 422 Validation Error: Invalid input data (details in response)
  * - 500 Internal Server Error: Unexpected server error
  */
-export const POST: APIRoute = async (context) => {
+export const PUT: APIRoute = async (context) => {
   try {
     // ========================================================================
     // 1. AUTHENTICATION
@@ -57,7 +60,26 @@ export const POST: APIRoute = async (context) => {
     }
 
     // ========================================================================
-    // 2. PARSE REQUEST BODY
+    // 2. PARSE AND VALIDATE ID
+    // ========================================================================
+    // Extract flashcard ID from URL path parameter
+    const idParam = context.params.id;
+
+    // Validate ID is a positive integer
+    const flashcardId = parseInt(idParam || "", 10);
+    if (isNaN(flashcardId) || flashcardId <= 0) {
+      const errorResponse: ErrorResponse = {
+        error: "Bad request",
+        message: "Invalid flashcard ID",
+      };
+      return new Response(JSON.stringify(errorResponse), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // ========================================================================
+    // 3. PARSE REQUEST BODY
     // ========================================================================
     // Parse JSON body and handle malformed JSON errors
     let body: unknown;
@@ -75,10 +97,10 @@ export const POST: APIRoute = async (context) => {
     }
 
     // ========================================================================
-    // 3. VALIDATE INPUT
+    // 4. VALIDATE INPUT
     // ========================================================================
     // Validate request body against Zod schema
-    const validation = createFlashcardSchema.safeParse(body);
+    const validation = updateFlashcardSchema.safeParse(body);
     if (!validation.success) {
       const errorResponse: ErrorResponse = {
         error: "Validation error",
@@ -92,31 +114,45 @@ export const POST: APIRoute = async (context) => {
     }
 
     // ========================================================================
-    // 4. CREATE FLASHCARD VIA SERVICE
+    // 5. UPDATE FLASHCARD VIA SERVICE
     // ========================================================================
     // Initialize service with authenticated Supabase client
     const flashcardService = new FlashcardService(context.locals.supabase);
 
-    // Create flashcard (user_id from session, data from validated input)
-    const flashcard = await flashcardService.createManualFlashcard(user.id, validation.data);
+    // Update flashcard (RLS ensures user can only update their own flashcards)
+    try {
+      const flashcard = await flashcardService.updateFlashcard(flashcardId, validation.data);
 
-    // ========================================================================
-    // 5. RETURN SUCCESS RESPONSE
-    // ========================================================================
-    // Wrap flashcard in response structure and return 201 Created
-    const response: FlashcardResponse = {
-      data: flashcard,
-    };
-    return new Response(JSON.stringify(response), {
-      status: 201,
-      headers: { "Content-Type": "application/json" },
-    });
+      // Return success response with updated flashcard
+      const response: FlashcardResponse = {
+        data: flashcard,
+      };
+      return new Response(JSON.stringify(response), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      // Handle specific service errors (404 not found)
+      if (error instanceof Error && error.message.includes("not found")) {
+        const errorResponse: ErrorResponse = {
+          error: "Not found",
+          message: "Flashcard not found or you don't have permission to update it",
+        };
+        return new Response(JSON.stringify(errorResponse), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      // Re-throw to be caught by outer catch block
+      throw error;
+    }
   } catch (error) {
     // ========================================================================
     // 6. HANDLE UNEXPECTED ERRORS
     // ========================================================================
     // Log error details for debugging (never expose to user)
-    console.error("[POST /api/flashcards] Error creating flashcard:", {
+    console.error("[PUT /api/flashcards/{id}] Error updating flashcard:", {
+      flashcardId: context.params.id,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
       timestamp: new Date().toISOString(),
