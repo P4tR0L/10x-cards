@@ -579,7 +579,7 @@ The API uses **Supabase Auth** with JWT (JSON Web Tokens) for authentication.
 #### Implementation Details:
 
 1. **Frontend Authentication:**
-   - Use Supabase Auth SDK for all authentication operations (sign up, sign in, sign out, password reset)
+   - Use Supabase Auth SDK for all authentication operations (sign up, sign in, sign out)
    - The SDK automatically manages JWT tokens and refresh tokens
    - No custom authentication endpoints are needed
 
@@ -643,15 +643,6 @@ Authorization is enforced at two levels:
 - Access tokens expire after 1 hour by default
 - Refresh tokens are used to obtain new access tokens
 - The SDK automatically refreshes tokens before they expire
-
-### 4.4. Password Reset Flow
-
-1. User clicks "Forgot Password" and enters email
-2. Frontend calls `supabase.auth.resetPasswordForEmail(email)`
-3. Supabase sends password reset email with magic link
-4. User clicks link and is redirected to reset password page
-5. User enters new password
-6. Frontend calls `supabase.auth.updateUser({ password: newPassword })`
 
 ## 5. Validation and Business Logic
 

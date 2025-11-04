@@ -37,7 +37,6 @@ Aplikacja 10x Cards została zaprojektowana jako nowoczesna aplikacja webowa wyk
 **Kluczowe informacje do wyświetlenia**:
 - Formularz logowania (e-mail, hasło)
 - Link do rejestracji nowego konta
-- Link do resetowania hasła
 - Komunikaty błędów walidacji i uwierzytelniania
 
 **Kluczowe komponenty widoku**:
@@ -47,7 +46,6 @@ Aplikacja 10x Cards została zaprojektowana jako nowoczesna aplikacja webowa wyk
   - `Button` typu submit ("Zaloguj się")
   - Inline error messages pod polami
 - `Link` do `/register`
-- `Link` do `/reset-password`
 - Logo aplikacji
 - Opcjonalnie: ilustracja lub krótki opis wartości aplikacji
 
@@ -92,66 +90,7 @@ Aplikacja 10x Cards została zaprojektowana jako nowoczesna aplikacja webowa wyk
 
 ---
 
-### 2.3. Widok Resetowania Hasła (Żądanie)
-
-**Ścieżka**: `/reset-password`
-
-**Typ**: Strona publiczna (niechroniona)
-
-**Główny cel**: Umożliwienie użytkownikowi zainicjowania procesu resetowania hasła poprzez podanie adresu e-mail.
-
-**Kluczowe informacje do wyświetlenia**:
-- Formularz z polem e-mail
-- Instrukcje procesu resetowania
-- Komunikat sukcesu po wysłaniu
-- Link powrotny do logowania
-
-**Kluczowe komponenty widoku**:
-- `ResetPasswordRequestForm` (React)
-  - `TextInput` dla e-mail
-  - `Button` typu submit ("Wyślij link resetujący")
-  - Success message (po wysłaniu)
-- `Link` do `/login`
-- Instrukcje tekstowe
-
-**UX, dostępność i względy bezpieczeństwa**:
-- **UX**: Jasna informacja o kolejnych krokach, komunikat sukcesu z informacją o sprawdzeniu skrzynki e-mail, możliwość ponownego wysłania po 60s
-- **Dostępność**: Semantic HTML, clear labels, focus management
-- **Bezpieczeństwo**: Nie ujawnianie czy e-mail istnieje w systemie (zawsze sukces dla UX), rate limiting po stronie API
-- **Integracja**: Wykorzystuje `supabase.auth.resetPasswordForEmail()`
-
----
-
-### 2.4. Widok Resetowania Hasła (Potwierdzenie)
-
-**Ścieżka**: `/reset-password/confirm`
-
-**Typ**: Strona publiczna (dostępna z magic link w e-mailu)
-
-**Główny cel**: Umożliwienie użytkownikowi ustawienia nowego hasła po kliknięciu w link z e-maila.
-
-**Kluczowe informacje do wyświetlenia**:
-- Formularz z polami nowego hasła
-- Wymagania dotyczące hasła
-- Komunikaty błędów i sukcesu
-
-**Kluczowe komponenty widoku**:
-- `ResetPasswordConfirmForm` (React)
-  - `PasswordInput` dla nowego hasła
-  - `PasswordInput` dla potwierdzenia hasła
-  - `PasswordStrengthIndicator`
-  - `Button` typu submit ("Ustaw nowe hasło")
-- Success message z przekierowaniem
-
-**UX, dostępność i względy bezpieczeństwa**:
-- **UX**: Wskaźnik siły hasła, automatyczne przekierowanie na /login po sukcesie (5s z licznikiem)
-- **Dostępność**: Zgodnie ze standardami WCAG dla formularzy
-- **Bezpieczeństwo**: Token w URL walidowany przez Supabase, jednokrotne użycie linku, wymuszenie siły hasła
-- **Integracja**: Wykorzystuje `supabase.auth.updateUser({ password })`
-
----
-
-### 2.5. Widok Główny / Tworzenie Fiszek
+### 2.3. Widok Główny / Tworzenie Fiszek
 
 **Ścieżka**: `/`
 
@@ -237,7 +176,7 @@ Aplikacja 10x Cards została zaprojektowana jako nowoczesna aplikacja webowa wyk
 
 ---
 
-### 2.6. Widok Zarządzania Kolekcją
+### 2.4. Widok Zarządzania Kolekcją
 
 **Ścieżka**: `/manage`
 
@@ -321,7 +260,7 @@ Aplikacja 10x Cards została zaprojektowana jako nowoczesna aplikacja webowa wyk
 
 ---
 
-### 2.7. Widok Przeglądania / Nauki
+### 2.5. Widok Przeglądania / Nauki
 
 **Ścieżka**: `/review`
 
@@ -651,40 +590,6 @@ NAWIGACJA do /review (z przycisku "Ucz się" na /manage)
   → Toast: "Wylogowano pomyślnie"
 ```
 
-### 3.7. Przepływ: Resetowanie Hasła
-
-```
-/login
-  ↓
-[Użytkownik] Kliknięcie "Zapomniałem hasła"
-  ↓
-/reset-password
-  ↓
-[Użytkownik] Wprowadza e-mail
-  → Kliknięcie "Wyślij link resetujący"
-  ↓
-[Supabase Auth] supabase.auth.resetPasswordForEmail(email)
-  → Wysyła e-mail z magic link
-  ↓
-[UI] Success message: "Sprawdź swoją skrzynkę e-mail"
-  → Link do /login
-  ↓
-[Użytkownik] Otwiera e-mail → klika link
-  ↓
-/reset-password/confirm?token=...
-  ↓
-[Użytkownik] Wprowadza nowe hasło (+ potwierdzenie)
-  → Walidacja siły hasła
-  → Kliknięcie "Ustaw nowe hasło"
-  ↓
-[Supabase Auth] supabase.auth.updateUser({password})
-  ↓
-[UI] Success toast: "Hasło zmienione"
-  → Automatyczne przekierowanie do /login (5s countdown)
-  ↓
-[Użytkownik] Loguje się nowym hasłem
-```
-
 ---
 
 ## 4. Układ i struktura nawigacji
@@ -729,8 +634,6 @@ Elementy:
 #### Strony publiczne (dostępne bez logowania):
 - `/login` - Logowanie
 - `/register` - Rejestracja
-- `/reset-password` - Żądanie resetu hasła
-- `/reset-password/confirm` - Potwierdzenie nowego hasła
 
 #### Strony chronione (wymagają uwierzytelnienia):
 - `/` - Strona główna (tworzenie fiszek)
@@ -875,7 +778,7 @@ Modalne komponenty nie zmieniają URL, ale stanowią "wirtualne widoki":
 - `<TextInput />` dla email
 - `<PasswordInput />` dla hasła
 - `<Button />` typu submit
-- Linki do /register i /reset-password
+- Link do /register
 
 **API Integration**: `supabase.auth.signInWithPassword()`
 
@@ -898,41 +801,6 @@ Modalne komponenty nie zmieniają URL, ale stanowią "wirtualne widoki":
 - `<Button />` typu submit
 
 **API Integration**: `supabase.auth.signUp()`
-
----
-
-#### `ResetPasswordRequestForm.tsx`
-**Opis**: Formularz żądania resetu hasła.
-
-**State**:
-- `email: string`
-- `isSubmitted: boolean`
-- `isSubmitting: boolean`
-
-**Zawiera**:
-- `<TextInput />` dla email
-- `<Button />` typu submit
-- Success message (po wysłaniu)
-
-**API Integration**: `supabase.auth.resetPasswordForEmail()`
-
----
-
-#### `ResetPasswordConfirmForm.tsx`
-**Opis**: Formularz ustawiania nowego hasła.
-
-**State**:
-- `password: string`
-- `confirmPassword: string`
-- `isSubmitting: boolean`
-- `errors: {password?, confirmPassword?}`
-
-**Zawiera**:
-- `<PasswordInput />` z `<PasswordStrengthIndicator />`
-- `<PasswordInput />` dla potwierdzenia
-- `<Button />` typu submit
-
-**API Integration**: `supabase.auth.updateUser({password})`
 
 ---
 
@@ -1691,17 +1559,16 @@ const response = await apiRequest('/api/flashcards', {
 | US-001 | Rejestracja użytkownika | `/register` - `RegisterForm` | ✅ Covered |
 | US-002 | Logowanie | `/login` - `LoginForm` | ✅ Covered |
 | US-003 | Wylogowanie | Header - `LogoutButton` | ✅ Covered |
-| US-004 | Reset hasła | `/reset-password`, `/reset-password/confirm` | ✅ Covered |
-| US-005 | Generowanie propozycji AI | `/` - `GenerateTab`, `ProposalsList` | ✅ Covered |
-| US-006 | Walidacja tekstu wejściowego | `/` - `GenerateTab` (character counter, validation) | ✅ Covered |
-| US-007 | Zarządzanie pojedynczą propozycją | `/` - `ProposalCard` (edit/accept/remove) | ✅ Covered |
-| US-008 | Akcje grupowe propozycji | `/` - `BatchActionsBar` | ✅ Covered |
-| US-009 | Manualne tworzenie fiszki | `/` - `ManualAddTab` | ✅ Covered |
-| US-010 | Lista zapisanych fiszek | `/manage` - `FlashcardGrid`, `FlashcardCard` | ✅ Covered |
-| US-011 | Wyszukiwanie fiszek | `/manage` - `ToolBar`, `SearchInput` | ✅ Covered |
-| US-012 | Edycja fiszki | `/manage` - `EditFlashcardModal` | ✅ Covered |
-| US-013 | Usuwanie fiszki | `/manage` - `DeleteConfirmationModal` | ✅ Covered |
-| US-014 | Przeglądanie fiszek | `/review` - `ReviewCard`, `ReviewControls` | ✅ Covered |
+| US-004 | Generowanie propozycji AI | `/` - `GenerateTab`, `ProposalsList` | ✅ Covered |
+| US-005 | Walidacja tekstu wejściowego | `/` - `GenerateTab` (character counter, validation) | ✅ Covered |
+| US-006 | Zarządzanie pojedynczą propozycją | `/` - `ProposalCard` (edit/accept/remove) | ✅ Covered |
+| US-007 | Akcje grupowe propozycji | `/` - `BatchActionsBar` | ✅ Covered |
+| US-008 | Manualne tworzenie fiszki | `/` - `ManualAddTab` | ✅ Covered |
+| US-009 | Lista zapisanych fiszek | `/manage` - `FlashcardGrid`, `FlashcardCard` | ✅ Covered |
+| US-010 | Wyszukiwanie fiszek | `/manage` - `ToolBar`, `SearchInput` | ✅ Covered |
+| US-011 | Edycja fiszki | `/manage` - `EditFlashcardModal` | ✅ Covered |
+| US-012 | Usuwanie fiszki | `/manage` - `DeleteConfirmationModal` | ✅ Covered |
+| US-013 | Przeglądanie fiszek | `/review` - `ReviewCard`, `ReviewControls` | ✅ Covered |
 
 **Wszystkie user stories z PRD są pokryte przez architekturę UI.**
 

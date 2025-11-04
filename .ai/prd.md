@@ -14,7 +14,6 @@ Głównym problemem, który rozwiązuje aplikacja, jest czasochłonność i wysi
 - Rejestracja użytkownika za pomocą adresu e-mail i hasła.
 - Logowanie do systemu.
 - Możliwość wylogowania się.
-- Mechanizm resetowania zapomnianego hasła.
 - Uwierzytelnianie obsługiwane przez usługę zewnętrzną (Supabase Auth).
 
 ### 3.2. Generowanie Fiszki przez AI
@@ -83,18 +82,9 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   1. W interfejsie aplikacji znajduje się przycisk "Wyloguj".
   2. Po kliknięciu przycisku sesja użytkownika jest kończona i jest on przekierowywany na stronę logowania.
 
-#### ID: US-004
-- Tytuł: Resetowanie hasła
-- Opis: Jako użytkownik, który zapomniał hasła, chcę móc je zresetować, aby odzyskać dostęp do konta.
-- Kryteria akceptacji:
-  1. Na stronie logowania znajduje się link "Zapomniałem hasła".
-  2. Po jego kliknięciu użytkownik jest proszony o podanie swojego adresu e-mail.
-  3. Po podaniu e-maila na skrzynkę zostaje wysłana wiadomość z linkiem do resetu hasła.
-  4. Link prowadzi do formularza, gdzie użytkownik może ustawić nowe hasło.
-
 ### Moduł: Generowanie fiszek AI
 
-#### ID: US-005
+#### ID: US-004
 - Tytuł: Generowanie propozycji fiszek przez AI
 - Opis: Jako użytkownik, chcę wkleić tekst i otrzymać propozycje fiszek wygenerowane przez AI, aby szybko tworzyć materiały do nauki.
 - Kryteria akceptacji:
@@ -103,7 +93,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   3. Po wklejeniu tekstu i kliknięciu przycisku, system wyświetla 12 propozycji fiszek.
   4. Każda propozycja ma wyraźnie oznaczony przód ("Pojęcie") i tył ("Definicja").
 
-#### ID: US-006
+#### ID: US-005
 - Tytuł: Walidacja tekstu wejściowego dla AI
 - Opis: Jako użytkownik, próbując wygenerować fiszki, chcę otrzymać informację zwrotną, jeśli mój tekst jest za krótki lub za długi.
 - Kryteria akceptacji:
@@ -112,7 +102,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   3. Jeśli tekst ma więcej niż 1000 znaków, po próbie generacji wyświetla się komunikat o maksymalnej dopuszczalnej długości.
   4. Generowanie rozpoczyna się tylko dla tekstów o długości od 100 do 1000 znaków.
 
-#### ID: US-007
+#### ID: US-006
 - Tytuł: Zarządzanie pojedynczą propozycją fiszki
 - Opis: Jako użytkownik, chcę móc edytować, zaakceptować lub usunąć każdą z wygenerowanych propozycji, aby dostosować je do moich potrzeb.
 - Kryteria akceptacji:
@@ -121,7 +111,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   3. Kliknięcie "Akceptuj" wizualnie oznacza fiszkę jako gotową do zapisu (np. zmienia kolor tła, pokazuje ikonę).
   4. Kliknięcie "Usuń" usuwa propozycję z listy.
 
-#### ID: US-008
+#### ID: US-007
 - Tytuł: Grupowe zarządzanie propozycjami fiszek
 - Opis: Jako użytkownik, chcę móc szybko zapisać wszystkie zaakceptowane fiszki lub odrzucić wszystkie propozycje, aby usprawnić pracę.
 - Kryteria akceptacji:
@@ -132,7 +122,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
 
 ### Moduł: Manualne tworzenie fiszek
 
-#### ID: US-009
+#### ID: US-008
 - Tytuł: Manualne tworzenie nowej fiszki
 - Opis: Jako użytkownik, chcę mieć możliwość ręcznego dodania fiszki, gdy znam dokładną treść pytania i odpowiedzi.
 - Kryteria akceptacji:
@@ -144,7 +134,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
 
 ### Moduł: Zarządzanie kolekcją fiszek
 
-#### ID: US-010
+#### ID: US-009
 - Tytuł: Wyświetlanie listy zapisanych fiszek
 - Opis: Jako użytkownik, chcę widzieć wszystkie moje zapisane fiszki w jednym miejscu, aby móc nimi zarządzać.
 - Kryteria akceptacji:
@@ -152,7 +142,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   2. Kolekcja jest wyświetlana w formie siatki (grid) z kartami fiszek - 3 w jednym rzędzie, na których widać u góry Przód a na dole Tył fiszki, a także akcje "Edytuj" oraz "Usuń" (jako czytelne ikony).
   3. Fiszki są domyślnie posortowane od najnowszej do najstarszej.
 
-#### ID: US-011
+#### ID: US-010
 - Tytuł: Wyszukiwanie fiszek
 - Opis: Jako użytkownik, chcę móc wyszukać konkretną fiszkę w mojej kolekcji, aby szybko ją znaleźć.
 - Kryteria akceptacji:
@@ -160,7 +150,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   2. Wpisywanie tekstu w pole filtruje listę fiszek w czasie rzeczywistym.
   3. Wyszukiwanie obejmuje zarówno przód, jak i tył fiszki.
 
-#### ID: US-012
+#### ID: US-011
 - Tytuł: Edycja istniejącej fiszki
 - Opis: Jako użytkownik, chcę móc edytować treść zapisanej fiszki, aby poprawić błędy lub zaktualizować informacje.
 - Kryteria akceptacji:
@@ -168,7 +158,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
   2. Kliknięcie przycisku otwiera formularz edycji (np. w oknie modalnym) z załadowaną treścią fiszki.
   3. Po zapisaniu zmian, zaktualizowana treść jest widoczna na liście.
 
-#### ID: US-013
+#### ID: US-012
 - Tytuł: Usuwanie istniejącej fiszki
 - Opis: Jako użytkownik, chcę móc usunąć fiszkę, której już nie potrzebuję.
 - Kryteria akceptacji:
@@ -178,7 +168,7 @@ Następujące funkcjonalności nie wchodzą w zakres wersji MVP:
 
 ### Moduł: Przeglądanie fiszek
 
-#### ID: US-014
+#### ID: US-013
 - Tytuł: Przeglądanie fiszek w trybie nauki
 - Opis: Jako użytkownik, chcę móc przeglądać moje fiszki jedna po drugiej, aby utrwalać wiedzę.
 - Kryteria akceptacji:
