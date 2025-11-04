@@ -3,7 +3,6 @@
  * Handles authenticated API requests with proper token management
  */
 
-import { getDevToken } from "./auth-dev";
 import type {
   FlashcardListResponse,
   FlashcardListQueryParams,
@@ -16,6 +15,16 @@ interface FetchOptions extends RequestInit {
 }
 
 /**
+ * Get auth token from localStorage
+ */
+function getAuthToken(): string | null {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  return localStorage.getItem("supabase_auth_token");
+}
+
+/**
  * Make an authenticated API request
  * Automatically adds Authorization header with token
  */
@@ -23,7 +32,7 @@ export async function fetchAPI(url: string, options: FetchOptions = {}): Promise
   const { token, ...fetchOptions } = options;
 
   // Get token from parameter or localStorage
-  const authToken = token || getDevToken();
+  const authToken = token || getAuthToken();
 
   // Build headers
   const headers = new Headers(fetchOptions.headers);

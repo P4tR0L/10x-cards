@@ -5,24 +5,20 @@ interface Props {
   userEmail?: string;
 }
 
-const { userEmail = "test@10xcards.dev" } = Astro.props;
+// Get user from Astro locals (set by middleware)
+const user = Astro.locals.user;
+const { userEmail = user?.email || "Użytkownik" } = Astro.props;
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-white/10 bg-gradient-to-r from-indigo-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-md">
+<header
+  class="sticky top-0 z-50 w-full border-b border-white/10 bg-gradient-to-r from-indigo-900/95 via-purple-900/95 to-blue-900/95 backdrop-blur-md"
+>
   <div class="container mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <!-- Logo -->
       <div class="flex items-center">
-        <a
-          href="/"
-          class="flex items-center space-x-2 text-white hover:text-blue-200 transition-colors"
-        >
-          <svg
-            class="h-8 w-8"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <a href="/" class="flex items-center space-x-2 text-white hover:text-blue-200 transition-colors">
+          <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M4 6h16M4 12h16M4 18h16"
               stroke="currentColor"
@@ -39,12 +35,7 @@ const { userEmail = "test@10xcards.dev" } = Astro.props;
       <!-- User info and Logout -->
       <div class="flex items-center space-x-4">
         <div class="hidden md:flex items-center space-x-2 text-white/90">
-          <svg
-            class="h-5 w-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"
               stroke="currentColor"
@@ -55,15 +46,16 @@ const { userEmail = "test@10xcards.dev" } = Astro.props;
           </svg>
           <span class="text-sm">{userEmail}</span>
         </div>
-        
+
         <!-- User initials on mobile -->
-        <div class="md:hidden flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white text-sm font-semibold">
+        <div
+          class="md:hidden flex items-center justify-center h-8 w-8 rounded-full bg-white/20 text-white text-sm font-semibold"
+        >
           {userEmail.charAt(0).toUpperCase()}
         </div>
-        
+
         <LogoutButton client:load />
       </div>
     </div>
   </div>
 </header>
-

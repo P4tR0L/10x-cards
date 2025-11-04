@@ -9,11 +9,26 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Get the Authorization header
   const authHeader = context.request.headers.get("Authorization");
+  
+  // Get tokens from cookies (for SSR pages)
+  const accessTokenCookie = context.cookies.get("sb-access-token")?.value;
+  const refreshTokenCookie = context.cookies.get("sb-refresh-token")?.value;
+
+  // Determine which token to use (header takes precedence over cookie)
+  let accessToken: string | null = null;
+  let refreshToken: string | null = null;
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    accessToken = authHeader.replace("Bearer ", "");
+  } else if (accessTokenCookie) {
+    accessToken = accessTokenCookie;
+    refreshToken = refreshTokenCookie || null;
+  }
 
   // Create a new Supabase client for this request
   const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
     global: {
-      headers: authHeader ? { Authorization: authHeader } : {},
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
     },
     auth: {
       autoRefreshToken: false,
@@ -22,19 +37,38 @@ export const onRequest = defineMiddleware(async (context, next) => {
     },
   });
 
-  // If we have an Authorization header with Bearer token, set it and get user
+  // If we have an access token, set the session and get user
   let user = null;
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    const token = authHeader.replace("Bearer ", "");
-    // Set the session with the access token
+  if (accessToken) {
     const { data, error } = await supabase.auth.setSession({
-      access_token: token,
-      refresh_token: "", // Not needed for API requests
+      access_token: accessToken,
+      refresh_token: refreshToken || "",
     });
 
     // If session is valid, get the user
     if (!error && data.session) {
       user = data.session.user;
+      
+      // If token was refreshed, update cookies
+      if (data.session.access_token !== accessToken) {
+        context.cookies.set("sb-access-token", data.session.access_token, {
+          path: "/",
+          httpOnly: true,
+          secure: import.meta.env.PROD,
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24 * 7, // 7 days
+        });
+        
+        if (data.session.refresh_token) {
+          context.cookies.set("sb-refresh-token", data.session.refresh_token, {
+            path: "/",
+            httpOnly: true,
+            secure: import.meta.env.PROD,
+            sameSite: "lax",
+            maxAge: 60 * 60 * 24 * 7, // 7 days
+          });
+        }
+      }
     }
   }
 

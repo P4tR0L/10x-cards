@@ -1,6 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { FlashcardCreator } from "../components/FlashcardCreator";
+
+// Protect route - redirect to login if not authenticated
+if (!Astro.locals.user) {
+  return Astro.redirect("/login");
+}
 ---
 
 <Layout title="10x Cards - Twórz Fiszki">

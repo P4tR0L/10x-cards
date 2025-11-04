@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { clearDevToken } from "@/lib/auth-dev";
+import { supabaseClient } from "@/db/supabase.client";
 
 export function LogoutButton() {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -9,11 +9,20 @@ export function LogoutButton() {
     setIsLoggingOut(true);
     
     try {
-      // Clear dev token
-      clearDevToken();
+      // Sign out from Supabase
+      await supabaseClient.auth.signOut();
       
-      // Redirect to home with reload to reset auth state
-      window.location.href = "/";
+      // Clear tokens from localStorage
+      localStorage.removeItem("supabase_auth_token");
+      localStorage.removeItem("supabase_refresh_token");
+      
+      // Call server endpoint to clear cookies
+      await fetch("/api/auth/logout", {
+        method: "POST",
+      });
+      
+      // Redirect to login page
+      window.location.href = "/login";
     } catch (error) {
       console.error("Logout error:", error);
       setIsLoggingOut(false);

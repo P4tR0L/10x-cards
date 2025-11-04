@@ -63,11 +63,6 @@ export function FlashcardCreator() {
           <CardDescription>
             Generuj fiszki automatycznie z pomocą AI lub dodaj je ręcznie
           </CardDescription>
-          <div className="pt-2">
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-              DEV MODE
-            </span>
-          </div>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="generate" className="w-full">
