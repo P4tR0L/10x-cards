@@ -16,8 +16,8 @@ export function FlashcardCreator() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-6xl">
-        <Card>
+      <div className="max-w-6xl mx-auto">
+        <Card className="bg-white/95 backdrop-blur-sm">
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
@@ -34,8 +34,8 @@ export function FlashcardCreator() {
 
   if (!isAuthenticated) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-6xl">
-        <Card>
+      <div className="max-w-6xl mx-auto">
+        <Card className="bg-white/95 backdrop-blur-sm">
           <CardContent className="py-12">
             <div className="text-center space-y-4">
               <p className="text-lg font-semibold text-red-600">
@@ -56,8 +56,8 @@ export function FlashcardCreator() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-6xl">
-      <Card>
+    <div className="max-w-6xl mx-auto">
+      <Card className="bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-3xl">Twórz Fiszki</CardTitle>
           <CardDescription>

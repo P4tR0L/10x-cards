@@ -174,12 +174,6 @@ export function ManageFlashcards() {
     [flashcards, pagination, fetchFlashcardsData]
   );
 
-  // Handle review button click
-  const handleReviewClick = useCallback(() => {
-    // Navigate to review page (to be implemented)
-    window.location.href = "/review";
-  }, []);
-
   // Handle create flashcard button click (from EmptyState)
   const handleCreateClick = useCallback(() => {
     window.location.href = "/";
@@ -204,8 +198,8 @@ export function ManageFlashcards() {
   // Auth loading state
   if (authLoading) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-7xl">
-        <Card>
+      <div className="max-w-7xl mx-auto">
+        <Card className="bg-white/95 backdrop-blur-sm">
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
@@ -220,8 +214,8 @@ export function ManageFlashcards() {
   // Auth error state
   if (!isAuthenticated) {
     return (
-      <div className="container mx-auto py-8 px-4 max-w-7xl">
-        <Card>
+      <div className="max-w-7xl mx-auto">
+        <Card className="bg-white/95 backdrop-blur-sm">
           <CardContent className="py-12">
             <div className="text-center space-y-4">
               <p className="text-lg font-semibold text-red-600">
@@ -239,8 +233,8 @@ export function ManageFlashcards() {
 
   return (
     <>
-      <div className="container mx-auto py-8 px-4 max-w-7xl">
-        <Card>
+      <div className="max-w-7xl mx-auto">
+        <Card className="bg-white/95 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-3xl">Zarządzaj Kolekcją</CardTitle>
             <CardDescription>
@@ -252,8 +246,6 @@ export function ManageFlashcards() {
             <ToolBar
               filters={filters}
               onFiltersChange={handleFiltersChange}
-              onReviewClick={handleReviewClick}
-              hasFlashcards={pagination.total > 0}
             />
 
             {/* Main content */}

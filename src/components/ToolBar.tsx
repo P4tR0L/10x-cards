@@ -8,21 +8,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, GraduationCap, SortAsc, SortDesc } from "lucide-react";
+import { Search, SortAsc, SortDesc } from "lucide-react";
 import type { FlashcardListQueryParams } from "@/types";
 
 interface ToolBarProps {
   filters: FlashcardListQueryParams;
   onFiltersChange: (filters: FlashcardListQueryParams) => void;
-  onReviewClick: () => void;
-  hasFlashcards: boolean;
 }
 
 export function ToolBar({
   filters,
   onFiltersChange,
-  onReviewClick,
-  hasFlashcards,
 }: ToolBarProps) {
   const [searchValue, setSearchValue] = useState(filters.search ?? "");
 
@@ -78,8 +74,8 @@ export function ToolBar({
   }, [filters, onFiltersChange]);
 
   return (
-    <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      {/* Left side: Search and Filters */}
+    <div className="flex flex-col gap-4 md:flex-row md:items-center">
+      {/* Search and Filters */}
       <div className="flex flex-col gap-3 flex-1 sm:flex-row sm:items-center">
         {/* Search Input */}
         <div className="relative flex-1 max-w-md">
@@ -140,17 +136,6 @@ export function ToolBar({
           </Button>
         </div>
       </div>
-
-      {/* Right side: Review Button */}
-      <Button
-        onClick={onReviewClick}
-        disabled={!hasFlashcards}
-        className="w-full sm:w-auto"
-        aria-label="Rozpocznij naukę"
-      >
-        <GraduationCap className="mr-2 h-4 w-4" />
-        Ucz się
-      </Button>
     </div>
   );
 }
