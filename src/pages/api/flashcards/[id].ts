@@ -1,7 +1,8 @@
 /**
- * Flashcard Update API Endpoint
+ * Flashcard Management API Endpoints
  *
  * PUT /api/flashcards/{id} - Update an existing flashcard
+ * DELETE /api/flashcards/{id} - Delete an existing flashcard
  *
  * Authentication required: JWT Bearer token in Authorization header
  */
@@ -152,6 +153,116 @@ export const PUT: APIRoute = async (context) => {
     // ========================================================================
     // Log error details for debugging (never expose to user)
     console.error("[PUT /api/flashcards/{id}] Error updating flashcard:", {
+      flashcardId: context.params.id,
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Return generic error response (don't leak implementation details)
+    const errorResponse: ErrorResponse = {
+      error: "Internal server error",
+      message: "An unexpected error occurred",
+    };
+    return new Response(JSON.stringify(errorResponse), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+};
+
+/**
+ * DELETE /api/flashcards/{id}
+ *
+ * Deletes an existing flashcard for the authenticated user.
+ *
+ * Path parameters:
+ * - id: Flashcard ID (positive integer)
+ *
+ * Response codes:
+ * - 204 No Content: Flashcard deleted successfully
+ * - 400 Bad Request: Invalid flashcard ID
+ * - 401 Unauthorized: Missing or invalid authentication token
+ * - 404 Not Found: Flashcard not found or access denied
+ * - 500 Internal Server Error: Unexpected server error
+ */
+export const DELETE: APIRoute = async (context) => {
+  try {
+    // ========================================================================
+    // 1. AUTHENTICATION
+    // ========================================================================
+    // Verify JWT token and get authenticated user from Supabase session
+    const {
+      data: { user },
+      error: authError,
+    } = await context.locals.supabase.auth.getUser();
+
+    // Handle authentication errors (missing token, invalid token, expired token)
+    if (authError || !user) {
+      const errorResponse: ErrorResponse = {
+        error: "Unauthorized",
+        message: "Invalid or missing authentication token",
+      };
+      return new Response(JSON.stringify(errorResponse), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // ========================================================================
+    // 2. PARSE AND VALIDATE ID
+    // ========================================================================
+    // Extract flashcard ID from URL path parameter
+    const idParam = context.params.id;
+
+    // Validate ID is a positive integer
+    const flashcardId = parseInt(idParam || "", 10);
+    if (isNaN(flashcardId) || flashcardId <= 0) {
+      const errorResponse: ErrorResponse = {
+        error: "Bad request",
+        message: "Invalid flashcard ID",
+      };
+      return new Response(JSON.stringify(errorResponse), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // ========================================================================
+    // 3. DELETE FLASHCARD VIA SERVICE
+    // ========================================================================
+    // Initialize service with authenticated Supabase client
+    const flashcardService = new FlashcardService(context.locals.supabase);
+
+    // Delete flashcard (RLS ensures user can only delete their own flashcards)
+    try {
+      await flashcardService.deleteFlashcard(flashcardId);
+
+      // Return success response (204 No Content - no body)
+      return new Response(null, {
+        status: 204,
+      });
+    } catch (error) {
+      // Handle specific service errors (404 not found)
+      if (error instanceof Error && error.message.includes("not found")) {
+        const errorResponse: ErrorResponse = {
+          error: "Not found",
+          message: "Flashcard not found or you don't have permission to delete it",
+        };
+        return new Response(JSON.stringify(errorResponse), {
+          status: 404,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+      // Re-throw to be caught by outer catch block
+      throw error;
+    }
+  } catch (error) {
+    // ========================================================================
+    // 4. HANDLE UNEXPECTED ERRORS
+    // ========================================================================
+    // Log error details for debugging (never expose to user)
+    console.error("[DELETE /api/flashcards/{id}] Error deleting flashcard:", {
       flashcardId: context.params.id,
       error: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,

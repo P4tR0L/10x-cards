@@ -149,15 +149,27 @@ export class FlashcardService {
    * Deletes a flashcard by ID
    *
    * This method uses RLS to ensure users can only delete their own flashcards.
+   * If no rows are deleted (flashcard doesn't exist or access denied), throws a specific error.
    *
    * @param flashcardId - The ID of the flashcard to delete
-   * @throws Error if flashcard not found or database operation fails
+   * @throws Error with "not found" message if flashcard doesn't exist or access denied
+   * @throws Error for other database failures
    */
   async deleteFlashcard(flashcardId: number): Promise<void> {
-    const { error } = await this.supabase.from("flashcards").delete().eq("id", flashcardId);
+    // Delete and return deleted rows to verify success
+    const { data, error } = await this.supabase.from("flashcards").delete().eq("id", flashcardId).select(); // Returns deleted rows
 
+    // Handle database errors
     if (error) {
       throw new Error(`Failed to delete flashcard: ${error.message}`);
+    }
+
+    // Check if any rows were deleted
+    // data will be empty array if:
+    // - Flashcard doesn't exist
+    // - Flashcard exists but belongs to another user (RLS blocked)
+    if (!data || data.length === 0) {
+      throw new Error("Flashcard not found or access denied");
     }
   }
 
