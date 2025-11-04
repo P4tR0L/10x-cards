@@ -2,15 +2,19 @@
  * Flashcards API Endpoint
  *
  * POST /api/flashcards - Create a single manual flashcard
- * GET /api/flashcards - List flashcards with pagination and filtering (TODO)
+ * GET /api/flashcards - List flashcards with pagination and filtering
  *
  * Authentication required: JWT Bearer token in Authorization header
  */
 
 import type { APIRoute } from "astro";
 import { FlashcardService } from "@/lib/services/flashcard.service";
-import { createFlashcardSchema } from "@/lib/validation/flashcard.validation";
-import type { FlashcardResponse, ErrorResponse } from "@/types";
+import {
+  createFlashcardSchema,
+  flashcardListQuerySchema,
+  type FlashcardListQueryInput,
+} from "@/lib/validation/flashcard.validation";
+import type { FlashcardResponse, FlashcardListResponse, ErrorResponse } from "@/types";
 
 // Disable prerendering for this API route (SSR required for dynamic data)
 export const prerender = false;
@@ -123,6 +127,129 @@ export const POST: APIRoute = async (context) => {
     });
 
     // Return generic error response (don't leak implementation details)
+    const errorResponse: ErrorResponse = {
+      error: "Internal server error",
+      message: "An unexpected error occurred",
+    };
+    return new Response(JSON.stringify(errorResponse), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+};
+
+/**
+ * GET /api/flashcards
+ *
+ * Lists flashcards with pagination, filtering, searching, and sorting.
+ *
+ * Query parameters:
+ * - page: Page number (1-indexed, default 1)
+ * - limit: Items per page (1-100, default 30)
+ * - search: Search term for front/back (max 500 chars)
+ * - source: Filter by source ('manual' or 'ai')
+ * - sort: Sort field ('created_at' or 'updated_at', default 'created_at')
+ * - order: Sort order ('asc' or 'desc', default 'desc')
+ *
+ * Response codes:
+ * - 200 OK: Flashcards retrieved successfully
+ * - 401 Unauthorized: Missing or invalid authentication token
+ * - 422 Validation Error: Invalid query parameters
+ * - 500 Internal Server Error: Unexpected server error
+ */
+export const GET: APIRoute = async (context) => {
+  try {
+    // ========================================================================
+    // 1. AUTHENTICATION
+    // ========================================================================
+    const {
+      data: { user },
+      error: authError,
+    } = await context.locals.supabase.auth.getUser();
+
+    if (authError || !user) {
+      const errorResponse: ErrorResponse = {
+        error: "Unauthorized",
+        message: "Invalid or missing authentication token",
+      };
+      return new Response(JSON.stringify(errorResponse), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    // ========================================================================
+    // 2. PARSE QUERY PARAMETERS
+    // ========================================================================
+    const url = new URL(context.request.url);
+    const queryParams = {
+      page: url.searchParams.get("page"),
+      limit: url.searchParams.get("limit"),
+      search: url.searchParams.get("search"),
+      source: url.searchParams.get("source"),
+      sort: url.searchParams.get("sort"),
+      order: url.searchParams.get("order"),
+    };
+
+    // ========================================================================
+    // 3. VALIDATE QUERY PARAMETERS
+    // ========================================================================
+    const validation = flashcardListQuerySchema.safeParse(queryParams);
+    if (!validation.success) {
+      const errorResponse: ErrorResponse = {
+        error: "Validation error",
+        message: "Invalid query parameters",
+        details: validation.error.flatten().fieldErrors,
+      };
+      return new Response(JSON.stringify(errorResponse), {
+        status: 422,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    const validatedParams: FlashcardListQueryInput = validation.data;
+
+    // ========================================================================
+    // 4. LIST FLASHCARDS VIA SERVICE
+    // ========================================================================
+    const flashcardService = new FlashcardService(context.locals.supabase);
+    const { flashcards, total } = await flashcardService.listFlashcards(user.id, validatedParams);
+
+    // ========================================================================
+    // 5. BUILD PAGINATION METADATA
+    // ========================================================================
+    const totalPages = Math.ceil(total / validatedParams.limit);
+    const pagination = {
+      page: validatedParams.page,
+      limit: validatedParams.limit,
+      total,
+      total_pages: totalPages,
+      has_next: validatedParams.page < totalPages,
+      has_prev: validatedParams.page > 1,
+    };
+
+    // ========================================================================
+    // 6. RETURN SUCCESS RESPONSE
+    // ========================================================================
+    const response: FlashcardListResponse = {
+      data: flashcards,
+      pagination,
+    };
+
+    return new Response(JSON.stringify(response), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    // ========================================================================
+    // 7. HANDLE UNEXPECTED ERRORS
+    // ========================================================================
+    console.error("[GET /api/flashcards] Error listing flashcards:", {
+      error: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    });
+
     const errorResponse: ErrorResponse = {
       error: "Internal server error",
       message: "An unexpected error occurred",

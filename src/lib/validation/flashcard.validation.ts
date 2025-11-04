@@ -93,3 +93,60 @@ export const createBatchFlashcardsSchema = z.object({
  */
 export type BatchFlashcardItemInput = z.infer<typeof batchFlashcardItemSchema>;
 export type CreateBatchFlashcardsInput = z.infer<typeof createBatchFlashcardsSchema>;
+
+/**
+ * Schema for flashcard list query parameters
+ *
+ * Validation rules:
+ * - page: integer >= 1, default 1
+ * - limit: integer 1-100, default 30
+ * - search: max 500 characters
+ * - source: 'manual' or 'ai'
+ * - sort: 'created_at' or 'updated_at', default 'created_at'
+ * - order: 'asc' or 'desc', default 'desc'
+ *
+ * Used in: GET /api/flashcards
+ */
+export const flashcardListQuerySchema = z.object({
+  page: z.coerce
+    .number({
+      invalid_type_error: "Page must be a number",
+    })
+    .int("Page must be an integer")
+    .min(1, "Page must be at least 1")
+    .default(1),
+
+  limit: z.coerce
+    .number({
+      invalid_type_error: "Limit must be a number",
+    })
+    .int("Limit must be an integer")
+    .min(1, "Limit must be at least 1")
+    .max(100, "Limit cannot exceed 100")
+    .default(30),
+
+  search: z.string().max(500, "Search term cannot exceed 500 characters").optional(),
+
+  source: z
+    .enum(["manual", "ai"], {
+      errorMap: () => ({ message: "Source must be 'manual' or 'ai'" }),
+    })
+    .optional(),
+
+  sort: z
+    .enum(["created_at", "updated_at"], {
+      errorMap: () => ({ message: "Sort must be 'created_at' or 'updated_at'" }),
+    })
+    .default("created_at"),
+
+  order: z
+    .enum(["asc", "desc"], {
+      errorMap: () => ({ message: "Order must be 'asc' or 'desc'" }),
+    })
+    .default("desc"),
+});
+
+/**
+ * Inferred TypeScript type from flashcardListQuerySchema
+ */
+export type FlashcardListQueryInput = z.infer<typeof flashcardListQuerySchema>;

@@ -10,7 +10,7 @@
 
 import type { SupabaseClient } from "@/db/supabase.client";
 import type { FlashcardDTO, FlashcardInsert } from "@/types";
-import type { CreateFlashcardInput, UpdateFlashcardInput } from "@/lib/validation/flashcard.validation";
+import type { CreateFlashcardInput, UpdateFlashcardInput, FlashcardListQueryInput } from "@/lib/validation/flashcard.validation";
 
 /**
  * Service class for managing flashcard operations
@@ -224,5 +224,82 @@ export class FlashcardService {
       const { user_id, ...flashcardDTO } = flashcard;
       return flashcardDTO as FlashcardDTO;
     });
+  }
+
+  /**
+   * Lists flashcards with pagination, filtering, searching, and sorting
+   *
+   * This method:
+   * 1. Constructs Supabase query with filters, search, and sorting
+   * 2. Applies RLS policy (automatic user_id filtering)
+   * 3. Executes query with pagination (range)
+   * 4. Returns flashcards array and total count
+   *
+   * @param userId - The ID of the authenticated user (for logging, RLS handles filtering)
+   * @param params - Query parameters (validated)
+   * @returns Object with flashcards array and total count
+   * @throws Error if database operation fails
+   *
+   * @example
+   * ```typescript
+   * const service = new FlashcardService(supabase);
+   * const result = await service.listFlashcards(user.id, {
+   *   page: 1,
+   *   limit: 30,
+   *   search: "biology",
+   *   source: "ai",
+   *   sort: "created_at",
+   *   order: "desc"
+   * });
+   * console.log(`Found ${result.total} flashcards`);
+   * ```
+   */
+  async listFlashcards(
+    userId: string,
+    params: FlashcardListQueryInput
+  ): Promise<{ flashcards: FlashcardDTO[]; total: number }> {
+    // Start building query with count
+    let query = this.supabase
+      .from("flashcards")
+      .select("*", { count: "exact" });
+
+    // Apply search filter (full-text search on front and back)
+    if (params.search) {
+      const searchPattern = `%${params.search}%`;
+      query = query.or(`front.ilike.${searchPattern},back.ilike.${searchPattern}`);
+    }
+
+    // Apply source filter
+    if (params.source) {
+      query = query.eq("source", params.source);
+    }
+
+    // Apply sorting
+    query = query.order(params.sort, { ascending: params.order === "asc" });
+
+    // Apply pagination
+    const offset = (params.page - 1) * params.limit;
+    query = query.range(offset, offset + params.limit - 1);
+
+    // Execute query
+    const { data, count, error } = await query;
+
+    // Handle database errors
+    if (error) {
+      throw new Error(`Failed to list flashcards: ${error.message}`);
+    }
+
+    // Transform data: remove user_id from all flashcards
+    const flashcards = (data || []).map((flashcard) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { user_id, ...flashcardDTO } = flashcard;
+      return flashcardDTO as FlashcardDTO;
+    });
+
+    // Return flashcards and total count
+    return {
+      flashcards,
+      total: count || 0,
+    };
   }
 }

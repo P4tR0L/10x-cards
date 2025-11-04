@@ -1354,5 +1354,56 @@ Response 200:
 
 ---
 
+## 9. Implementation Status
+
+This section tracks the implementation status of each API endpoint.
+
+### Legend
+- ✅ **IMPLEMENTED** - Fully implemented and tested
+- 🚧 **IN PROGRESS** - Currently being implemented
+- 📋 **PLANNED** - Specified but not yet started
+
+### Flashcards Resource
+
+| Endpoint | Method | Status | Implementation Date | Notes |
+|:---------|:-------|:-------|:-------------------|:------|
+| `/api/flashcards` | GET | ✅ IMPLEMENTED | 2025-11-04 | List with pagination, filtering, search, sorting |
+| `/api/flashcards` | POST | ✅ IMPLEMENTED | - | Create manual flashcard |
+| `/api/flashcards/{id}` | GET | 📋 PLANNED | - | Get single flashcard - Service method exists, needs API handler |
+| `/api/flashcards/{id}` | PUT | ✅ IMPLEMENTED | - | Update flashcard |
+| `/api/flashcards/{id}` | DELETE | ✅ IMPLEMENTED | - | Delete flashcard |
+| `/api/flashcards/batch` | POST | ✅ IMPLEMENTED | - | Batch create from AI generation |
+
+### Generations Resource
+
+| Endpoint | Method | Status | Implementation Date | Notes |
+|:---------|:-------|:-------|:-------------------|:------|
+| `/api/generations` | POST | ✅ IMPLEMENTED | - | Generate flashcards with AI |
+| `/api/generations/{id}` | PATCH | 📋 PLANNED | - | Update generation metrics |
+
+### Implementation Details
+
+#### GET /api/flashcards (List Flashcards)
+- **Status:** ✅ IMPLEMENTED
+- **Date:** 2025-11-04
+- **Files Modified:**
+  - `src/lib/validation/flashcard.validation.ts` - Added query parameter validation
+  - `src/lib/services/flashcard.service.ts` - Added `listFlashcards()` method
+  - `src/pages/api/flashcards/index.ts` - Added GET handler
+- **Testing Guide:** `.ai/list-flashcards-testing-guide.md`
+- **Implementation Plan:** `.ai/list-flashcards-implementation-plan.md`
+- **Features:**
+  - Pagination (1-100 items per page, default 30)
+  - Full-text search (front/back fields)
+  - Source filtering (manual/ai)
+  - Sorting (created_at/updated_at, asc/desc)
+  - Pagination metadata (total, total_pages, has_next, has_prev)
+  - JWT authentication
+  - Zod validation
+  - RLS enforcement
+  - Security (user_id excluded)
+
+---
+
 **End of API Plan**
 
