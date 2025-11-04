@@ -26,6 +26,11 @@ export function ToolBar({
 }: ToolBarProps) {
   const [searchValue, setSearchValue] = useState(filters.search ?? "");
 
+  // Sync searchValue with filters.search when filters are cleared externally
+  useEffect(() => {
+    setSearchValue(filters.search ?? "");
+  }, [filters.search]);
+
   // Debounce search with 300ms delay
   useEffect(() => {
     const timeoutId = setTimeout(() => {
