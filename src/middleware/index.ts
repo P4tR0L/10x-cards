@@ -22,18 +22,25 @@ export const onRequest = defineMiddleware(async (context, next) => {
     },
   });
 
-  // If we have an Authorization header with Bearer token, set it
+  // If we have an Authorization header with Bearer token, set it and get user
+  let user = null;
   if (authHeader && authHeader.startsWith("Bearer ")) {
     const token = authHeader.replace("Bearer ", "");
     // Set the session with the access token
-    await supabase.auth.setSession({
+    const { data, error } = await supabase.auth.setSession({
       access_token: token,
       refresh_token: "", // Not needed for API requests
     });
+
+    // If session is valid, get the user
+    if (!error && data.session) {
+      user = data.session.user;
+    }
   }
 
-  // Make the client available to the endpoint
+  // Make the client and user available to the endpoint
   context.locals.supabase = supabase;
+  context.locals.user = user;
 
   return next();
 });
