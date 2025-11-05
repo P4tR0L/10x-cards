@@ -22,7 +22,7 @@ const currentPath = Astro.url.pathname;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 bg-fixed">
+  <body class="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 bg-fixed flex flex-col">
     {
       showNavigation && (
         <>
@@ -32,9 +32,25 @@ const currentPath = Astro.url.pathname;
       )
     }
 
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
       <slot />
     </main>
+
+    <footer class="mt-auto py-4 text-center text-white/70">
+      <div class="container mx-auto px-4">
+        <p class="text-xs">
+          Stworzone z <span class="text-red-500 animate-pulse">❤️</span> przez{" "}
+          <a
+            href="https://www.linkedin.com/in/kaczmarek-patryk/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-white hover:text-purple-300 transition-colors duration-200 underline decoration-purple-400/50 hover:decoration-purple-300"
+          >
+            Patryk Kaczmarek
+          </a>
+        </p>
+      </div>
+    </footer>
 
     <ToasterProvider client:only="react" />
   </body>
