@@ -22,7 +22,7 @@ export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProp
           </Badge>
 
           {/* Action buttons - visible on hover */}
-          <TooltipProvider>
+          <TooltipProvider delayDuration={300}>
             <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -36,7 +36,7 @@ export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProp
                     <Pencil className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="top" align="center">
                   <p>Edytuj</p>
                 </TooltipContent>
               </Tooltip>
@@ -53,7 +53,7 @@ export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProp
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent>
+                <TooltipContent side="top" align="center">
                   <p>Usuń</p>
                 </TooltipContent>
               </Tooltip>
