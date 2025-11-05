@@ -12,6 +12,7 @@ import type { FlashcardListItemDTO } from "@/types";
 import { ReviewCard } from "./ReviewCard";
 import { ReviewControls } from "./ReviewControls";
 import { CompletionScreen } from "./CompletionScreen";
+import { FlashcardNavigator } from "./FlashcardNavigator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Loader2 } from "lucide-react";
@@ -111,6 +112,15 @@ export function ReviewMode() {
     }
   }, [currentIndex, flashcards.length]);
 
+  // Handle direct navigation to specific card
+  const handleNavigate = useCallback((index: number) => {
+    if (index >= 0 && index < flashcards.length) {
+      setCurrentIndex(index);
+      setIsFlipped(false);
+      setAnnouncement(`Fiszka ${index + 1} z ${flashcards.length}`);
+    }
+  }, [flashcards.length]);
+
   // Handle restart (from completion screen)
   const handleRestart = useCallback(() => {
     setCurrentIndex(0);
@@ -151,16 +161,12 @@ export function ReviewMode() {
             handleNext();
           }
           break;
-        case "Escape": // Escape - exit
-          event.preventDefault();
-          handleExit();
-          break;
       }
     }
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [handleFlip, handleNext, handlePrevious, handleExit, isCompleted]);
+  }, [handleFlip, handleNext, handlePrevious, isCompleted]);
 
   // Swipe gestures for mobile
   useSwipe(
@@ -227,31 +233,39 @@ export function ReviewMode() {
 
       <div className="max-w-6xl mx-auto">
         <Card className="backdrop-blur-sm overflow-hidden" role="main" aria-label="Tryb nauki fiszek">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-2xl">Ucz się</CardTitle>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-3xl">Ucz się</CardTitle>
             <CardDescription className="flex items-center justify-between gap-4">
-              <span>
+              <span className="text-xs">
                 Fiszka {currentIndex + 1} z {flashcards.length}
               </span>
               <span className="text-xs">{Math.round(((currentIndex + 1) / flashcards.length) * 100)}% ukończone</span>
             </CardDescription>
-            <Progress value={((currentIndex + 1) / flashcards.length) * 100} className="h-1.5 mt-2" />
+            <Progress value={((currentIndex + 1) / flashcards.length) * 100} className="h-1 mt-1.5" />
+            
+            {/* Flashcard navigator */}
+            <div className="mt-3">
+              <FlashcardNavigator
+                totalCards={flashcards.length}
+                currentIndex={currentIndex}
+                onNavigate={handleNavigate}
+              />
+            </div>
           </CardHeader>
 
-          <CardContent className="space-y-3 pb-4">
+          <CardContent className="space-y-2 pb-3">
             {/* Main review area */}
-            <div className="flex items-center justify-center py-2 relative isolate overflow-hidden">
-              <div className="w-full max-w-2xl relative z-0">
+            <div className="flex items-center justify-center py-1 relative">
+              <div className="w-full max-w-2xl">
                 <ReviewCard flashcard={currentFlashcard} isFlipped={isFlipped} onFlip={handleFlip} />
               </div>
             </div>
 
             {/* Controls area */}
-            <div className="border-t pt-3">
+            <div className="border-t pt-2">
               <ReviewControls
                 onPrevious={handlePrevious}
                 onNext={handleNext}
-                onExit={handleExit}
                 canGoPrevious={currentIndex > 0}
                 canGoNext={currentIndex < flashcards.length - 1}
               />
@@ -271,9 +285,6 @@ export function ReviewMode() {
           </div>
           <div>
             <kbd className="px-1.5 py-0.5 bg-muted rounded">←→</kbd> Nawigacja
-          </div>
-          <div>
-            <kbd className="px-1.5 py-0.5 bg-muted rounded">Esc</kbd> Wyjdź
           </div>
         </div>
       </div>

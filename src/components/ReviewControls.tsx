@@ -1,50 +1,46 @@
 /**
  * ReviewControls Component
  * Navigation controls for review mode
- * Provides Previous/Next/Exit buttons
+ * Provides Previous/Next buttons
  */
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface ReviewControlsProps {
   onPrevious: () => void;
   onNext: () => void;
-  onExit: () => void;
   canGoPrevious: boolean;
   canGoNext: boolean;
 }
 
-export function ReviewControls({ onPrevious, onNext, onExit, canGoPrevious, canGoNext }: ReviewControlsProps) {
+export function ReviewControls({ onPrevious, onNext, canGoPrevious, canGoNext }: ReviewControlsProps) {
   return (
     <div>
       {/* Navigation buttons */}
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex items-center justify-between gap-4">
         {/* Previous button */}
         <Button
           variant="outline"
           size="default"
           onClick={onPrevious}
           disabled={!canGoPrevious}
-          className="flex-1 max-w-[180px]"
+          className="min-w-[140px]"
           aria-label="Poprzednia fiszka"
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
           Poprzednia
         </Button>
 
-        {/* Exit button */}
-        <Button variant="outline" size="default" onClick={onExit} className="px-4" aria-label="Zakończ sesję nauki">
-          <X className="mr-2 h-4 w-4" />
-          Zakończ
-        </Button>
+        {/* Spacer */}
+        <div className="flex-1" />
 
         {/* Next button */}
         <Button
           variant="default"
           size="default"
           onClick={onNext}
-          className="flex-1 max-w-[180px]"
+          className="min-w-[140px]"
           aria-label={canGoNext ? "Następna fiszka" : "Ukończ sesję i zobacz podsumowanie"}
         >
           {canGoNext ? "Następna" : "Ukończ"}
