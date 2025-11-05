@@ -50,7 +50,8 @@ Rules:
 3. Focus on the most important concepts
 4. Make flashcards clear and concise
 5. Ensure each flashcard tests a single concept
-6. Return ONLY valid JSON in this format:
+6. Always generate flashcards in language of the source text
+7. Return ONLY valid JSON in this format:
 {
   "flashcards": [
     {"front": "concept", "back": "definition"},

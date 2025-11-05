@@ -1,18 +1,19 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ManualAddTab } from "./ManualAddTab";
 import { GenerateTab } from "./GenerateTab";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
 
 export function FlashcardCreator() {
   const { isLoading, isAuthenticated } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      window.location.href = "/login";
+    }
+  }, [isLoading, isAuthenticated]);
 
   if (isLoading) {
     return (
@@ -21,10 +22,7 @@ export function FlashcardCreator() {
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-              <p className="text-muted-foreground">Inicjalizacja...</p>
-              <p className="text-xs text-muted-foreground">
-                (Tworzenie testowego użytkownika)
-              </p>
+              <p className="text-muted-foreground">Ładowanie...</p>
             </div>
           </CardContent>
         </Card>
@@ -36,18 +34,10 @@ export function FlashcardCreator() {
     return (
       <div className="max-w-6xl mx-auto">
         <Card className="bg-white/95 backdrop-blur-sm">
-          <CardContent className="py-12">
+          <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
-              <p className="text-lg font-semibold text-red-600">
-                Błąd inicjalizacji
-              </p>
-              <p className="text-muted-foreground">
-                Nie udało się zalogować testowego użytkownika.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Sprawdź czy Supabase jest uruchomiony i czy zmienne środowiskowe
-                są poprawnie skonfigurowane.
-              </p>
+              <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+              <p className="text-muted-foreground">Przekierowywanie do logowania...</p>
             </div>
           </CardContent>
         </Card>
@@ -60,9 +50,7 @@ export function FlashcardCreator() {
       <Card className="bg-white/95 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-3xl">Twórz Fiszki</CardTitle>
-          <CardDescription>
-            Generuj fiszki automatycznie z pomocą AI lub dodaj je ręcznie
-          </CardDescription>
+          <CardDescription>Generuj fiszki automatycznie z pomocą AI lub dodaj je ręcznie</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="generate" className="w-full">
@@ -84,4 +72,3 @@ export function FlashcardCreator() {
     </div>
   );
 }
-
