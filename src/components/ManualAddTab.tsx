@@ -13,15 +13,10 @@ export function ManualAddTab() {
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {}
-  );
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const validateField = (
-    field: "front" | "back",
-    value: string
-  ): string | undefined => {
+  const validateField = (field: "front" | "back", value: string): string | undefined => {
     const trimmedValue = value.trim();
 
     if (trimmedValue.length === 0) {
@@ -107,10 +102,7 @@ export function ManualAddTab() {
         setSuccessMessage(null);
       }, 3000);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Wystąpił błąd podczas dodawania fiszki";
+      const errorMessage = error instanceof Error ? error.message : "Wystąpił błąd podczas dodawania fiszki";
       setValidationErrors({
         front: errorMessage,
       });
@@ -146,9 +138,7 @@ export function ManualAddTab() {
               </p>
             )}
           </div>
-          <p className="text-xs text-foreground">
-            {front.length} / 5000
-          </p>
+          <p className="text-xs text-foreground">{front.length} / 5000</p>
         </div>
       </div>
 
@@ -177,9 +167,7 @@ export function ManualAddTab() {
               </p>
             )}
           </div>
-          <p className="text-xs text-foreground">
-            {back.length} / 5000
-          </p>
+          <p className="text-xs text-foreground">{back.length} / 5000</p>
         </div>
       </div>
 
@@ -193,14 +181,9 @@ export function ManualAddTab() {
         </div>
       )}
 
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={!isFormValid() || isSubmitting}
-      >
+      <Button type="submit" className="w-full" disabled={!isFormValid() || isSubmitting}>
         {isSubmitting ? "Dodawanie..." : "Dodaj fiszkę"}
       </Button>
     </form>
   );
 }
-

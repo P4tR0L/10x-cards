@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 interface ReviewControlsProps {
-  currentIndex: number;
-  totalCards: number;
   onPrevious: () => void;
   onNext: () => void;
   onExit: () => void;
@@ -17,15 +15,7 @@ interface ReviewControlsProps {
   canGoNext: boolean;
 }
 
-export function ReviewControls({
-  currentIndex,
-  totalCards,
-  onPrevious,
-  onNext,
-  onExit,
-  canGoPrevious,
-  canGoNext,
-}: ReviewControlsProps) {
+export function ReviewControls({ onPrevious, onNext, onExit, canGoPrevious, canGoNext }: ReviewControlsProps) {
   return (
     <div>
       {/* Navigation buttons */}
@@ -44,13 +34,7 @@ export function ReviewControls({
         </Button>
 
         {/* Exit button */}
-        <Button
-          variant="outline"
-          size="default"
-          onClick={onExit}
-          className="px-4"
-          aria-label="Zakończ sesję nauki"
-        >
+        <Button variant="outline" size="default" onClick={onExit} className="px-4" aria-label="Zakończ sesję nauki">
           <X className="mr-2 h-4 w-4" />
           Zakończ
         </Button>
@@ -70,4 +54,3 @@ export function ReviewControls({
     </div>
   );
 }
-

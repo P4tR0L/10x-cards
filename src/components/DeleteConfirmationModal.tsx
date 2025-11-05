@@ -18,12 +18,7 @@ interface DeleteConfirmationModalProps {
   onConfirm: (id: number) => Promise<void>;
 }
 
-export function DeleteConfirmationModal({
-  flashcard,
-  isOpen,
-  onClose,
-  onConfirm,
-}: DeleteConfirmationModalProps) {
+export function DeleteConfirmationModal({ flashcard, isOpen, onClose, onConfirm }: DeleteConfirmationModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleConfirm = async () => {
@@ -63,43 +58,27 @@ export function DeleteConfirmationModal({
             </div>
             <DialogTitle>Usuń fiszkę</DialogTitle>
           </div>
-          <DialogDescription>
-            Ta operacja jest nieodwracalna. Czy na pewno chcesz usunąć tę fiszkę?
-          </DialogDescription>
+          <DialogDescription>Ta operacja jest nieodwracalna. Czy na pewno chcesz usunąć tę fiszkę?</DialogDescription>
         </DialogHeader>
 
         <div className="py-4">
           <div className="rounded-lg bg-muted p-4 space-y-2">
             <div className="space-y-1">
-              <p className="text-xs font-semibold text-muted-foreground uppercase">
-                Przód
-              </p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase">Przód</p>
               <p className="text-sm line-clamp-2">{flashcard.front}</p>
             </div>
             <div className="border-t pt-2 space-y-1">
-              <p className="text-xs font-semibold text-muted-foreground uppercase">
-                Tył
-              </p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase">Tył</p>
               <p className="text-sm line-clamp-2">{flashcard.back}</p>
             </div>
           </div>
         </div>
 
         <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleClose}
-            disabled={isDeleting}
-          >
+          <Button type="button" variant="outline" onClick={handleClose} disabled={isDeleting}>
             Anuluj
           </Button>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={handleConfirm}
-            disabled={isDeleting}
-          >
+          <Button type="button" variant="destructive" onClick={handleConfirm} disabled={isDeleting}>
             {isDeleting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -114,4 +93,3 @@ export function DeleteConfirmationModal({
     </Dialog>
   );
 }
-

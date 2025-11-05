@@ -14,11 +14,7 @@ interface CompletionScreenProps {
   onExit: () => void;
 }
 
-export function CompletionScreen({
-  totalCards,
-  onRestart,
-  onExit,
-}: CompletionScreenProps) {
+export function CompletionScreen({ totalCards, onRestart, onExit }: CompletionScreenProps) {
   return (
     <div className="max-w-6xl mx-auto">
       <Card className="backdrop-blur-sm animate-in fade-in-50 zoom-in-95 duration-500">
@@ -27,12 +23,8 @@ export function CompletionScreen({
             <CheckCircle2 className="h-12 w-12 text-primary" />
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-3xl md:text-4xl">
-              Gratulacje! 🎉
-            </CardTitle>
-            <CardDescription className="text-lg">
-              Ukończyłeś sesję nauki
-            </CardDescription>
+            <CardTitle className="text-3xl md:text-4xl">Gratulacje! 🎉</CardTitle>
+            <CardDescription className="text-lg">Ukończyłeś sesję nauki</CardDescription>
           </div>
         </CardHeader>
 
@@ -40,17 +32,13 @@ export function CompletionScreen({
           {/* Summary */}
           <div className="text-center space-y-4">
             <div className="bg-muted rounded-lg p-6">
-              <div className="text-4xl font-bold text-primary mb-2">
-                {totalCards}
-              </div>
+              <div className="text-4xl font-bold text-primary mb-2">{totalCards}</div>
               <div className="text-sm text-muted-foreground">
                 {totalCards === 1 ? "fiszka przejrzana" : totalCards < 5 ? "fiszki przejrzane" : "fiszek przejrzanych"}
               </div>
             </div>
 
-            <p className="text-muted-foreground">
-              Świetna robota! Kontynuuj regularną naukę, aby utrwalić materiał.
-            </p>
+            <p className="text-muted-foreground">Świetna robota! Kontynuuj regularną naukę, aby utrwalić materiał.</p>
           </div>
         </CardContent>
 
@@ -81,4 +69,3 @@ export function CompletionScreen({
     </div>
   );
 }
-

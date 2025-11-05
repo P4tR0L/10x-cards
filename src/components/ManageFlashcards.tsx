@@ -9,11 +9,7 @@ import { PaginationControls } from "./PaginationControls";
 import { EmptyState } from "./EmptyState";
 import { EditFlashcardModal } from "./EditFlashcardModal";
 import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
-import {
-  getFlashcards,
-  updateFlashcard,
-  deleteFlashcard,
-} from "@/lib/api-client";
+import { getFlashcards, updateFlashcard, deleteFlashcard } from "@/lib/api-client";
 import type {
   FlashcardListItemDTO,
   FlashcardListQueryParams,
@@ -103,22 +99,17 @@ export function ManageFlashcards() {
     async (id: number, data: UpdateFlashcardCommand) => {
       try {
         // Optimistic update
-        const oldFlashcards = [...flashcards];
         setFlashcards((prev) =>
           prev.map((f) =>
-            f.id === id
-              ? { ...f, front: data.front, back: data.back, updated_at: new Date().toISOString() }
-              : f
+            f.id === id ? { ...f, front: data.front, back: data.back, updated_at: new Date().toISOString() } : f
           )
         );
 
         // API call
         const response = await updateFlashcard(id, data);
-        
+
         // Update with real data from server
-        setFlashcards((prev) =>
-          prev.map((f) => (f.id === id ? response.data : f))
-        );
+        setFlashcards((prev) => prev.map((f) => (f.id === id ? response.data : f)));
 
         toast.success("Fiszka zaktualizowana", {
           description: "Zmiany zostały zapisane pomyślnie",
@@ -134,7 +125,7 @@ export function ManageFlashcards() {
         throw error;
       }
     },
-    [flashcards, fetchFlashcardsData]
+    [fetchFlashcardsData]
   );
 
   // Handle delete
@@ -142,9 +133,6 @@ export function ManageFlashcards() {
     async (id: number) => {
       try {
         // Optimistic update
-        const oldFlashcards = [...flashcards];
-        const oldPagination = { ...pagination };
-        
         setFlashcards((prev) => prev.filter((f) => f.id !== id));
         setPagination((prev) => ({
           ...prev,
@@ -171,7 +159,7 @@ export function ManageFlashcards() {
         throw error;
       }
     },
-    [flashcards, pagination, fetchFlashcardsData]
+    [fetchFlashcardsData]
   );
 
   // Handle create flashcard button click (from EmptyState)
@@ -192,8 +180,7 @@ export function ManageFlashcards() {
   }, []);
 
   // Check if filters are active
-  const hasActiveFilters =
-    !!filters.search || filters.source !== undefined;
+  const hasActiveFilters = !!filters.search || filters.source !== undefined;
 
   // Auth loading state
   if (authLoading) {
@@ -218,12 +205,8 @@ export function ManageFlashcards() {
         <Card className="backdrop-blur-sm">
           <CardContent className="py-12">
             <div className="text-center space-y-4">
-              <p className="text-lg font-semibold text-red-400">
-                Błąd uwierzytelnienia
-              </p>
-              <p className="text-muted-foreground">
-                Musisz być zalogowany, aby zarządzać fiszkami.
-              </p>
+              <p className="text-lg font-semibold text-red-400">Błąd uwierzytelnienia</p>
+              <p className="text-muted-foreground">Musisz być zalogowany, aby zarządzać fiszkami.</p>
             </div>
           </CardContent>
         </Card>
@@ -237,16 +220,11 @@ export function ManageFlashcards() {
         <Card className="backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="text-3xl">Zarządzaj kolekcją</CardTitle>
-            <CardDescription>
-              Przeglądaj, wyszukuj, edytuj i usuwaj swoje fiszki
-            </CardDescription>
+            <CardDescription>Przeglądaj, wyszukuj, edytuj i usuwaj swoje fiszki</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* ToolBar */}
-            <ToolBar
-              filters={filters}
-              onFiltersChange={handleFiltersChange}
-            />
+            <ToolBar filters={filters} onFiltersChange={handleFiltersChange} />
 
             {/* Main content */}
             {isLoading && isInitialLoad ? (
@@ -275,19 +253,12 @@ export function ManageFlashcards() {
 
                 {/* FlashcardGrid */}
                 <div className={pagination.total_pages > 1 ? "pb-24" : ""}>
-                  <FlashcardGrid
-                    flashcards={flashcards}
-                    onEdit={handleEditClick}
-                    onDelete={handleDeleteClick}
-                  />
+                  <FlashcardGrid flashcards={flashcards} onEdit={handleEditClick} onDelete={handleDeleteClick} />
                 </div>
 
                 {/* PaginationControls */}
                 {pagination.total_pages > 1 && (
-                  <PaginationControls
-                    pagination={pagination}
-                    onPageChange={handlePageChange}
-                  />
+                  <PaginationControls pagination={pagination} onPageChange={handlePageChange} />
                 )}
               </>
             )}
@@ -318,4 +289,3 @@ export function ManageFlashcards() {
     </>
   );
 }
-

@@ -1,7 +1,7 @@
 ---
 /**
  * Register Page
- * 
+ *
  * Public page that allows new users to create an account.
  * - Redirects to homepage if user is already authenticated
  * - Shows RegisterForm component with email/password/confirm password fields
@@ -26,7 +26,9 @@ if (authToken) {
       <!-- Logo and header -->
       <div class="text-center space-y-2">
         <div class="flex justify-center items-center gap-3 mb-6">
-          <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -45,12 +47,8 @@ if (authToken) {
           </div>
           <span class="text-3xl font-bold text-white">10x Cards</span>
         </div>
-        <h1 class="text-3xl font-bold text-white">
-          Stwórz konto
-        </h1>
-        <p class="text-indigo-200">
-          Zacznij tworzyć fiszki z pomocą AI już dziś
-        </p>
+        <h1 class="text-3xl font-bold text-white">Stwórz konto</h1>
+        <p class="text-indigo-200">Zacznij tworzyć fiszki z pomocą AI już dziś</p>
       </div>
 
       <!-- Register form card -->
@@ -61,12 +59,8 @@ if (authToken) {
       <!-- Additional information -->
       <div class="text-center space-y-2">
         <div class="text-sm text-indigo-200">
-          <p>
-            🚀 Generuj fiszki automatycznie z AI
-          </p>
-          <p class="mt-1">
-            📚 Organizuj swoją naukę efektywniej
-          </p>
+          <p>🚀 Generuj fiszki automatycznie z AI</p>
+          <p class="mt-1">📚 Organizuj swoją naukę efektywniej</p>
         </div>
       </div>
     </div>
@@ -79,4 +73,3 @@ if (authToken) {
     min-height: 100vh;
   }
 </style>
-

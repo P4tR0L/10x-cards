@@ -9,7 +9,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Get the Authorization header
   const authHeader = context.request.headers.get("Authorization");
-  
+
   // Get tokens from cookies (for SSR pages)
   const accessTokenCookie = context.cookies.get("sb-access-token")?.value;
   const refreshTokenCookie = context.cookies.get("sb-refresh-token")?.value;
@@ -48,7 +48,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // If session is valid, get the user
     if (!error && data.session) {
       user = data.session.user;
-      
+
       // If token was refreshed, update cookies
       if (data.session.access_token !== accessToken) {
         context.cookies.set("sb-access-token", data.session.access_token, {
@@ -58,7 +58,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
           sameSite: "lax",
           maxAge: 60 * 60 * 24 * 7, // 7 days
         });
-        
+
         if (data.session.refresh_token) {
           context.cookies.set("sb-refresh-token", data.session.refresh_token, {
             path: "/",

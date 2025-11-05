@@ -1,6 +1,6 @@
 /**
  * LoginForm Component
- * 
+ *
  * Provides email/password authentication form with:
  * - Email and password inputs with validation
  * - Error handling and inline error messages
@@ -9,7 +9,7 @@
  * - Auto-redirect after successful login
  */
 
-import { useState, type FormEvent, useEffect } from "react";
+import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -60,7 +60,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   // Handle form submission
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Clear previous errors
     setErrors({});
 
@@ -90,7 +90,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         // Store session tokens in localStorage for client-side use
         localStorage.setItem("supabase_auth_token", data.session.access_token);
         localStorage.setItem("supabase_refresh_token", data.session.refresh_token);
-        
+
         // Set cookies for SSR (server-side rendering)
         // This is done by calling a server endpoint
         await fetch("/api/auth/set-session", {
@@ -103,7 +103,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             refresh_token: data.session.refresh_token,
           }),
         });
-        
+
         // Call success callback or redirect
         if (onSuccess) {
           onSuccess();
@@ -122,16 +122,10 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="space-y-6 w-full max-w-sm"
-      role="form"
-      aria-label="Formularz logowania"
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-sm" aria-label="Formularz logowania" noValidate>
       {/* General error message */}
       {errors.general && (
-        <div 
+        <div
           className="bg-destructive/10 text-destructive text-sm p-3 rounded-md border border-destructive/20"
           role="alert"
           aria-live="polite"
@@ -142,9 +136,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
       {/* Email field */}
       <div className="space-y-2">
-        <Label htmlFor="email">
-          Adres e-mail
-        </Label>
+        <Label htmlFor="email">Adres e-mail</Label>
         <Input
           id="email"
           type="email"
@@ -152,18 +144,13 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="twoj@email.com"
           autoComplete="email"
-          autoFocus
           disabled={isLoading}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "email-error" : undefined}
           className={errors.email ? "border-destructive" : ""}
         />
         {errors.email && (
-          <p 
-            id="email-error" 
-            className="text-destructive text-sm"
-            role="alert"
-          >
+          <p id="email-error" className="text-destructive text-sm" role="alert">
             {errors.email}
           </p>
         )}
@@ -171,9 +158,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
       {/* Password field */}
       <div className="space-y-2">
-        <Label htmlFor="password">
-          Hasło
-        </Label>
+        <Label htmlFor="password">Hasło</Label>
         <div className="relative">
           <Input
             id="password"
@@ -229,36 +214,24 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           </button>
         </div>
         {errors.password && (
-          <p 
-            id="password-error" 
-            className="text-destructive text-sm"
-            role="alert"
-          >
+          <p id="password-error" className="text-destructive text-sm" role="alert">
             {errors.password}
           </p>
         )}
       </div>
 
       {/* Submit button */}
-      <Button 
-        type="submit" 
-        className="w-full"
-        disabled={isLoading}
-      >
+      <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? "Logowanie..." : "Zaloguj się"}
       </Button>
 
       {/* Link to registration */}
       <p className="text-center text-sm text-muted-foreground">
         Nie masz konta?{" "}
-        <a 
-          href="/register" 
-          className="text-primary hover:underline font-medium"
-        >
+        <a href="/register" className="text-primary hover:underline font-medium">
           Zarejestruj się
         </a>
       </p>
     </form>
   );
 }
-

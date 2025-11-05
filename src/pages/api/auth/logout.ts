@@ -1,6 +1,6 @@
 /**
  * POST /api/auth/logout
- * 
+ *
  * Clears authentication session cookies and signs out from Supabase.
  */
 
@@ -19,17 +19,17 @@ export const POST: APIRoute = async ({ cookies, locals }) => {
     cookies.delete("sb-access-token", { path: "/" });
     cookies.delete("sb-refresh-token", { path: "/" });
 
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error during logout:", error);
-    
+
     // Even if there's an error, clear the cookies
     cookies.delete("sb-access-token", { path: "/" });
     cookies.delete("sb-refresh-token", { path: "/" });
-    
+
     return new Response(
       JSON.stringify({
         error: "Internal server error",
@@ -39,4 +39,3 @@ export const POST: APIRoute = async ({ cookies, locals }) => {
     );
   }
 };
-

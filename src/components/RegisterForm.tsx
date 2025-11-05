@@ -1,6 +1,6 @@
 /**
  * RegisterForm Component
- * 
+ *
  * Provides user registration form with:
  * - Email and password inputs with validation
  * - Password confirmation field
@@ -74,7 +74,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   // Handle form submission
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     // Clear previous errors
     setErrors({});
 
@@ -110,7 +110,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         // Store session tokens in localStorage for client-side use
         localStorage.setItem("supabase_auth_token", data.session.access_token);
         localStorage.setItem("supabase_refresh_token", data.session.refresh_token);
-        
+
         // Set cookies for SSR (server-side rendering)
         await fetch("/api/auth/set-session", {
           method: "POST",
@@ -122,7 +122,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             refresh_token: data.session.refresh_token,
           }),
         });
-        
+
         // Call success callback or redirect
         if (onSuccess) {
           onSuccess();
@@ -146,19 +146,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit} 
-      className="space-y-6 w-full max-w-sm"
-      role="form"
-      aria-label="Formularz rejestracji"
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-sm" aria-label="Formularz rejestracji" noValidate>
       {/* General message (error or success) */}
       {errors.general && (
-        <div 
+        <div
           className={`text-sm p-3 rounded-md border ${
-            errors.general.includes("utworzone") 
-              ? "bg-green-950/30 text-green-400 border-green-500/50" 
+            errors.general.includes("utworzone")
+              ? "bg-green-950/30 text-green-400 border-green-500/50"
               : "bg-destructive/10 text-destructive border-destructive/20"
           }`}
           role="alert"
@@ -170,9 +164,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       {/* Email field */}
       <div className="space-y-2">
-        <Label htmlFor="register-email">
-          Adres e-mail
-        </Label>
+        <Label htmlFor="register-email">Adres e-mail</Label>
         <Input
           id="register-email"
           type="email"
@@ -180,18 +172,13 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="twoj@email.com"
           autoComplete="email"
-          autoFocus
           disabled={isLoading}
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "register-email-error" : undefined}
           className={errors.email ? "border-destructive" : ""}
         />
         {errors.email && (
-          <p 
-            id="register-email-error" 
-            className="text-destructive text-sm"
-            role="alert"
-          >
+          <p id="register-email-error" className="text-destructive text-sm" role="alert">
             {errors.email}
           </p>
         )}
@@ -199,9 +186,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
 
       {/* Password field */}
       <div className="space-y-2">
-        <Label htmlFor="register-password">
-          Hasło
-        </Label>
+        <Label htmlFor="register-password">Hasło</Label>
         <div className="relative">
           <Input
             id="register-password"
@@ -257,24 +242,16 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           </button>
         </div>
         {errors.password && (
-          <p 
-            id="register-password-error" 
-            className="text-destructive text-sm"
-            role="alert"
-          >
+          <p id="register-password-error" className="text-destructive text-sm" role="alert">
             {errors.password}
           </p>
         )}
-        <p className="text-xs text-muted-foreground">
-          Minimum 6 znaków
-        </p>
+        <p className="text-xs text-muted-foreground">Minimum 6 znaków</p>
       </div>
 
       {/* Confirm Password field */}
       <div className="space-y-2">
-        <Label htmlFor="register-confirm-password">
-          Potwierdź hasło
-        </Label>
+        <Label htmlFor="register-confirm-password">Potwierdź hasło</Label>
         <div className="relative">
           <Input
             id="register-confirm-password"
@@ -330,36 +307,24 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           </button>
         </div>
         {errors.confirmPassword && (
-          <p 
-            id="register-confirm-password-error" 
-            className="text-destructive text-sm"
-            role="alert"
-          >
+          <p id="register-confirm-password-error" className="text-destructive text-sm" role="alert">
             {errors.confirmPassword}
           </p>
         )}
       </div>
 
       {/* Submit button */}
-      <Button 
-        type="submit" 
-        className="w-full"
-        disabled={isLoading}
-      >
+      <Button type="submit" className="w-full" disabled={isLoading}>
         {isLoading ? "Tworzenie konta..." : "Zarejestruj się"}
       </Button>
 
       {/* Link to login */}
       <p className="text-center text-sm text-muted-foreground">
         Masz już konto?{" "}
-        <a 
-          href="/login" 
-          className="text-primary hover:underline font-medium"
-        >
+        <a href="/login" className="text-primary hover:underline font-medium">
           Zaloguj się
         </a>
       </p>
     </form>
   );
 }
-

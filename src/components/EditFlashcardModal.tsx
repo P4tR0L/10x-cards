@@ -19,12 +19,7 @@ interface EditFlashcardModalProps {
   onSave: (id: number, data: UpdateFlashcardCommand) => Promise<void>;
 }
 
-export function EditFlashcardModal({
-  flashcard,
-  isOpen,
-  onClose,
-  onSave,
-}: EditFlashcardModalProps) {
+export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditFlashcardModalProps) {
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
   const [isSaving, setIsSaving] = useState(false);
@@ -94,9 +89,7 @@ export function EditFlashcardModal({
       <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>Edytuj fiszkę</DialogTitle>
-          <DialogDescription>
-            Wprowadź zmiany w treści fiszki. Pamiętaj, że oba pola są wymagane.
-          </DialogDescription>
+          <DialogDescription>Wprowadź zmiany w treści fiszki. Pamiętaj, że oba pola są wymagane.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
@@ -124,9 +117,7 @@ export function EditFlashcardModal({
                 {errors.front}
               </p>
             )}
-            <p className="text-xs text-muted-foreground">
-              {front.length} / 5000 znaków
-            </p>
+            <p className="text-xs text-muted-foreground">{front.length} / 5000 znaków</p>
           </div>
 
           {/* Back field */}
@@ -153,19 +144,12 @@ export function EditFlashcardModal({
                 {errors.back}
               </p>
             )}
-            <p className="text-xs text-muted-foreground">
-              {back.length} / 5000 znaków
-            </p>
+            <p className="text-xs text-muted-foreground">{back.length} / 5000 znaków</p>
           </div>
         </div>
 
         <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleClose}
-            disabled={isSaving}
-          >
+          <Button type="button" variant="outline" onClick={handleClose} disabled={isSaving}>
             Anuluj
           </Button>
           <Button type="button" onClick={handleSave} disabled={isSaving}>
@@ -183,4 +167,3 @@ export function EditFlashcardModal({
     </Dialog>
   );
 }
-

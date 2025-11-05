@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 export function ReviewMode() {
   const { isLoading: authLoading, isAuthenticated } = useAuth();
-  
+
   // State management
   const [flashcards, setFlashcards] = useState<FlashcardListItemDTO[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,25 +37,25 @@ export function ReviewMode() {
 
       try {
         setIsLoading(true);
-        
+
         // Load all flashcards - fetch multiple pages if needed (max 100 per page)
         let allFlashcards: FlashcardListItemDTO[] = [];
         let currentPage = 1;
         let hasMore = true;
 
         while (hasMore) {
-          const response = await getFlashcards({ 
-            page: currentPage, 
-            limit: 100, 
-            sort: "created_at", 
-            order: "asc" 
+          const response = await getFlashcards({
+            page: currentPage,
+            limit: 100,
+            sort: "created_at",
+            order: "asc",
           });
-          
+
           allFlashcards = [...allFlashcards, ...response.data];
           hasMore = response.pagination.has_next;
           currentPage++;
         }
-        
+
         if (allFlashcards.length === 0) {
           // No flashcards - redirect to manage with toast
           toast.info("Brak fiszek do nauki. Utwórz najpierw jakieś fiszki!");
@@ -163,18 +163,21 @@ export function ReviewMode() {
   }, [handleFlip, handleNext, handlePrevious, handleExit, isCompleted]);
 
   // Swipe gestures for mobile
-  useSwipe({
-    onSwipeLeft: () => {
-      if (!isCompleted) {
-        handleNext();
-      }
+  useSwipe(
+    {
+      onSwipeLeft: () => {
+        if (!isCompleted) {
+          handleNext();
+        }
+      },
+      onSwipeRight: () => {
+        if (!isCompleted) {
+          handlePrevious();
+        }
+      },
     },
-    onSwipeRight: () => {
-      if (!isCompleted) {
-        handlePrevious();
-      }
-    },
-  }, { minSwipeDistance: 50 });
+    { minSwipeDistance: 50 }
+  );
 
   // Show loading state
   if (authLoading || isLoading) {
@@ -194,13 +197,7 @@ export function ReviewMode() {
 
   // Show completion screen
   if (isCompleted) {
-    return (
-      <CompletionScreen
-        totalCards={flashcards.length}
-        onRestart={handleRestart}
-        onExit={handleExit}
-      />
-    );
+    return <CompletionScreen totalCards={flashcards.length} onRestart={handleRestart} onExit={handleExit} />;
   }
 
   // Get current flashcard
@@ -224,12 +221,7 @@ export function ReviewMode() {
   return (
     <>
       {/* Screen reader announcements */}
-      <div
-        className="sr-only"
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-      >
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
         {announcement}
       </div>
 
@@ -241,33 +233,22 @@ export function ReviewMode() {
               <span>
                 Fiszka {currentIndex + 1} z {flashcards.length}
               </span>
-              <span className="text-xs">
-                {Math.round(((currentIndex + 1) / flashcards.length) * 100)}% ukończone
-              </span>
+              <span className="text-xs">{Math.round(((currentIndex + 1) / flashcards.length) * 100)}% ukończone</span>
             </CardDescription>
-            <Progress 
-              value={((currentIndex + 1) / flashcards.length) * 100} 
-              className="h-1.5 mt-2" 
-            />
+            <Progress value={((currentIndex + 1) / flashcards.length) * 100} className="h-1.5 mt-2" />
           </CardHeader>
 
           <CardContent className="space-y-3 pb-4">
             {/* Main review area */}
             <div className="flex items-center justify-center py-2 relative isolate overflow-hidden">
               <div className="w-full max-w-2xl relative z-0">
-                <ReviewCard
-                  flashcard={currentFlashcard}
-                  isFlipped={isFlipped}
-                  onFlip={handleFlip}
-                />
+                <ReviewCard flashcard={currentFlashcard} isFlipped={isFlipped} onFlip={handleFlip} />
               </div>
             </div>
 
             {/* Controls area */}
             <div className="border-t pt-3">
               <ReviewControls
-                currentIndex={currentIndex}
-                totalCards={flashcards.length}
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 onExit={handleExit}
@@ -280,17 +261,22 @@ export function ReviewMode() {
       </div>
 
       {/* Keyboard hints */}
-      <div 
+      <div
         className="hidden md:block fixed bottom-4 left-4 text-xs text-muted-foreground bg-card/80 backdrop-blur-sm px-3 py-2 rounded-lg border z-20"
         aria-hidden="true"
       >
         <div className="space-y-1">
-          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">Space</kbd> Odwróć</div>
-          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">←→</kbd> Nawigacja</div>
-          <div><kbd className="px-1.5 py-0.5 bg-muted rounded">Esc</kbd> Wyjdź</div>
+          <div>
+            <kbd className="px-1.5 py-0.5 bg-muted rounded">Space</kbd> Odwróć
+          </div>
+          <div>
+            <kbd className="px-1.5 py-0.5 bg-muted rounded">←→</kbd> Nawigacja
+          </div>
+          <div>
+            <kbd className="px-1.5 py-0.5 bg-muted rounded">Esc</kbd> Wyjdź
+          </div>
         </div>
       </div>
     </>
   );
 }
-

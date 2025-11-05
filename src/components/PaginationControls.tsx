@@ -7,10 +7,7 @@ interface PaginationControlsProps {
   onPageChange: (page: number) => void;
 }
 
-export function PaginationControls({
-  pagination,
-  onPageChange,
-}: PaginationControlsProps) {
+export function PaginationControls({ pagination, onPageChange }: PaginationControlsProps) {
   const { page, total_pages, has_prev, has_next, total } = pagination;
 
   return (
@@ -18,8 +15,7 @@ export function PaginationControls({
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Info text */}
         <p className="text-sm text-muted-foreground">
-          Strona {page} z {total_pages} (łącznie {total}{" "}
-          {total === 1 ? "fiszka" : total < 5 ? "fiszki" : "fiszek"})
+          Strona {page} z {total_pages} (łącznie {total} {total === 1 ? "fiszka" : total < 5 ? "fiszki" : "fiszek"})
         </p>
 
         {/* Navigation buttons */}
@@ -50,4 +46,3 @@ export function PaginationControls({
     </div>
   );
 }
-

@@ -7,11 +7,7 @@ interface EmptyStateProps {
   onClearFilters: () => void;
 }
 
-export function EmptyState({
-  hasFilters,
-  onCreateClick,
-  onClearFilters,
-}: EmptyStateProps) {
+export function EmptyState({ hasFilters, onCreateClick, onClearFilters }: EmptyStateProps) {
   if (hasFilters) {
     // Empty state when filters are applied but no results
     return (
@@ -22,8 +18,7 @@ export function EmptyState({
         <div className="space-y-2">
           <h3 className="text-lg font-semibold">Brak wyników</h3>
           <p className="text-sm text-muted-foreground max-w-md">
-            Nie znaleziono fiszek pasujących do wybranych filtrów. Spróbuj zmienić
-            kryteria wyszukiwania.
+            Nie znaleziono fiszek pasujących do wybranych filtrów. Spróbuj zmienić kryteria wyszukiwania.
           </p>
         </div>
         <Button variant="outline" onClick={onClearFilters}>
@@ -42,8 +37,8 @@ export function EmptyState({
       <div className="space-y-2">
         <h3 className="text-lg font-semibold">Nie masz jeszcze żadnych fiszek</h3>
         <p className="text-sm text-muted-foreground max-w-md">
-          Zacznij tworzyć fiszki, aby budować swoją kolekcję. Możesz generować je
-          automatycznie z AI lub dodawać ręcznie.
+          Zacznij tworzyć fiszki, aby budować swoją kolekcję. Możesz generować je automatycznie z AI lub dodawać
+          ręcznie.
         </p>
       </div>
       <Button onClick={onCreateClick}>
@@ -53,4 +48,3 @@ export function EmptyState({
     </div>
   );
 }
-

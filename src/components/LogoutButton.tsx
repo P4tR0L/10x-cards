@@ -7,20 +7,20 @@ export function LogoutButton() {
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
-    
+
     try {
       // Sign out from Supabase
       await supabaseClient.auth.signOut();
-      
+
       // Clear tokens from localStorage
       localStorage.removeItem("supabase_auth_token");
       localStorage.removeItem("supabase_refresh_token");
-      
+
       // Call server endpoint to clear cookies
       await fetch("/api/auth/logout", {
         method: "POST",
       });
-      
+
       // Redirect to login page
       window.location.href = "/login";
     } catch (error) {
@@ -41,4 +41,3 @@ export function LogoutButton() {
     </Button>
   );
 }
-

@@ -14,10 +14,7 @@ interface SwipeOptions {
   minSwipeDistance?: number;
 }
 
-export function useSwipe(
-  handlers: SwipeHandlers,
-  options: SwipeOptions = {}
-) {
+export function useSwipe(handlers: SwipeHandlers, options: SwipeOptions = {}) {
   const { onSwipeLeft, onSwipeRight } = handlers;
   const { minSwipeDistance = 50 } = options;
 
@@ -68,4 +65,3 @@ export function useSwipe(
     };
   }, [onSwipeLeft, onSwipeRight, minSwipeDistance]);
 }
-

@@ -7,27 +7,14 @@ interface FlashcardGridProps {
   onDelete: (flashcard: FlashcardListItemDTO) => void;
 }
 
-export function FlashcardGrid({
-  flashcards,
-  onEdit,
-  onDelete,
-}: FlashcardGridProps) {
+export function FlashcardGrid({ flashcards, onEdit, onDelete }: FlashcardGridProps) {
   return (
-    <div
-      className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-      role="list"
-      aria-label="Lista fiszek"
-    >
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3" role="list" aria-label="Lista fiszek">
       {flashcards.map((flashcard) => (
         <div key={flashcard.id} role="listitem">
-          <FlashcardCard
-            flashcard={flashcard}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
+          <FlashcardCard flashcard={flashcard} onEdit={onEdit} onDelete={onDelete} />
         </div>
       ))}
     </div>
   );
 }
-

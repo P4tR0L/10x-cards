@@ -39,12 +39,7 @@ function isActive(href: string, current: string): boolean {
               aria-current={active ? "page" : undefined}
             >
               {item.icon === "plus" && (
-                <svg
-                  class="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M12 5v14M5 12h14"
                     stroke="currentColor"
@@ -55,12 +50,7 @@ function isActive(href: string, current: string): boolean {
                 </svg>
               )}
               {item.icon === "collection" && (
-                <svg
-                  class="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M3 7h18M3 12h18M3 17h18"
                     stroke="currentColor"
@@ -68,25 +58,11 @@ function isActive(href: string, current: string): boolean {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
-                  <rect
-                    x="3"
-                    y="4"
-                    width="18"
-                    height="16"
-                    rx="2"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    fill="none"
-                  />
+                  <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none" />
                 </svg>
               )}
               {item.icon === "academic" && (
-                <svg
-                  class="h-4 w-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M22 10v6M2 10l10-5 10 5-10 5z"
                     stroke="currentColor"
@@ -111,4 +87,3 @@ function isActive(href: string, current: string): boolean {
     </div>
   </div>
 </nav>
-

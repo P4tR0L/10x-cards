@@ -1,6 +1,6 @@
 /**
  * POST /api/auth/set-session
- * 
+ *
  * Sets authentication session cookies for SSR.
  * Called after successful login on the client side.
  */
@@ -16,8 +16,8 @@ interface SetSessionRequest {
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   try {
-    const body = await request.json() as SetSessionRequest;
-    
+    const body = (await request.json()) as SetSessionRequest;
+
     if (!body.access_token || !body.refresh_token) {
       return new Response(
         JSON.stringify({
@@ -40,10 +40,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     cookies.set("sb-access-token", body.access_token, cookieOptions);
     cookies.set("sb-refresh-token", body.refresh_token, cookieOptions);
 
-    return new Response(
-      JSON.stringify({ success: true }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Error setting session:", error);
     return new Response(
@@ -55,4 +55,3 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     );
   }
 };
-

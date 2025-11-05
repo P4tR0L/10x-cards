@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -33,12 +28,7 @@ interface ProposalCardProps {
   onEdit: (id: string, front: string, back: string) => void;
 }
 
-export function ProposalCard({
-  proposal,
-  onAccept,
-  onRemove,
-  onEdit,
-}: ProposalCardProps) {
+export function ProposalCard({ proposal, onAccept, onRemove, onEdit }: ProposalCardProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editedFront, setEditedFront] = useState(proposal.front);
   const [editedBack, setEditedBack] = useState(proposal.back);
@@ -73,9 +63,7 @@ export function ProposalCard({
   return (
     <Card
       className={`relative transition-all flex flex-col h-full ${
-        proposal.isAccepted
-          ? "border-green-500/70 bg-green-950/30 shadow-md"
-          : "border-border hover:shadow-sm"
+        proposal.isAccepted ? "border-green-500/70 bg-green-950/30 shadow-md" : "border-border hover:shadow-sm"
       }`}
     >
       {proposal.isAccepted && (
@@ -98,22 +86,13 @@ export function ProposalCard({
           <p className="text-sm font-medium text-muted-foreground">Tył</p>
           <p className="text-sm leading-relaxed">{proposal.back}</p>
         </div>
-        {proposal.isEdited && (
-          <p className="text-xs text-amber-400 mt-2 italic">
-            ✎ Edytowano
-          </p>
-        )}
+        {proposal.isEdited && <p className="text-xs text-amber-400 mt-2 italic">✎ Edytowano</p>}
       </CardContent>
 
       <CardFooter className="flex gap-2 pt-3 mt-auto">
         <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
           <DialogTrigger asChild>
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1"
-              aria-label="Edytuj propozycję"
-            >
+            <Button variant="outline" size="sm" className="flex-1" aria-label="Edytuj propozycję">
               <Pencil className="h-4 w-4 mr-1" />
               Edytuj
             </Button>
@@ -122,16 +101,12 @@ export function ProposalCard({
             <DialogHeader>
               <DialogTitle>Edytuj propozycję</DialogTitle>
               <DialogDescription>
-                Wprowadź zmiany w treści fiszki. Zmiany zostaną zapisane po
-                kliknięciu "Zapisz zmiany".
+                Wprowadź zmiany w treści fiszki. Zmiany zostaną zapisane po kliknięciu &quot;Zapisz zmiany&quot;.
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <label
-                  htmlFor="edit-front"
-                  className="text-sm font-medium leading-none"
-                >
+                <label htmlFor="edit-front" className="text-sm font-medium leading-none">
                   Przód fiszki
                 </label>
                 <Textarea
@@ -140,15 +115,10 @@ export function ProposalCard({
                   onChange={(e) => setEditedFront(e.target.value)}
                   className="min-h-[100px]"
                 />
-                <p className="text-xs text-muted-foreground text-right">
-                  {editedFront.length} / 5000
-                </p>
+                <p className="text-xs text-muted-foreground text-right">{editedFront.length} / 5000</p>
               </div>
               <div className="space-y-2">
-                <label
-                  htmlFor="edit-back"
-                  className="text-sm font-medium leading-none"
-                >
+                <label htmlFor="edit-back" className="text-sm font-medium leading-none">
                   Tył fiszki
                 </label>
                 <Textarea
@@ -157,22 +127,14 @@ export function ProposalCard({
                   onChange={(e) => setEditedBack(e.target.value)}
                   className="min-h-[100px]"
                 />
-                <p className="text-xs text-muted-foreground text-right">
-                  {editedBack.length} / 5000
-                </p>
+                <p className="text-xs text-muted-foreground text-right">{editedBack.length} / 5000</p>
               </div>
             </div>
             <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsDialogOpen(false)}
-              >
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
                 Anuluj
               </Button>
-              <Button
-                onClick={handleEditSubmit}
-                disabled={!isEditFormValid}
-              >
+              <Button onClick={handleEditSubmit} disabled={!isEditFormValid}>
                 Zapisz zmiany
               </Button>
             </DialogFooter>
@@ -184,9 +146,7 @@ export function ProposalCard({
           size="sm"
           className="flex-1"
           onClick={() => onAccept(proposal.id)}
-          aria-label={
-            proposal.isAccepted ? "Cofnij akceptację" : "Akceptuj propozycję"
-          }
+          aria-label={proposal.isAccepted ? "Cofnij akceptację" : "Akceptuj propozycję"}
           aria-pressed={proposal.isAccepted}
         >
           <Check className="h-4 w-4 mr-1" />
@@ -206,4 +166,3 @@ export function ProposalCard({
     </Card>
   );
 }
-

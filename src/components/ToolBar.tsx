@@ -32,7 +32,7 @@ export function ToolBar({ filters, onFiltersChange }: ToolBarProps) {
     }, 300);
 
     return () => clearTimeout(timeoutId);
-  }, [searchValue]);
+  }, [searchValue, filters, onFiltersChange]);
 
   const handleSourceChange = useCallback(
     (value: string) => {

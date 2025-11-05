@@ -10,7 +10,11 @@
 
 import type { SupabaseClient } from "@/db/supabase.client";
 import type { FlashcardDTO, FlashcardInsert } from "@/types";
-import type { CreateFlashcardInput, UpdateFlashcardInput, FlashcardListQueryInput } from "@/lib/validation/flashcard.validation";
+import type {
+  CreateFlashcardInput,
+  UpdateFlashcardInput,
+  FlashcardListQueryInput,
+} from "@/lib/validation/flashcard.validation";
 
 /**
  * Service class for managing flashcard operations
@@ -259,9 +263,7 @@ export class FlashcardService {
     params: FlashcardListQueryInput
   ): Promise<{ flashcards: FlashcardDTO[]; total: number }> {
     // Start building query with count
-    let query = this.supabase
-      .from("flashcards")
-      .select("*", { count: "exact" });
+    let query = this.supabase.from("flashcards").select("*", { count: "exact" });
 
     // Apply search filter (full-text search on front and back)
     if (params.search) {
