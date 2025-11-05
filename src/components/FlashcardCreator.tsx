@@ -50,13 +50,13 @@ export function FlashcardCreator() {
       <Card className="backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-3xl">Twórz fiszki</CardTitle>
-          <CardDescription>Generuj fiszki automatycznie z pomocą AI lub dodaj je ręcznie</CardDescription>
+          <CardDescription>Generuj fiszki automatycznie z pomocą AI lub dodaj własne</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="generate" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="generate">Generuj z AI</TabsTrigger>
-              <TabsTrigger value="manual">Dodaj ręcznie</TabsTrigger>
+              <TabsTrigger value="manual">Dodaj własne</TabsTrigger>
             </TabsList>
 
             <TabsContent value="generate" className="space-y-4">

@@ -46,22 +46,15 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
           <CardContent className="h-full flex flex-col p-3 md:p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
-              <Badge
-                variant={flashcard.source === "ai" ? "default" : "secondary"}
-                className="text-xs"
-              >
-                {flashcard.source === "ai" ? "AI" : "Ręczna"}
+              <Badge variant={flashcard.source === "ai" ? "default" : "secondary"} className="text-xs">
+                {flashcard.source === "ai" ? "AI" : "Własna"}
               </Badge>
-              <div className="text-xs font-semibold text-primary uppercase tracking-wide">
-                Przód
-              </div>
+              <div className="text-xs font-semibold text-primary uppercase tracking-wide">Przód</div>
             </div>
 
             {/* Content */}
             <div className="flex-1 flex items-center justify-center">
-              <p className="text-sm md:text-lg lg:text-xl text-center leading-relaxed px-2">
-                {flashcard.front}
-              </p>
+              <p className="text-sm md:text-lg lg:text-xl text-center leading-relaxed px-2">{flashcard.front}</p>
             </div>
 
             {/* Hint */}
@@ -81,22 +74,15 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
           <CardContent className="h-full flex flex-col p-3 md:p-4">
             {/* Header */}
             <div className="flex items-center justify-between mb-3">
-              <Badge
-                variant={flashcard.source === "ai" ? "default" : "secondary"}
-                className="text-xs"
-              >
-                {flashcard.source === "ai" ? "AI" : "Ręczna"}
+              <Badge variant={flashcard.source === "ai" ? "default" : "secondary"} className="text-xs">
+                {flashcard.source === "ai" ? "AI" : "Własna"}
               </Badge>
-              <div className="text-xs font-semibold text-primary uppercase tracking-wide">
-                Tył
-              </div>
+              <div className="text-xs font-semibold text-primary uppercase tracking-wide">Tył</div>
             </div>
 
             {/* Content */}
             <div className="flex-1 flex items-center justify-center">
-              <p className="text-sm md:text-lg lg:text-xl text-center leading-relaxed px-2">
-                {flashcard.back}
-              </p>
+              <p className="text-sm md:text-lg lg:text-xl text-center leading-relaxed px-2">{flashcard.back}</p>
             </div>
 
             {/* Hint */}
@@ -110,4 +96,3 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
     </div>
   );
 }
-

@@ -1,13 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, SortAsc, SortDesc } from "lucide-react";
 import type { FlashcardListQueryParams } from "@/types";
 
@@ -16,10 +10,7 @@ interface ToolBarProps {
   onFiltersChange: (filters: FlashcardListQueryParams) => void;
 }
 
-export function ToolBar({
-  filters,
-  onFiltersChange,
-}: ToolBarProps) {
+export function ToolBar({ filters, onFiltersChange }: ToolBarProps) {
   const [searchValue, setSearchValue] = useState(filters.search ?? "");
 
   // Sync searchValue with filters.search when filters are cleared externally
@@ -91,26 +82,20 @@ export function ToolBar({
         </div>
 
         {/* Source Filter */}
-        <Select
-          value={filters.source || "all"}
-          onValueChange={handleSourceChange}
-        >
+        <Select value={filters.source || "all"} onValueChange={handleSourceChange}>
           <SelectTrigger className="w-full sm:w-[160px]" aria-label="Filtruj według źródła">
             <SelectValue placeholder="Źródło" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Wszystkie</SelectItem>
-            <SelectItem value="manual">Ręczne</SelectItem>
+            <SelectItem value="manual">Własne</SelectItem>
             <SelectItem value="ai">AI</SelectItem>
           </SelectContent>
         </Select>
 
         {/* Sort Select */}
         <div className="flex gap-2">
-          <Select
-            value={filters.sort || "created_at"}
-            onValueChange={handleSortChange}
-          >
+          <Select value={filters.sort || "created_at"} onValueChange={handleSortChange}>
             <SelectTrigger className="w-full sm:w-[180px]" aria-label="Sortuj według">
               <SelectValue placeholder="Sortuj" />
             </SelectTrigger>
@@ -128,15 +113,10 @@ export function ToolBar({
             aria-label={`Sortuj ${filters.order === "asc" ? "rosnąco" : "malejąco"}`}
             title={filters.order === "asc" ? "Sortuj malejąco" : "Sortuj rosnąco"}
           >
-            {filters.order === "asc" ? (
-              <SortAsc className="h-4 w-4" />
-            ) : (
-              <SortDesc className="h-4 w-4" />
-            )}
+            {filters.order === "asc" ? <SortAsc className="h-4 w-4" /> : <SortDesc className="h-4 w-4" />}
           </Button>
         </div>
       </div>
     </div>
   );
 }
-

@@ -1,12 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Pencil, Trash2 } from "lucide-react";
 import type { FlashcardListItemDTO } from "@/types";
 
@@ -16,21 +11,14 @@ interface FlashcardCardProps {
   onDelete: (flashcard: FlashcardListItemDTO) => void;
 }
 
-export function FlashcardCard({
-  flashcard,
-  onEdit,
-  onDelete,
-}: FlashcardCardProps) {
+export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProps) {
   return (
     <Card className="group transition-all hover:shadow-md hover:border-primary/50 h-full">
       <CardContent className="p-4 space-y-3 h-full flex flex-col">
         {/* Header with Badge */}
         <div className="flex items-start justify-between gap-2">
-          <Badge
-            variant={flashcard.source === "ai" ? "default" : "secondary"}
-            className="shrink-0"
-          >
-            {flashcard.source === "ai" ? "AI" : "Ręczna"}
+          <Badge variant={flashcard.source === "ai" ? "default" : "secondary"} className="shrink-0">
+            {flashcard.source === "ai" ? "AI" : "Własna"}
           </Badge>
 
           {/* Action buttons - visible on hover */}
@@ -75,9 +63,7 @@ export function FlashcardCard({
 
         {/* Front side */}
         <div className="space-y-1 flex-1">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-            Przód
-          </div>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Przód</div>
           <p className="text-sm leading-relaxed line-clamp-3" title={flashcard.front}>
             {flashcard.front}
           </p>
@@ -88,9 +74,7 @@ export function FlashcardCard({
 
         {/* Back side */}
         <div className="space-y-1 flex-1">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-            Tył
-          </div>
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tył</div>
           <p className="text-sm leading-relaxed line-clamp-3" title={flashcard.back}>
             {flashcard.back}
           </p>
@@ -99,4 +83,3 @@ export function FlashcardCard({
     </Card>
   );
 }
-

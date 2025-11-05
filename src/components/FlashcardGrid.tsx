@@ -19,13 +19,13 @@ export function FlashcardGrid({
       aria-label="Lista fiszek"
     >
       {flashcards.map((flashcard) => (
-        <article key={flashcard.id} role="listitem">
+        <div key={flashcard.id} role="listitem">
           <FlashcardCard
             flashcard={flashcard}
             onEdit={onEdit}
             onDelete={onDelete}
           />
-        </article>
+        </div>
       ))}
     </div>
   );
