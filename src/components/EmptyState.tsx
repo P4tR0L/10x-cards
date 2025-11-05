@@ -15,7 +15,7 @@ export function EmptyState({ hasFilters, onCreateClick, onClearFilters }: EmptyS
         <div className="rounded-full bg-muted p-6">
           <FileQuestion className="h-12 w-12 text-muted-foreground" />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 select-none">
           <h3 className="text-lg font-semibold">Brak wyników</h3>
           <p className="text-sm text-muted-foreground max-w-md">
             Nie znaleziono fiszek pasujących do wybranych filtrów. Spróbuj zmienić kryteria wyszukiwania.
@@ -34,7 +34,7 @@ export function EmptyState({ hasFilters, onCreateClick, onClearFilters }: EmptyS
       <div className="rounded-full bg-primary/10 p-6">
         <Plus className="h-12 w-12 text-primary" />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2 select-none">
         <h3 className="text-lg font-semibold">Nie masz jeszcze żadnych fiszek</h3>
         <p className="text-sm text-muted-foreground max-w-md">
           Zacznij tworzyć fiszki, aby budować swoją kolekcję. Możesz generować je automatycznie z AI lub dodawać

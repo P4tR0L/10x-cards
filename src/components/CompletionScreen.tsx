@@ -31,14 +31,14 @@ export function CompletionScreen({ totalCards, onRestart, onExit }: CompletionSc
         <CardContent className="space-y-6 pb-8">
           {/* Summary */}
           <div className="text-center space-y-4">
-            <div className="bg-muted rounded-lg p-6">
+            <div className="bg-muted rounded-lg p-6 select-none">
               <div className="text-4xl font-bold text-primary mb-2">{totalCards}</div>
               <div className="text-sm text-muted-foreground">
                 {totalCards === 1 ? "fiszka przejrzana" : totalCards < 5 ? "fiszki przejrzane" : "fiszek przejrzanych"}
               </div>
             </div>
 
-            <p className="text-muted-foreground">Świetna robota! Kontynuuj regularną naukę, aby utrwalić materiał.</p>
+            <p className="text-muted-foreground select-none">Świetna robota! Kontynuuj regularną naukę, aby utrwalić materiał.</p>
           </div>
         </CardContent>
 

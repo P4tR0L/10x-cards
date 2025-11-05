@@ -46,7 +46,7 @@ export function FlashcardNavigator({ totalCards, currentIndex, onNavigate }: Fla
               onClick={() => onNavigate(index)}
               className={`
                 flex-shrink-0 w-8 h-8 rounded-md text-xs font-medium
-                transition-all duration-200
+                transition-all duration-200 cursor-pointer select-none
                 ${
                   isActive
                     ? "bg-primary text-primary-foreground shadow-md scale-110 ring-2 ring-primary"

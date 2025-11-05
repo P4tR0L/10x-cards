@@ -14,7 +14,7 @@ export function PaginationControls({ pagination, onPageChange }: PaginationContr
     <div className="sticky bottom-0 bg-background border-t border-border p-4 shadow-lg rounded-t-lg">
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
         {/* Info text */}
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-muted-foreground select-none">
           Strona {page} z {total_pages} (łącznie {total} {total === 1 ? "fiszka" : total < 5 ? "fiszki" : "fiszek"})
         </p>
 

@@ -235,7 +235,7 @@ export function ReviewMode() {
         <Card className="backdrop-blur-sm overflow-hidden" role="main" aria-label="Tryb nauki fiszek">
           <CardHeader className="pb-2">
             <CardTitle className="text-3xl">Ucz się</CardTitle>
-            <CardDescription className="flex items-center justify-between gap-4">
+            <CardDescription className="flex items-center justify-between gap-4 select-none">
               <span className="text-xs">
                 Fiszka {currentIndex + 1} z {flashcards.length}
               </span>
@@ -276,7 +276,7 @@ export function ReviewMode() {
 
       {/* Keyboard hints */}
       <div
-        className="hidden md:block fixed bottom-4 left-4 text-xs text-muted-foreground bg-card/80 backdrop-blur-sm px-3 py-2 rounded-lg border z-20"
+        className="hidden md:block fixed bottom-4 left-4 text-xs text-muted-foreground bg-card/80 backdrop-blur-sm px-3 py-2 rounded-lg border z-20 select-none"
         aria-hidden="true"
       >
         <div className="space-y-1">

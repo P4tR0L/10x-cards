@@ -21,7 +21,7 @@ export function BatchActionsBar({
   return (
     <div className="sticky bottom-0 bg-background border-t border-border p-4 shadow-lg rounded-t-lg">
       <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center justify-between">
-        <div className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground select-none">
           {acceptedCount > 0 ? (
             <span>
               Wybrano <strong className="text-foreground">{acceptedCount}</strong>{" "}

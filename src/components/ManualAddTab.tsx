@@ -138,7 +138,7 @@ export function ManualAddTab() {
               </p>
             )}
           </div>
-          <p className="text-xs text-foreground">{front.length} / 5000</p>
+          <p className="text-xs text-foreground select-none">{front.length} / 5000</p>
         </div>
       </div>
 
@@ -167,7 +167,7 @@ export function ManualAddTab() {
               </p>
             )}
           </div>
-          <p className="text-xs text-foreground">{back.length} / 5000</p>
+          <p className="text-xs text-foreground select-none">{back.length} / 5000</p>
         </div>
       </div>
 

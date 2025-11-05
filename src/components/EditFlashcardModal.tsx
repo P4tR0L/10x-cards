@@ -117,7 +117,7 @@ export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditF
                 {errors.front}
               </p>
             )}
-            <p className="text-xs text-muted-foreground">{front.length} / 5000 znaków</p>
+            <p className="text-xs text-muted-foreground select-none">{front.length} / 5000 znaków</p>
           </div>
 
           {/* Back field */}
@@ -144,7 +144,7 @@ export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditF
                 {errors.back}
               </p>
             )}
-            <p className="text-xs text-muted-foreground">{back.length} / 5000 znaków</p>
+            <p className="text-xs text-muted-foreground select-none">{back.length} / 5000 znaków</p>
           </div>
         </div>
 

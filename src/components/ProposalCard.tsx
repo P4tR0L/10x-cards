@@ -115,7 +115,7 @@ export function ProposalCard({ proposal, onAccept, onRemove, onEdit }: ProposalC
                   onChange={(e) => setEditedFront(e.target.value)}
                   className="min-h-[100px]"
                 />
-                <p className="text-xs text-muted-foreground text-right">{editedFront.length} / 5000</p>
+                <p className="text-xs text-muted-foreground text-right select-none">{editedFront.length} / 5000</p>
               </div>
               <div className="space-y-2">
                 <label htmlFor="edit-back" className="text-sm font-medium leading-none">
@@ -127,7 +127,7 @@ export function ProposalCard({ proposal, onAccept, onRemove, onEdit }: ProposalC
                   onChange={(e) => setEditedBack(e.target.value)}
                   className="min-h-[100px]"
                 />
-                <p className="text-xs text-muted-foreground text-right">{editedBack.length} / 5000</p>
+                <p className="text-xs text-muted-foreground text-right select-none">{editedBack.length} / 5000</p>
               </div>
             </div>
             <DialogFooter>
