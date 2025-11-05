@@ -1,12 +1,11 @@
 /**
  * ReviewControls Component
  * Navigation controls for review mode
- * Shows progress and provides Previous/Next/Exit buttons
+ * Provides Previous/Next/Exit buttons
  */
 
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 
 interface ReviewControlsProps {
   currentIndex: number;
@@ -27,61 +26,45 @@ export function ReviewControls({
   canGoPrevious,
   canGoNext,
 }: ReviewControlsProps) {
-  const progress = ((currentIndex + 1) / totalCards) * 100;
-  const currentCardNumber = currentIndex + 1;
-
   return (
-    <div className="space-y-4">
-      {/* Progress bar */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="font-semibold text-foreground">
-            Fiszka {currentCardNumber} z {totalCards}
-          </span>
-          <span className="text-muted-foreground">
-            {Math.round(progress)}% ukończone
-          </span>
-        </div>
-        <Progress value={progress} className="h-2" />
-      </div>
-
+    <div>
       {/* Navigation buttons */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-3">
         {/* Previous button */}
         <Button
           variant="outline"
-          size="lg"
+          size="default"
           onClick={onPrevious}
           disabled={!canGoPrevious}
-          className="flex-1 max-w-[200px]"
+          className="flex-1 max-w-[180px]"
           aria-label="Poprzednia fiszka"
         >
-          <ChevronLeft className="mr-2 h-5 w-5" />
+          <ChevronLeft className="mr-2 h-4 w-4" />
           Poprzednia
         </Button>
 
         {/* Exit button */}
         <Button
-          variant="ghost"
-          size="lg"
+          variant="outline"
+          size="default"
           onClick={onExit}
-          className="px-6"
+          className="px-4"
           aria-label="Zakończ sesję nauki"
         >
-          <X className="mr-2 h-5 w-5" />
+          <X className="mr-2 h-4 w-4" />
           Zakończ
         </Button>
 
         {/* Next button */}
         <Button
           variant="default"
-          size="lg"
+          size="default"
           onClick={onNext}
-          className="flex-1 max-w-[200px]"
+          className="flex-1 max-w-[180px]"
           aria-label={canGoNext ? "Następna fiszka" : "Ukończ sesję i zobacz podsumowanie"}
         >
           {canGoNext ? "Następna" : "Ukończ"}
-          <ChevronRight className="ml-2 h-5 w-5" />
+          <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
     </div>

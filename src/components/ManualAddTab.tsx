@@ -141,20 +141,12 @@ export function ManualAddTab() {
         <div className="flex justify-between items-center">
           <div className="min-h-[20px]">
             {validationErrors.front && (
-              <p id="front-error" className="text-sm text-red-600" role="alert">
+              <p id="front-error" className="text-sm text-red-400" role="alert">
                 {validationErrors.front}
               </p>
             )}
           </div>
-          <p
-            className={`text-xs ${
-              front.trim().length > 5000
-                ? "text-red-600"
-                : front.trim().length >= 1
-                  ? "text-green-600"
-                  : "text-muted-foreground"
-            }`}
-          >
+          <p className="text-xs text-foreground">
             {front.length} / 5000
           </p>
         </div>
@@ -180,20 +172,12 @@ export function ManualAddTab() {
         <div className="flex justify-between items-center">
           <div className="min-h-[20px]">
             {validationErrors.back && (
-              <p id="back-error" className="text-sm text-red-600" role="alert">
+              <p id="back-error" className="text-sm text-red-400" role="alert">
                 {validationErrors.back}
               </p>
             )}
           </div>
-          <p
-            className={`text-xs ${
-              back.trim().length > 5000
-                ? "text-red-600"
-                : back.trim().length >= 1
-                  ? "text-green-600"
-                  : "text-muted-foreground"
-            }`}
-          >
+          <p className="text-xs text-foreground">
             {back.length} / 5000
           </p>
         </div>
@@ -201,7 +185,7 @@ export function ManualAddTab() {
 
       {successMessage && (
         <div
-          className="p-3 bg-green-50 border border-green-200 rounded-md text-green-800 text-sm"
+          className="p-3 bg-green-950/30 border border-green-500/50 rounded-md text-green-400 text-sm"
           role="status"
           aria-live="polite"
         >

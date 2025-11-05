@@ -158,7 +158,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         <div 
           className={`text-sm p-3 rounded-md border ${
             errors.general.includes("utworzone") 
-              ? "bg-green-500/10 text-green-600 border-green-500/20" 
+              ? "bg-green-950/30 text-green-400 border-green-500/50" 
               : "bg-destructive/10 text-destructive border-destructive/20"
           }`}
           role="alert"

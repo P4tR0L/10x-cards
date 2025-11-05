@@ -72,15 +72,15 @@ export function ProposalCard({
 
   return (
     <Card
-      className={`relative transition-all ${
+      className={`relative transition-all flex flex-col h-full ${
         proposal.isAccepted
-          ? "border-green-500 bg-green-50/50 shadow-md"
+          ? "border-green-500/70 bg-green-950/30 shadow-md"
           : "border-border hover:shadow-sm"
       }`}
     >
       {proposal.isAccepted && (
         <div className="absolute top-2 right-2">
-          <CheckCircle2 className="h-5 w-5 text-green-600" aria-label="Zaakceptowano" />
+          <CheckCircle2 className="h-5 w-5 text-green-400" aria-label="Zaakceptowano" />
         </div>
       )}
 
@@ -93,19 +93,19 @@ export function ProposalCard({
         </div>
       </CardHeader>
 
-      <CardContent className="pb-3">
+      <CardContent className="pb-3 flex-1">
         <div className="space-y-1">
           <p className="text-sm font-medium text-muted-foreground">Tył</p>
           <p className="text-sm leading-relaxed">{proposal.back}</p>
         </div>
         {proposal.isEdited && (
-          <p className="text-xs text-amber-600 mt-2 italic">
+          <p className="text-xs text-amber-400 mt-2 italic">
             ✎ Edytowano
           </p>
         )}
       </CardContent>
 
-      <CardFooter className="flex gap-2 pt-3">
+      <CardFooter className="flex gap-2 pt-3 mt-auto">
         <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
           <DialogTrigger asChild>
             <Button
@@ -198,7 +198,7 @@ export function ProposalCard({
           size="sm"
           onClick={() => onRemove(proposal.id)}
           aria-label="Usuń propozycję"
-          className="text-red-600 hover:bg-red-50"
+          className="text-red-400 hover:bg-red-950/30 hover:border-red-500/50"
         >
           <X className="h-4 w-4" />
         </Button>

@@ -18,7 +18,7 @@ export function FlashcardCreator() {
   if (isLoading) {
     return (
       <div className="max-w-6xl mx-auto">
-        <Card className="bg-white/95 backdrop-blur-sm">
+        <Card className="backdrop-blur-sm">
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
@@ -33,7 +33,7 @@ export function FlashcardCreator() {
   if (!isAuthenticated) {
     return (
       <div className="max-w-6xl mx-auto">
-        <Card className="bg-white/95 backdrop-blur-sm">
+        <Card className="backdrop-blur-sm">
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
@@ -47,16 +47,16 @@ export function FlashcardCreator() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <Card className="bg-white/95 backdrop-blur-sm">
+      <Card className="backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="text-3xl">Twórz Fiszki</CardTitle>
+          <CardTitle className="text-3xl">Twórz fiszki</CardTitle>
           <CardDescription>Generuj fiszki automatycznie z pomocą AI lub dodaj je ręcznie</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="generate" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="generate">Generuj z AI</TabsTrigger>
-              <TabsTrigger value="manual">Dodaj Ręcznie</TabsTrigger>
+              <TabsTrigger value="manual">Dodaj ręcznie</TabsTrigger>
             </TabsList>
 
             <TabsContent value="generate" className="space-y-4">

@@ -22,8 +22,8 @@ export function FlashcardCard({
   onDelete,
 }: FlashcardCardProps) {
   return (
-    <Card className="group transition-all hover:shadow-md hover:border-primary/50">
-      <CardContent className="p-4 space-y-3">
+    <Card className="group transition-all hover:shadow-md hover:border-primary/50 h-full">
+      <CardContent className="p-4 space-y-3 h-full flex flex-col">
         {/* Header with Badge */}
         <div className="flex items-start justify-between gap-2">
           <Badge
@@ -74,7 +74,7 @@ export function FlashcardCard({
         </div>
 
         {/* Front side */}
-        <div className="space-y-1">
+        <div className="space-y-1 flex-1">
           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
             Przód
           </div>
@@ -84,10 +84,10 @@ export function FlashcardCard({
         </div>
 
         {/* Divider */}
-        <div className="border-t" />
+        <div className="border-t shrink-0" />
 
         {/* Back side */}
-        <div className="space-y-1">
+        <div className="space-y-1 flex-1">
           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
             Tył
           </div>

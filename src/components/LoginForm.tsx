@@ -51,8 +51,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
     if (!password) {
       newErrors.password = "Hasło jest wymagane";
-    } else if (password.length < 6) {
-      newErrors.password = "Hasło musi mieć co najmniej 6 znaków";
     }
 
     setErrors(newErrors);

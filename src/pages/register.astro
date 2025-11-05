@@ -25,7 +25,7 @@ if (authToken) {
     <div class="w-full max-w-md space-y-8">
       <!-- Logo and header -->
       <div class="text-center space-y-2">
-        <div class="flex justify-center mb-6">
+        <div class="flex justify-center items-center gap-3 mb-6">
           <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -37,10 +37,13 @@ if (authToken) {
               stroke-linejoin="round"
               class="w-8 h-8 text-white"
             >
-              <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              <!-- First card (back) -->
+              <rect x="4" y="7" width="9" height="12" rx="1.5" stroke="white" stroke-width="2" fill="none"></rect>
+              <!-- Second card (front) -->
+              <rect x="11" y="5" width="9" height="12" rx="1.5" fill="white" stroke="white" stroke-width="2"></rect>
             </svg>
           </div>
+          <span class="text-3xl font-bold text-white">10x Cards</span>
         </div>
         <h1 class="text-3xl font-bold text-white">
           Stwórz konto
@@ -51,7 +54,7 @@ if (authToken) {
       </div>
 
       <!-- Register form card -->
-      <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 p-8">
+      <div class="bg-card backdrop-blur-lg rounded-2xl shadow-2xl border border-border p-8">
         <RegisterForm client:load />
       </div>
 

@@ -20,8 +20,8 @@ export function CompletionScreen({
   onExit,
 }: CompletionScreenProps) {
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl animate-in fade-in-50 zoom-in-95 duration-500">
+    <div className="max-w-6xl mx-auto">
+      <Card className="backdrop-blur-sm animate-in fade-in-50 zoom-in-95 duration-500">
         <CardHeader className="text-center space-y-4 pb-8">
           <div className="mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
             <CheckCircle2 className="h-12 w-12 text-primary" />

@@ -1,17 +1,21 @@
 import { Button } from "@/components/ui/button";
-import { Save, X } from "lucide-react";
+import { Save, X, Check } from "lucide-react";
 
 interface BatchActionsBarProps {
   acceptedCount: number;
+  totalCount: number;
   onSaveAccepted: () => void;
   onRejectAll: () => void;
+  onAcceptAll: () => void;
   isSaving: boolean;
 }
 
 export function BatchActionsBar({
   acceptedCount,
+  totalCount,
   onSaveAccepted,
   onRejectAll,
+  onAcceptAll,
   isSaving,
 }: BatchActionsBarProps) {
   return (
@@ -31,25 +35,25 @@ export function BatchActionsBar({
         <div className="flex gap-2">
           <Button
             variant="outline"
-            onClick={onRejectAll}
-            disabled={isSaving}
+            onClick={onAcceptAll}
+            disabled={acceptedCount === totalCount || isSaving}
             className="flex-1 sm:flex-none"
           >
-            <X className="h-4 w-4 mr-2" />
-            Odrzuć Wszystkie
+            <Check className="h-4 w-4 mr-2" />
+            Zaakceptuj wszystkie
           </Button>
 
-          <Button
-            onClick={onSaveAccepted}
-            disabled={acceptedCount === 0 || isSaving}
-            className="flex-1 sm:flex-none"
-          >
+          <Button variant="outline" onClick={onRejectAll} disabled={isSaving} className="flex-1 sm:flex-none">
+            <X className="h-4 w-4 mr-2" />
+            Odrzuć wszystkie
+          </Button>
+
+          <Button onClick={onSaveAccepted} disabled={acceptedCount === 0 || isSaving} className="flex-1 sm:flex-none">
             <Save className="h-4 w-4 mr-2" />
-            {isSaving ? "Zapisywanie..." : "Zapisz Zaakceptowane"}
+            {isSaving ? "Zapisywanie..." : "Zapisz zaakceptowane"}
           </Button>
         </div>
       </div>
     </div>
   );
 }
-

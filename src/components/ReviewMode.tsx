@@ -12,7 +12,9 @@ import type { FlashcardListItemDTO } from "@/types";
 import { ReviewCard } from "./ReviewCard";
 import { ReviewControls } from "./ReviewControls";
 import { CompletionScreen } from "./CompletionScreen";
-import { LoadingOverlay } from "./LoadingOverlay";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export function ReviewMode() {
@@ -176,7 +178,18 @@ export function ReviewMode() {
 
   // Show loading state
   if (authLoading || isLoading) {
-    return <LoadingOverlay message="Ładowanie fiszek..." />;
+    return (
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm">
+          <CardContent className="flex items-center justify-center py-12">
+            <div className="text-center space-y-4">
+              <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+              <p className="text-muted-foreground">Ładowanie fiszek...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   // Show completion screen
@@ -194,11 +207,22 @@ export function ReviewMode() {
   const currentFlashcard = flashcards[currentIndex];
 
   if (!currentFlashcard) {
-    return <LoadingOverlay message="Ładowanie..." />;
+    return (
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm">
+          <CardContent className="flex items-center justify-center py-12">
+            <div className="text-center space-y-4">
+              <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+              <p className="text-muted-foreground">Ładowanie...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col" role="main" aria-label="Tryb nauki fiszek">
+    <>
       {/* Screen reader announcements */}
       <div
         className="sr-only"
@@ -209,30 +233,50 @@ export function ReviewMode() {
         {announcement}
       </div>
 
-      {/* Main review area */}
-      <div className="flex-1 flex items-center justify-center p-4 md:p-8 relative z-0">
-        <div className="w-full max-w-4xl">
-          <ReviewCard
-            flashcard={currentFlashcard}
-            isFlipped={isFlipped}
-            onFlip={handleFlip}
-          />
-        </div>
-      </div>
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm overflow-hidden" role="main" aria-label="Tryb nauki fiszek">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-2xl">Ucz się</CardTitle>
+            <CardDescription className="flex items-center justify-between gap-4">
+              <span>
+                Fiszka {currentIndex + 1} z {flashcards.length}
+              </span>
+              <span className="text-xs">
+                {Math.round(((currentIndex + 1) / flashcards.length) * 100)}% ukończone
+              </span>
+            </CardDescription>
+            <Progress 
+              value={((currentIndex + 1) / flashcards.length) * 100} 
+              className="h-1.5 mt-2" 
+            />
+          </CardHeader>
 
-      {/* Controls area */}
-      <div className="border-t bg-card/50 p-4 md:p-6 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          <ReviewControls
-            currentIndex={currentIndex}
-            totalCards={flashcards.length}
-            onPrevious={handlePrevious}
-            onNext={handleNext}
-            onExit={handleExit}
-            canGoPrevious={currentIndex > 0}
-            canGoNext={currentIndex < flashcards.length - 1}
-          />
-        </div>
+          <CardContent className="space-y-3 pb-4">
+            {/* Main review area */}
+            <div className="flex items-center justify-center py-2 relative isolate overflow-hidden">
+              <div className="w-full max-w-2xl relative z-0">
+                <ReviewCard
+                  flashcard={currentFlashcard}
+                  isFlipped={isFlipped}
+                  onFlip={handleFlip}
+                />
+              </div>
+            </div>
+
+            {/* Controls area */}
+            <div className="border-t pt-3">
+              <ReviewControls
+                currentIndex={currentIndex}
+                totalCards={flashcards.length}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                onExit={handleExit}
+                canGoPrevious={currentIndex > 0}
+                canGoNext={currentIndex < flashcards.length - 1}
+              />
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Keyboard hints */}
@@ -246,7 +290,7 @@ export function ReviewMode() {
           <div><kbd className="px-1.5 py-0.5 bg-muted rounded">Esc</kbd> Wyjdź</div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

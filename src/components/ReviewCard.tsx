@@ -18,7 +18,7 @@ interface ReviewCardProps {
 export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
   return (
     <div
-      className="relative w-full aspect-[3/2] md:aspect-[4/3] cursor-pointer perspective-1000"
+      className="relative w-full aspect-[16/9] cursor-pointer perspective-1000 isolate"
       onClick={onFlip}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -33,7 +33,7 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
     >
       {/* 3D flip container */}
       <div
-        className={`relative w-full h-full transition-transform duration-500 transform-style-3d ${
+        className={`relative w-full h-full transition-transform duration-500 transform-style-3d will-change-transform ${
           isFlipped ? "rotate-y-180" : ""
         }`}
       >
@@ -43,30 +43,30 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
             isFlipped ? "pointer-events-none" : ""
           }`}
         >
-          <CardContent className="h-full flex flex-col p-6 md:p-8">
+          <CardContent className="h-full flex flex-col p-3 md:p-4">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3">
               <Badge
                 variant={flashcard.source === "ai" ? "default" : "secondary"}
-                className="text-sm"
+                className="text-xs"
               >
                 {flashcard.source === "ai" ? "AI" : "Ręczna"}
               </Badge>
-              <div className="text-sm font-semibold text-primary uppercase tracking-wide">
+              <div className="text-xs font-semibold text-primary uppercase tracking-wide">
                 Przód
               </div>
             </div>
 
             {/* Content */}
             <div className="flex-1 flex items-center justify-center">
-              <p className="text-lg md:text-2xl lg:text-3xl text-center leading-relaxed px-4">
+              <p className="text-sm md:text-lg lg:text-xl text-center leading-relaxed px-2">
                 {flashcard.front}
               </p>
             </div>
 
             {/* Hint */}
-            <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm mt-6">
-              <RotateCcw className="h-4 w-4" />
+            <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs mt-3">
+              <RotateCcw className="h-3 w-3" />
               <span>Kliknij, aby odwrócić</span>
             </div>
           </CardContent>
@@ -78,30 +78,30 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
             !isFlipped ? "pointer-events-none" : ""
           }`}
         >
-          <CardContent className="h-full flex flex-col p-6 md:p-8">
+          <CardContent className="h-full flex flex-col p-3 md:p-4">
             {/* Header */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center justify-between mb-3">
               <Badge
                 variant={flashcard.source === "ai" ? "default" : "secondary"}
-                className="text-sm"
+                className="text-xs"
               >
                 {flashcard.source === "ai" ? "AI" : "Ręczna"}
               </Badge>
-              <div className="text-sm font-semibold text-primary uppercase tracking-wide">
+              <div className="text-xs font-semibold text-primary uppercase tracking-wide">
                 Tył
               </div>
             </div>
 
             {/* Content */}
             <div className="flex-1 flex items-center justify-center">
-              <p className="text-lg md:text-2xl lg:text-3xl text-center leading-relaxed px-4">
+              <p className="text-sm md:text-lg lg:text-xl text-center leading-relaxed px-2">
                 {flashcard.back}
               </p>
             </div>
 
             {/* Hint */}
-            <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm mt-6">
-              <RotateCcw className="h-4 w-4" />
+            <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-xs mt-3">
+              <RotateCcw className="h-3 w-3" />
               <span>Kliknij, aby odwrócić</span>
             </div>
           </CardContent>

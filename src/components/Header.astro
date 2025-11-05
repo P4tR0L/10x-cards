@@ -19,13 +19,10 @@ const { userEmail = user?.email || "Użytkownik" } = Astro.props;
       <div class="flex items-center">
         <a href="/" class="flex items-center space-x-2 text-white hover:text-blue-200 transition-colors">
           <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M4 6h16M4 12h16M4 18h16"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"></circle>
+            <!-- First card (back) -->
+            <rect x="3" y="7" width="10" height="13" rx="1.5" stroke="currentColor" stroke-width="2" fill="none"></rect>
+            <!-- Second card (front) -->
+            <rect x="11" y="4" width="10" height="13" rx="1.5" fill="currentColor" stroke="currentColor" stroke-width="2"></rect>
           </svg>
           <span class="hidden sm:inline-block text-xl font-bold">10x Cards</span>
           <span class="sm:hidden text-lg font-bold">10x</span>

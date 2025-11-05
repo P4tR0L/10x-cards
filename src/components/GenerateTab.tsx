@@ -6,11 +6,7 @@ import { ProposalsList } from "./ProposalsList";
 import { BatchActionsBar } from "./BatchActionsBar";
 import { fetchAPI } from "@/lib/api-client";
 import type { ProposalData } from "./ProposalCard";
-import type {
-  GenerateFlashcardsResponse,
-  CreateBatchFlashcardsCommand,
-  BatchFlashcardItem,
-} from "@/types";
+import type { GenerateFlashcardsResponse, CreateBatchFlashcardsCommand, BatchFlashcardItem } from "@/types";
 
 export function GenerateTab() {
   const [sourceText, setSourceText] = useState("");
@@ -47,25 +43,11 @@ export function GenerateTab() {
 
   const isFormValid = (): boolean => {
     const trimmedText = sourceText.trim();
-    return (
-      trimmedText.length >= 100 &&
-      trimmedText.length <= 1000 &&
-      !validationError
-    );
+    return trimmedText.length >= 100 && trimmedText.length <= 1000 && !validationError;
   };
 
   const getCharacterCountColor = (): string => {
-    const trimmedLength = sourceText.trim().length;
-
-    if (trimmedLength < 100) {
-      return "text-red-600";
-    }
-
-    if (trimmedLength > 1000) {
-      return "text-red-600";
-    }
-
-    return "text-green-600";
+    return "text-foreground";
   };
 
   const handleGenerate = async (e: React.FormEvent) => {
@@ -95,24 +77,19 @@ export function GenerateTab() {
       const data: GenerateFlashcardsResponse = result.data;
 
       // Convert proposals to ProposalData format
-      const proposalData: ProposalData[] = data.proposals.map(
-        (proposal, index) => ({
-          id: `proposal-${index}`,
-          front: proposal.front,
-          back: proposal.back,
-          isAccepted: false,
-          isEdited: false,
-        })
-      );
+      const proposalData: ProposalData[] = data.proposals.map((proposal, index) => ({
+        id: `proposal-${index}`,
+        front: proposal.front,
+        back: proposal.back,
+        isAccepted: false,
+        isEdited: false,
+      }));
 
       setGenerationId(data.generation_id);
       setProposals(proposalData);
       setSourceText("");
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Wystąpił błąd podczas generowania fiszek";
+      const errorMessage = error instanceof Error ? error.message : "Wystąpił błąd podczas generowania fiszek";
       setValidationError(errorMessage);
     } finally {
       setIsGenerating(false);
@@ -120,9 +97,7 @@ export function GenerateTab() {
   };
 
   const handleAccept = (id: string) => {
-    setProposals((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, isAccepted: !p.isAccepted } : p))
-    );
+    setProposals((prev) => prev.map((p) => (p.id === id ? { ...p, isAccepted: !p.isAccepted } : p)));
   };
 
   const handleRemove = (id: string) => {
@@ -131,11 +106,7 @@ export function GenerateTab() {
 
   const handleEdit = (id: string, front: string, back: string) => {
     setProposals((prev) =>
-      prev.map((p) =>
-        p.id === id
-          ? { ...p, front, back, isEdited: true, isAccepted: true }
-          : p
-      )
+      prev.map((p) => (p.id === id ? { ...p, front, back, isEdited: true, isAccepted: true } : p))
     );
   };
 
@@ -190,10 +161,7 @@ export function GenerateTab() {
         setSuccessMessage(null);
       }, 3000);
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Wystąpił błąd podczas zapisywania fiszek";
+      const errorMessage = error instanceof Error ? error.message : "Wystąpił błąd podczas zapisywania fiszek";
       setValidationError(errorMessage);
     } finally {
       setIsSaving(false);
@@ -206,6 +174,10 @@ export function GenerateTab() {
     setValidationError(null);
   };
 
+  const handleAcceptAll = () => {
+    setProposals((prev) => prev.map((p) => ({ ...p, isAccepted: true })));
+  };
+
   const acceptedCount = proposals.filter((p) => p.isAccepted).length;
 
   // Show proposals view if we have proposals
@@ -215,17 +187,14 @@ export function GenerateTab() {
         {isSaving && <LoadingOverlay message="Zapisywanie fiszek..." />}
 
         {validationError && (
-          <div
-            className="p-3 bg-red-50 border border-red-200 rounded-md text-red-800 text-sm"
-            role="alert"
-          >
+          <div className="p-3 bg-red-950/30 border border-red-500/50 rounded-md text-red-400 text-sm" role="alert">
             {validationError}
           </div>
         )}
 
         {successMessage && (
           <div
-            className="p-3 bg-green-50 border border-green-200 rounded-md text-green-800 text-sm"
+            className="p-3 bg-green-950/30 border border-green-500/50 rounded-md text-green-400 text-sm"
             role="status"
             aria-live="polite"
           >
@@ -233,17 +202,14 @@ export function GenerateTab() {
           </div>
         )}
 
-        <ProposalsList
-          proposals={proposals}
-          onAccept={handleAccept}
-          onRemove={handleRemove}
-          onEdit={handleEdit}
-        />
+        <ProposalsList proposals={proposals} onAccept={handleAccept} onRemove={handleRemove} onEdit={handleEdit} />
 
         <BatchActionsBar
           acceptedCount={acceptedCount}
+          totalCount={proposals.length}
           onSaveAccepted={handleSaveAccepted}
           onRejectAll={handleRejectAll}
+          onAcceptAll={handleAcceptAll}
           isSaving={isSaving}
         />
       </div>
@@ -258,7 +224,7 @@ export function GenerateTab() {
       <form onSubmit={handleGenerate} className="space-y-6">
         {successMessage && (
           <div
-            className="p-3 bg-green-50 border border-green-200 rounded-md text-green-800 text-sm"
+            className="p-3 bg-green-950/30 border border-green-500/50 rounded-md text-green-400 text-sm"
             role="status"
             aria-live="polite"
           >
@@ -267,61 +233,45 @@ export function GenerateTab() {
         )}
 
         <div className="space-y-2">
-        <label
-          htmlFor="source-text"
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-        >
-          Tekst źródłowy
-        </label>
-        <Textarea
-          id="source-text"
-          placeholder="Wklej tekst, z którego chcesz wygenerować fiszki (min. 100, max. 1000 znaków)..."
-          value={sourceText}
-          onChange={(e) => handleSourceTextChange(e.target.value)}
-          disabled={isGenerating}
-          className="min-h-[200px]"
-          aria-describedby={
-            validationError ? "source-text-error" : "source-text-hint"
-          }
-          aria-invalid={!!validationError}
-        />
-        <div className="flex justify-between items-center">
-          <div className="min-h-[20px]">
-            {validationError && (
-              <p
-                id="source-text-error"
-                className="text-sm text-red-600"
-                role="alert"
-              >
-                {validationError}
-              </p>
-            )}
-            {!validationError && sourceText.trim().length > 0 && (
-              <p
-                id="source-text-hint"
-                className="text-sm text-muted-foreground"
-              >
-                {sourceText.trim().length < 100
-                  ? `Jeszcze ${100 - sourceText.trim().length} znaków do minimum`
-                  : "Gotowe do generowania!"}
-              </p>
-            )}
+          <label
+            htmlFor="source-text"
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Tekst źródłowy
+          </label>
+          <Textarea
+            id="source-text"
+            placeholder="Wklej tekst, z którego chcesz wygenerować fiszki (min. 100, max. 1000 znaków)..."
+            value={sourceText}
+            onChange={(e) => handleSourceTextChange(e.target.value)}
+            disabled={isGenerating}
+            className="min-h-[200px]"
+            aria-describedby={validationError ? "source-text-error" : "source-text-hint"}
+            aria-invalid={!!validationError}
+          />
+          <div className="flex justify-between items-center">
+            <div className="min-h-[20px]">
+              {validationError && (
+                <p id="source-text-error" className="text-sm text-red-400" role="alert">
+                  {validationError}
+                </p>
+              )}
+              {!validationError && sourceText.trim().length > 0 && (
+                <p id="source-text-hint" className="text-sm text-muted-foreground">
+                  {sourceText.trim().length < 100
+                    ? `Jeszcze ${100 - sourceText.trim().length} znaków do minimum`
+                    : "Gotowe do generowania!"}
+                </p>
+              )}
+            </div>
+            <p className={`text-xs font-medium ${getCharacterCountColor()}`}>{sourceText.trim().length} / 1000</p>
           </div>
-          <p className={`text-xs font-medium ${getCharacterCountColor()}`}>
-            {sourceText.trim().length} / 1000
-          </p>
         </div>
-      </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={!isFormValid() || isGenerating}
-        >
-          {isGenerating ? "Generowanie..." : "Generuj Fiszki"}
+        <Button type="submit" className="w-full" disabled={!isFormValid() || isGenerating}>
+          {isGenerating ? "Generowanie..." : "Generuj fiszki"}
         </Button>
       </form>
     </>
   );
 }
-

@@ -198,8 +198,8 @@ export function ManageFlashcards() {
   // Auth loading state
   if (authLoading) {
     return (
-      <div className="max-w-7xl mx-auto">
-        <Card className="bg-white/95 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm">
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
@@ -214,11 +214,11 @@ export function ManageFlashcards() {
   // Auth error state
   if (!isAuthenticated) {
     return (
-      <div className="max-w-7xl mx-auto">
-        <Card className="bg-white/95 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm">
           <CardContent className="py-12">
             <div className="text-center space-y-4">
-              <p className="text-lg font-semibold text-red-600">
+              <p className="text-lg font-semibold text-red-400">
                 Błąd uwierzytelnienia
               </p>
               <p className="text-muted-foreground">
@@ -233,10 +233,10 @@ export function ManageFlashcards() {
 
   return (
     <>
-      <div className="max-w-7xl mx-auto">
-        <Card className="bg-white/95 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="text-3xl">Zarządzaj Kolekcją</CardTitle>
+            <CardTitle className="text-3xl">Zarządzaj kolekcją</CardTitle>
             <CardDescription>
               Przeglądaj, wyszukuj, edytuj i usuwaj swoje fiszki
             </CardDescription>
@@ -274,11 +274,13 @@ export function ManageFlashcards() {
                 )}
 
                 {/* FlashcardGrid */}
-                <FlashcardGrid
-                  flashcards={flashcards}
-                  onEdit={handleEditClick}
-                  onDelete={handleDeleteClick}
-                />
+                <div className={pagination.total_pages > 1 ? "pb-24" : ""}>
+                  <FlashcardGrid
+                    flashcards={flashcards}
+                    onEdit={handleEditClick}
+                    onDelete={handleDeleteClick}
+                  />
+                </div>
 
                 {/* PaginationControls */}
                 {pagination.total_pages > 1 && (
