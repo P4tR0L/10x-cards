@@ -44,12 +44,17 @@ import type {
  * - 503: AI service unavailable
  */
 export const POST: APIRoute = async (context) => {
+  // eslint-disable-next-line no-console
+  console.log("[GENERATION] Request received");
+  
   try {
     // ============================================================================
     // 1. AUTHENTICATION
     // ============================================================================
 
     const supabase = context.locals.supabase;
+    // eslint-disable-next-line no-console
+    console.log("[GENERATION] Supabase client:", !!supabase);
 
     // Verify JWT token and get user
     const {

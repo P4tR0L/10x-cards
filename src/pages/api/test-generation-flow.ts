@@ -6,10 +6,10 @@
 export const prerender = false;
 
 import type { APIRoute } from "astro";
-import { createGenerationSchema } from "../../../lib/validation/generation.validation";
-import { OpenRouterService } from "../../../lib/services/openrouter.service";
-import { GenerationService } from "../../../lib/services/generation.service";
-import { hashText } from "../../../lib/utils/hash";
+import { createGenerationSchema } from "../../lib/validation/generation.validation";
+import { OpenRouterService } from "../../lib/services/openrouter.service";
+import { GenerationService } from "../../lib/services/generation.service";
+import { hashText } from "../../lib/utils/hash";
 
 export const GET: APIRoute = async (context) => {
   const results: Record<string, unknown> = {
