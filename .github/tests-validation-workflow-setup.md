@@ -48,12 +48,23 @@ Jeśli chcesz używać Codecov (obecnie wyłączone w workflow):
 ## Jak działa przekazywanie zmiennych środowiskowych
 
 ### W CI (GitHub Actions)
+
+**Ważne:** Zmienne środowiskowe muszą być zdefiniowane na poziomie **job'a**, nie tylko w kroku testów!
+
 ```yaml
-env:
-  PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
-  # ... inne zmienne
+e2e-test:
+  environment: integration
+  env:
+    PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+    PUBLIC_SUPABASE_KEY: ${{ secrets.PUBLIC_SUPABASE_KEY }}
+    E2E_USERNAME: ${{ secrets.E2E_USERNAME }}
+    E2E_PASSWORD: ${{ secrets.E2E_PASSWORD }}
+  steps:
+    - name: Run E2E tests
+      run: npm run test:e2e
 ```
-Zmienne są przekazywane bezpośrednio z sekretów GitHub Actions.
+
+Zmienne są dostępne dla wszystkich kroków w job'ie, w tym dla Playwright config, który ładuje się przed uruchomieniem testów.
 
 ### Lokalnie
 ```bash
@@ -64,7 +75,7 @@ Zmienne są ładowane z pliku `.env.test` przez `dotenv`.
 
 ### Logika w `playwright.config.ts`
 ```typescript
-// W CI: zmienne z GitHub Actions secrets
+// W CI: zmienne z GitHub Actions secrets (już załadowane na poziomie job'a)
 // Lokalnie: zmienne z .env.test
 if (!process.env.CI) {
   dotenv.config({ path: ".env.test" });
@@ -146,6 +157,7 @@ Workflow generuje następujące artefakty (dostępne w zakładce Actions):
 1. Sprawdź czy sekrety `E2E_USERNAME` i `E2E_PASSWORD` są dodane do środowiska `integration`
 2. Sprawdź czy nazwa środowiska jest dokładnie `integration` (case-sensitive)
 3. Sprawdź czy wszystkie 4 sekrety są skonfigurowane (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_KEY`, `E2E_USERNAME`, `E2E_PASSWORD`)
+4. **Ważne:** Upewnij się, że zmienne środowiskowe są zdefiniowane na poziomie `env:` w job'ie `e2e-test`, nie tylko w kroku `Run E2E tests`
 
 ### Problem: E2E testy failują z błędami logowania
 
@@ -211,11 +223,14 @@ Sprawdzaj status workflow w:
 
 | Aspekt | Lokalnie | W CI (GitHub Actions) |
 |--------|----------|----------------------|
-| Zmienne środowiskowe | Z pliku `.env.test` | Z GitHub Secrets |
+| Zmienne środowiskowe | Z pliku `.env.test` | Z GitHub Secrets (na poziomie job'a) |
 | WebServer command | `dotenv -e .env.test -- astro dev` | `astro dev` (zmienne już w env) |
 | Playwright dotenv | Ładuje `.env.test` | Pomija (używa env z Actions) |
+| Poziom env w workflow | N/A | Job level (`e2e-test.env`) |
 | Retry tests | 0 | 2 |
 | Workers | Domyślnie | 1 |
+
+**Uwaga:** W CI zmienne muszą być na poziomie job'a, aby Playwright config mógł je odczytać podczas inicjalizacji.
 
 ## Dodatkowe zasoby
 
