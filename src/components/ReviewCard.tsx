@@ -42,6 +42,7 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
           className={`absolute inset-0 backface-hidden border-2 border-blue-500/30 hover:border-blue-500/60 bg-card transition-colors ${
             isFlipped ? "pointer-events-none" : ""
           }`}
+          data-testid="flashcard-front"
         >
           <CardContent className="h-full flex flex-col p-2 md:p-3">
             {/* Header */}
@@ -70,6 +71,7 @@ export function ReviewCard({ flashcard, isFlipped, onFlip }: ReviewCardProps) {
           className={`absolute inset-0 backface-hidden border-2 border-purple-500/30 hover:border-purple-500/60 bg-gradient-to-br from-card to-purple-950/5 transition-colors rotate-y-180 ${
             !isFlipped ? "pointer-events-none" : ""
           }`}
+          data-testid="flashcard-back"
         >
           <CardContent className="h-full flex flex-col p-2 md:p-3">
             {/* Header */}

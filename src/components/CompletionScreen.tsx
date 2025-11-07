@@ -38,7 +38,9 @@ export function CompletionScreen({ totalCards, onRestart, onExit }: CompletionSc
               </div>
             </div>
 
-            <p className="text-muted-foreground select-none">Świetna robota! Kontynuuj regularną naukę, aby utrwalić materiał.</p>
+            <p className="text-muted-foreground select-none">
+              Świetna robota! Kontynuuj regularną naukę, aby utrwalić materiał.
+            </p>
           </div>
         </CardContent>
 

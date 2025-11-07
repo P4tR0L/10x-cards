@@ -23,6 +23,7 @@ Nowoczesna aplikacja do nauki z fiszkami wspomagana sztuczną inteligencją. Tw�
 - [OpenRouter](https://openrouter.ai/) - API do modeli AI
 - [Vitest](https://vitest.dev/) - Nowoczesny framework do testów jednostkowych
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - Biblioteka do testowania komponentów React
+- [Playwright](https://playwright.dev/) - Framework do testów E2E
 
 ## 📋 Wymagania
 
@@ -83,6 +84,10 @@ npm run dev
 - `npm run test:ui` - Uruchamia testy w trybie UI
 - `npm run test:watch` - Uruchamia testy w trybie watch
 - `npm run test:coverage` - Generuje raport pokrycia kodu testami
+- `npm run test:e2e` - Uruchamia testy E2E z Playwright
+- `npm run test:e2e:ui` - Uruchamia testy E2E w trybie UI
+- `npm run test:e2e:headed` - Uruchamia testy E2E z widoczną przeglądarką
+- `npm run test:e2e:debug` - Uruchamia testy E2E w trybie debugowania
 
 ## 📁 Struktura Projektu
 
@@ -103,6 +108,10 @@ npm run dev
 │   │   └── api/          # Endpointy API
 │   ├── styles/            # Globalne style
 │   └── types.ts           # Wspólne typy TypeScript
+├── e2e/
+│   ├── tests/             # Testy E2E Playwright
+│   ├── page-objects/      # Page Object Model
+│   └── helpers/           # Helpery testowe
 ├── supabase/
 │   ├── migrations/        # Migracje bazy danych
 │   └── config.toml        # Konfiguracja Supabase
@@ -134,14 +143,58 @@ Fiszki mogą być generowane automatycznie z tekstu źródłowego przy użyciu r
 
 ## 🔬 Testowanie
 
-Projekt wykorzystuje Vitest do testów jednostkowych i integracyjnych. Główne narzędzia to:
+Projekt wykorzystuje kompleksową strategię testowania z testami jednostkowymi i E2E, zapewniając wysoką jakość kodu i niezawodność aplikacji.
 
-- **Vitest** - Szybki i nowoczesny framework do testów.
-- **React Testing Library** - Do testowania komponentów React w sposób, w jaki używają ich użytkownicy.
-- **jsdom** / **happy-dom** - Środowiska do testowania kodu wirtualnego DOM.
-- **Vitest Coverage** - Do generowania raportów pokrycia kodu testami.
+### Testy Jednostkowe
 
-Testy znajdują się w katalogach `__tests__` obok testowanych plików.
+Testy jednostkowe wykorzystują Vitest i React Testing Library:
+
+- **Vitest** - Szybki i nowoczesny framework do testów
+- **React Testing Library** - Do testowania komponentów React w sposób, w jaki używają ich użytkownicy
+- **jsdom** / **happy-dom** - Środowiska do testowania kodu wirtualnego DOM
+- **Vitest Coverage** - Do generowania raportów pokrycia kodu testami
+
+Testy jednostkowe znajdują się w katalogach `__tests__` obok testowanych plików.
+
+**Aktualne pokrycie:**
+- Serwisy (flashcard.service, openrouter.service)
+- Walidacje Zod
+
+### Testy E2E
+
+Testy E2E wykorzystują Playwright dla kompleksowego testowania przepływów użytkownika:
+
+- **Playwright** - Nowoczesny framework do testów E2E
+- **Page Object Model** - Wzorzec projektowy dla utrzymywalnych testów
+- **data-testid selectors** - Odporne selektory dla stabilnych testów
+- **Automatyczne zarządzanie przeglądarką** - Chromium z automatyczną konfiguracją
+- **Test isolation** - Automatyczne czyszczenie bazy danych między testami
+- **Serial mode** - Testy wykonują się sekwencyjnie dla uniknięcia konfliktów bazy danych
+
+**Aktualne pokrycie:**
+- Flashcard lifecycle (login → create → review)
+- Multiple flashcards handling
+- Immediate review availability
+
+Testy E2E znajdują się w katalogu `e2e/`:
+- `e2e/tests/` - Specyfikacje testów
+- `e2e/page-objects/` - Page Objects (LoginPage, CreateFlashcardPage, ReviewPage)
+- `e2e/helpers/` - Helpery testowe (auth, database cleanup)
+
+Aby uruchomić testy E2E:
+
+```bash
+# Instalacja przeglądarek (jednorazowo)
+npx playwright install chromium --with-deps
+
+# Uruchomienie testów
+npm run test:e2e
+
+# Tryb UI (zalecany do developmentu)
+npm run test:e2e:ui
+```
+
+Szczegółowa dokumentacja: [E2E Setup Guide](./e2e/SETUP.md)
 
 ## 🎨 Stylowanie
 

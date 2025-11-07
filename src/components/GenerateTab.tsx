@@ -264,7 +264,9 @@ export function GenerateTab() {
                 </p>
               )}
             </div>
-            <p className={`text-xs font-medium select-none ${getCharacterCountColor()}`}>{sourceText.trim().length} / 1000</p>
+            <p className={`text-xs font-medium select-none ${getCharacterCountColor()}`}>
+              {sourceText.trim().length} / 1000
+            </p>
           </div>
         </div>
 

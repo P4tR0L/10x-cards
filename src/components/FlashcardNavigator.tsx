@@ -38,7 +38,7 @@ export function FlashcardNavigator({ totalCards, currentIndex, onNavigate }: Fla
       >
         {Array.from({ length: totalCards }, (_, index) => {
           const isActive = index === currentIndex;
-          
+
           return (
             <button
               key={index}
@@ -65,4 +65,3 @@ export function FlashcardNavigator({ totalCards, currentIndex, onNavigate }: Fla
     </div>
   );
 }
-

@@ -4,8 +4,8 @@ import type { Database } from "../db/database.types";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   // Get Supabase credentials from environment
-  const supabaseUrl = import.meta.env.SUPABASE_URL;
-  const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_KEY;
 
   // Get the Authorization header
   const authHeader = context.request.headers.get("Authorization");

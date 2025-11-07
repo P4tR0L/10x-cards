@@ -295,9 +295,7 @@ describe("FlashcardService.listFlashcards", () => {
       await service.listFlashcards(userId, params);
 
       // Assert
-      expect(mockQuery.or).toHaveBeenCalledWith(
-        "front.ilike.%TypeScript%,back.ilike.%TypeScript%"
-      );
+      expect(mockQuery.or).toHaveBeenCalledWith("front.ilike.%TypeScript%,back.ilike.%TypeScript%");
     });
 
     it("should escape special characters in search pattern", async () => {
@@ -321,9 +319,7 @@ describe("FlashcardService.listFlashcards", () => {
       await service.listFlashcards(userId, params);
 
       // Assert
-      expect(mockQuery.or).toHaveBeenCalledWith(
-        "front.ilike.%What is %?%,back.ilike.%What is %?%"
-      );
+      expect(mockQuery.or).toHaveBeenCalledWith("front.ilike.%What is %?%,back.ilike.%What is %?%");
     });
 
     it("should not apply search filter when search is undefined", async () => {
@@ -573,9 +569,7 @@ describe("FlashcardService.listFlashcards", () => {
       await service.listFlashcards(userId, params);
 
       // Assert
-      expect(mockQuery.or).toHaveBeenCalledWith(
-        "front.ilike.%biology%,back.ilike.%biology%"
-      );
+      expect(mockQuery.or).toHaveBeenCalledWith("front.ilike.%biology%,back.ilike.%biology%");
       expect(mockQuery.eq).toHaveBeenCalledWith("source", "ai");
     });
 
@@ -601,9 +595,7 @@ describe("FlashcardService.listFlashcards", () => {
       await service.listFlashcards(userId, params);
 
       // Assert
-      expect(mockQuery.or).toHaveBeenCalledWith(
-        "front.ilike.%react%,back.ilike.%react%"
-      );
+      expect(mockQuery.or).toHaveBeenCalledWith("front.ilike.%react%,back.ilike.%react%");
       expect(mockQuery.eq).toHaveBeenCalledWith("source", "manual");
       expect(mockQuery.order).toHaveBeenCalledWith("updated_at", {
         ascending: true,
@@ -852,9 +844,7 @@ describe("FlashcardService.listFlashcards", () => {
       await service.listFlashcards(userId, params);
 
       // Assert
-      expect(mockQuery.or).toHaveBeenCalledWith(
-        `front.ilike.%${longSearchTerm}%,back.ilike.%${longSearchTerm}%`
-      );
+      expect(mockQuery.or).toHaveBeenCalledWith(`front.ilike.%${longSearchTerm}%,back.ilike.%${longSearchTerm}%`);
     });
 
     it("should handle maximum limit value (100)", async () => {
@@ -904,4 +894,3 @@ describe("FlashcardService.listFlashcards", () => {
     });
   });
 });
-

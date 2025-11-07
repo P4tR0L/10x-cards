@@ -113,13 +113,16 @@ export function ReviewMode() {
   }, [currentIndex, flashcards.length]);
 
   // Handle direct navigation to specific card
-  const handleNavigate = useCallback((index: number) => {
-    if (index >= 0 && index < flashcards.length) {
-      setCurrentIndex(index);
-      setIsFlipped(false);
-      setAnnouncement(`Fiszka ${index + 1} z ${flashcards.length}`);
-    }
-  }, [flashcards.length]);
+  const handleNavigate = useCallback(
+    (index: number) => {
+      if (index >= 0 && index < flashcards.length) {
+        setCurrentIndex(index);
+        setIsFlipped(false);
+        setAnnouncement(`Fiszka ${index + 1} z ${flashcards.length}`);
+      }
+    },
+    [flashcards.length]
+  );
 
   // Handle restart (from completion screen)
   const handleRestart = useCallback(() => {
@@ -242,7 +245,7 @@ export function ReviewMode() {
               <span className="text-xs">{Math.round(((currentIndex + 1) / flashcards.length) * 100)}% ukończone</span>
             </CardDescription>
             <Progress value={((currentIndex + 1) / flashcards.length) * 100} className="h-1 mt-1.5" />
-            
+
             {/* Flashcard navigator */}
             <div className="mt-3">
               <FlashcardNavigator
