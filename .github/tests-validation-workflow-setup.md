@@ -21,12 +21,17 @@ Następnie dodaj sekrety do środowiska `integration`:
 
 | Nazwa sekretu | Opis | Przykład |
 |---------------|------|----------|
-| `PUBLIC_SUPABASE_URL` | Publiczny URL instancji Supabase | `https://xxxxx.supabase.co` |
+| `PUBLIC_SUPABASE_URL` | Publiczny URL instancji Supabase testowej | `https://xxxxx.supabase.co` |
 | `PUBLIC_SUPABASE_KEY` | Publiczny klucz API Supabase (anon key) | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...` |
 | `E2E_USERNAME` | Email użytkownika testowego E2E | `test@10xcards.test` |
 | `E2E_PASSWORD` | Hasło użytkownika testowego E2E | `SecurePassword123!` |
 
-**Ważne:** Upewnij się, że użytkownik testowy z podanymi danymi logowania istnieje w bazie danych testowej Supabase.
+**Ważne:** 
+- Upewnij się, że użytkownik testowy z podanymi danymi logowania istnieje w bazie danych testowej Supabase.
+- Wszystkie sekrety muszą być skonfigurowane w środowisku `integration`, nie jako repository secrets.
+
+**Uwaga o OpenRouter:**
+Testy E2E nie testują funkcjonalności generowania fiszek przez AI (aby uniknąć kosztów API). W związku z tym zmienne `OPENROUTER_API_KEY`, `OPENROUTER_MODEL` i `SITE_URL` nie są wymagane dla testów.
 
 ### 2. Repository Secrets (opcjonalne)
 
@@ -39,6 +44,32 @@ Jeśli chcesz używać Codecov (obecnie wyłączone w workflow):
 | Nazwa sekretu | Opis | Gdzie uzyskać |
 |---------------|------|---------------|
 | `CODECOV_TOKEN` | Token do przesyłania raportów coverage | https://codecov.io/ |
+
+## Jak działa przekazywanie zmiennych środowiskowych
+
+### W CI (GitHub Actions)
+```yaml
+env:
+  PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+  # ... inne zmienne
+```
+Zmienne są przekazywane bezpośrednio z sekretów GitHub Actions.
+
+### Lokalnie
+```bash
+# Playwright ładuje .env.test automatycznie
+npm run test:e2e
+```
+Zmienne są ładowane z pliku `.env.test` przez `dotenv`.
+
+### Logika w `playwright.config.ts`
+```typescript
+// W CI: zmienne z GitHub Actions secrets
+// Lokalnie: zmienne z .env.test
+if (!process.env.CI) {
+  dotenv.config({ path: ".env.test" });
+}
+```
 
 ## Struktura workflow
 
@@ -67,6 +98,17 @@ Workflow `tests-validation.yml` składa się z 4 etapów:
 2. **Unit Tests** (równolegle) - Testy jednostkowe z Vitest
 3. **E2E Tests** (równolegle) - Testy E2E z Playwright
 4. **Status Comment** - Komentarz w PR (tylko jeśli wszystko przeszło)
+
+## Uruchamianie workflow
+
+### Automatyczne
+Workflow uruchamia się automatycznie przy każdym Pull Request do brancha `master`.
+
+### Ręczne
+1. Przejdź do zakładki **Actions**
+2. Wybierz workflow **Tests Validation**
+3. Kliknij **Run workflow**
+4. Wybierz branch i kliknij **Run workflow**
 
 ## Artifacts
 
@@ -103,6 +145,7 @@ Workflow generuje następujące artefakty (dostępne w zakładce Actions):
 **Rozwiązanie:** 
 1. Sprawdź czy sekrety `E2E_USERNAME` i `E2E_PASSWORD` są dodane do środowiska `integration`
 2. Sprawdź czy nazwa środowiska jest dokładnie `integration` (case-sensitive)
+3. Sprawdź czy wszystkie 4 sekrety są skonfigurowane (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_KEY`, `E2E_USERNAME`, `E2E_PASSWORD`)
 
 ### Problem: E2E testy failują z błędami logowania
 
@@ -110,6 +153,13 @@ Workflow generuje następujące artefakty (dostępne w zakładce Actions):
 1. Sprawdź czy użytkownik testowy istnieje w bazie danych Supabase
 2. Sprawdź czy dane logowania są poprawne
 3. Sprawdź czy `PUBLIC_SUPABASE_URL` i `PUBLIC_SUPABASE_KEY` są poprawne
+
+### Problem: E2E testy failują z błędami Supabase connection
+
+**Rozwiązanie:**
+1. Sprawdź czy instancja Supabase jest dostępna
+2. Sprawdź czy `PUBLIC_SUPABASE_URL` i `PUBLIC_SUPABASE_KEY` są poprawnie skopiowane (bez spacji na końcu)
+3. Sprawdź czy baza danych ma uruchomione wszystkie migracje
 
 ### Problem: Unit testy failują z "ECONNREFUSED"
 
@@ -124,6 +174,13 @@ Workflow generuje następujące artefakty (dostępne w zakładce Actions):
 1. Sprawdź czy Pull Request jest skierowany do brancha `master`
 2. Sprawdź czy plik `.github/workflows/tests-validation.yml` jest w branchu `master`
 3. Sprawdź logi w zakładce Actions
+
+### Problem: WebServer nie startuje w CI
+
+**Rozwiązanie:**
+1. Sprawdź czy zmienne `PUBLIC_SUPABASE_URL` i `PUBLIC_SUPABASE_KEY` są poprawnie skonfigurowane
+2. Sprawdź logi webServer w Playwright report
+3. Sprawdź czy port 3001 jest dostępny
 
 ## Lokalne testowanie
 
@@ -150,9 +207,20 @@ Sprawdzaj status workflow w:
 - Status checks w Pull Requestach
 - Komentarze automatyczne w PR po zakończeniu wszystkich testów
 
+## Różnice między środowiskiem lokalnym a CI
+
+| Aspekt | Lokalnie | W CI (GitHub Actions) |
+|--------|----------|----------------------|
+| Zmienne środowiskowe | Z pliku `.env.test` | Z GitHub Secrets |
+| WebServer command | `dotenv -e .env.test -- astro dev` | `astro dev` (zmienne już w env) |
+| Playwright dotenv | Ładuje `.env.test` | Pomija (używa env z Actions) |
+| Retry tests | 0 | 2 |
+| Workers | Domyślnie | 1 |
+
 ## Dodatkowe zasoby
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- [GitHub Environments Documentation](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment)
 - [Vitest Documentation](https://vitest.dev/)
 - [Playwright Documentation](https://playwright.dev/)
 - [Supabase Documentation](https://supabase.com/docs)
