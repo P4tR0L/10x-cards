@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Potwierdź swoje konto - 10x Cards</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+          sans-serif;
+        background-color: #0f172a;
+        color: #e2e8f0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .logo {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      .logo-icon {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-text {
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+      .card {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border: 1px solid #334155;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+      h1 {
+        color: #ffffff;
+        font-size: 28px;
+        margin: 0 0 16px 0;
+        text-align: center;
+      }
+      p {
+        color: #cbd5e1;
+        font-size: 16px;
+        line-height: 1.6;
+        margin: 0 0 24px 0;
+      }
+      .button {
+        display: inline-block;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+        transition: transform 0.2s;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+      }
+      .button-container {
+        text-align: center;
+        margin: 32px 0;
+      }
+      .info-box {
+        background: #1e293b;
+        border-left: 4px solid #6366f1;
+        padding: 16px;
+        margin: 24px 0;
+        border-radius: 4px;
+      }
+      .info-box p {
+        margin: 0;
+        font-size: 14px;
+        color: #94a3b8;
+      }
+      .footer {
+        text-align: center;
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #334155;
+      }
+      .footer p {
+        font-size: 14px;
+        color: #64748b;
+        margin: 8px 0;
+      }
+      .features {
+        margin: 24px 0;
+        padding: 0;
+        list-style: none;
+      }
+      .features li {
+        padding: 8px 0;
+        color: #cbd5e1;
+        font-size: 15px;
+      }
+      .features li::before {
+        content: "✓ ";
+        color: #6366f1;
+        font-weight: bold;
+        margin-right: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">
+          <div class="logo-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              stroke-width="2"
+            >
+              <rect x="4" y="7" width="9" height="12" rx="1.5" />
+              <rect x="11" y="5" width="9" height="12" rx="1.5" fill="white" />
+            </svg>
+          </div>
+          <span class="logo-text">10x Cards</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h1>🎉 Witaj w 10x Cards!</h1>
+
+        <p>Cześć!</p>
+
+        <p>
+          Dziękujemy za rejestrację w <strong>10x Cards</strong> - aplikacji do nauki z fiszkami
+          wspomaganej sztuczną inteligencją!
+        </p>
+
+        <p>
+          Aby aktywować swoje konto i rozpocząć naukę, kliknij przycisk poniżej. Link jest ważny
+          przez <strong>24 godziny</strong>.
+        </p>
+
+        <div class="button-container">
+          <a href="{{ .ConfirmationURL }}" class="button"> Potwierdź swoje konto </a>
+        </div>
+
+        <div class="info-box">
+          <p>
+            <strong>Przycisk nie działa?</strong> Skopiuj i wklej poniższy link do przeglądarki:
+          </p>
+          <p style="word-break: break-all; margin-top: 8px; color: #6366f1">
+            {{ .ConfirmationURL }}
+          </p>
+        </div>
+
+        <p style="margin-top: 32px"><strong>Co możesz robić w 10x Cards:</strong></p>
+        <ul class="features">
+          <li>Generuj fiszki automatycznie z AI</li>
+          <li>Twórz własne fiszki ręcznie</li>
+          <li>Organizuj swoją naukę efektywniej</li>
+          <li>Ucz się w dowolnym miejscu i czasie</li>
+        </ul>
+      </div>
+
+      <div class="footer">
+        <p>
+          <strong>Nie zakładałeś konta?</strong><br />
+          Jeśli nie rejestrowałeś się w 10x Cards, możesz zignorować tego emaila.
+        </p>
+        <p style="margin-top: 16px">
+          © 2025 10x Cards. Wszystkie prawa zastrzeżone.<br />
+          <a href="{{ .SiteURL }}" style="color: #6366f1; text-decoration: none">{{ .SiteURL }}</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
+
