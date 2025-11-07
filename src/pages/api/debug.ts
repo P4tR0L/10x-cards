@@ -9,14 +9,22 @@ import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context) => {
   try {
+    // Get environment variables from Cloudflare runtime (production) or import.meta.env (dev)
+    const openRouterApiKey = context.locals.runtime?.env?.OPENROUTER_API_KEY || import.meta.env.OPENROUTER_API_KEY;
+    const openRouterModel = context.locals.runtime?.env?.OPENROUTER_MODEL || import.meta.env.OPENROUTER_MODEL;
+    const siteUrl = context.locals.runtime?.env?.SITE_URL || import.meta.env.SITE_URL;
+
     const diagnostics = {
       timestamp: new Date().toISOString(),
       environment: {
-        OPENROUTER_API_KEY: import.meta.env.OPENROUTER_API_KEY ? "✓ Set" : "✗ Missing",
-        OPENROUTER_MODEL: import.meta.env.OPENROUTER_MODEL || "✗ Missing",
-        SITE_URL: import.meta.env.SITE_URL || "✗ Missing",
+        OPENROUTER_API_KEY: openRouterApiKey ? "✓ Set" : "✗ Missing",
+        OPENROUTER_MODEL: openRouterModel || "✗ Missing",
+        SITE_URL: siteUrl || "✗ Missing",
         PUBLIC_SUPABASE_URL: import.meta.env.PUBLIC_SUPABASE_URL ? "✓ Set" : "✗ Missing",
         PUBLIC_SUPABASE_KEY: import.meta.env.PUBLIC_SUPABASE_KEY ? "✓ Set" : "✗ Missing",
+      },
+      runtime: {
+        cloudflareRuntimeAvailable: !!context.locals.runtime,
       },
       supabase: {
         available: !!context.locals.supabase,

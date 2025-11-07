@@ -73,9 +73,10 @@ export const POST: APIRoute = async (context) => {
     // 2. ENVIRONMENT VALIDATION
     // ============================================================================
 
-    const openRouterApiKey = import.meta.env.OPENROUTER_API_KEY;
-    const openRouterModel = import.meta.env.OPENROUTER_MODEL;
-    const siteUrl = import.meta.env.SITE_URL;
+    // Get environment variables from Cloudflare runtime
+    const openRouterApiKey = context.locals.runtime?.env?.OPENROUTER_API_KEY || import.meta.env.OPENROUTER_API_KEY;
+    const openRouterModel = context.locals.runtime?.env?.OPENROUTER_MODEL || import.meta.env.OPENROUTER_MODEL;
+    const siteUrl = context.locals.runtime?.env?.SITE_URL || import.meta.env.SITE_URL;
 
     if (!openRouterApiKey || !openRouterModel || !siteUrl) {
       // eslint-disable-next-line no-console
