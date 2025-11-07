@@ -7,8 +7,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load test environment variables
-dotenv.config({ path: path.resolve(__dirname, ".env.test") });
+// Load test environment variables only in local environment
+// In CI, environment variables come from GitHub Actions secrets
+if (!process.env.CI) {
+  dotenv.config({ path: path.resolve(__dirname, ".env.test") });
+}
 
 /**
  * Playwright E2E Testing Configuration
@@ -58,9 +61,9 @@ export default defineConfig({
 
   // Run local dev server before starting the tests (optional)
   webServer: {
-    // Use dotenv-cli to load .env.test and run on port 3001 to avoid conflicts
-    // This ensures the dev server uses the test database instead of the local one
-    command: "npx dotenv -e .env.test -- npx astro dev --port 3001",
+    // In CI: use environment variables from secrets
+    // Locally: load .env.test via dotenv-cli
+    command: process.env.CI ? "npx astro dev --port 3001" : "npx dotenv -e .env.test -- npx astro dev --port 3001",
     url: "http://localhost:3001",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
