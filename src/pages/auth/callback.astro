@@ -8,6 +8,8 @@
  */
 
 import Layout from "../../layouts/Layout.astro";
+import { initAuthCallbackHandler } from "@/lib/client/auth-callback-handler";
+initAuthCallbackHandler();
 ---
 
 <Layout title="Potwierdzanie..." showNavigation={false}>
@@ -64,8 +66,3 @@ import Layout from "../../layouts/Layout.astro";
     </div>
   </div>
 </Layout>
-
-<script>
-  import { initAuthCallbackHandler } from "@/lib/client/auth-callback-handler";
-  initAuthCallbackHandler();
-</script>
