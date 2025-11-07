@@ -11,8 +11,8 @@ export const GET: APIRoute = async (context) => {
   try {
     const result = {
       step1: "Context exists",
-      step2: !!context.locals.supabase ? "Supabase OK" : "Supabase missing",
-      step3: !!context.locals.runtime ? "Runtime OK" : "Runtime missing",
+      step2: context.locals.supabase ? "Supabase OK" : "Supabase missing",
+      step3: context.locals.runtime ? "Runtime OK" : "Runtime missing",
       step4:
         context.locals.runtime?.env?.OPENROUTER_API_KEY || import.meta.env.OPENROUTER_API_KEY
           ? "Env vars OK"
