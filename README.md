@@ -21,6 +21,8 @@ Nowoczesna aplikacja do nauki z fiszkami wspomagana sztuczną inteligencją. Tw�
 - [Shadcn/ui](https://ui.shadcn.com/) - Komponenty UI oparte na Radix UI
 - [Supabase](https://supabase.com/) - Backend-as-a-Service (baza danych, autentykacja)
 - [OpenRouter](https://openrouter.ai/) - API do modeli AI
+- [Vitest](https://vitest.dev/) - Nowoczesny framework do testów jednostkowych
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - Biblioteka do testowania komponentów React
 
 ## 📋 Wymagania
 
@@ -77,6 +79,10 @@ npm run dev
 - `npm run lint` - Sprawdza kod za pomocą ESLint
 - `npm run lint:fix` - Naprawia problemy ESLint
 - `npm run format` - Formatuje kod za pomocą Prettier
+- `npm run test` - Uruchamia testy jednostkowe
+- `npm run test:ui` - Uruchamia testy w trybie UI
+- `npm run test:watch` - Uruchamia testy w trybie watch
+- `npm run test:coverage` - Generuje raport pokrycia kodu testami
 
 ## 📁 Struktura Projektu
 
@@ -125,6 +131,17 @@ Fiszki mogą być generowane automatycznie z tekstu źródłowego przy użyciu r
 - Akceptację po edycji
 - Czas generowania
 - Długość tekstu źródłowego
+
+## 🔬 Testowanie
+
+Projekt wykorzystuje Vitest do testów jednostkowych i integracyjnych. Główne narzędzia to:
+
+- **Vitest** - Szybki i nowoczesny framework do testów.
+- **React Testing Library** - Do testowania komponentów React w sposób, w jaki używają ich użytkownicy.
+- **jsdom** / **happy-dom** - Środowiska do testowania kodu wirtualnego DOM.
+- **Vitest Coverage** - Do generowania raportów pokrycia kodu testami.
+
+Testy znajdują się w katalogach `__tests__` obok testowanych plików.
 
 ## 🎨 Stylowanie
 
