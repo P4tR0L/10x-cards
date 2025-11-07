@@ -324,9 +324,6 @@ describe("OpenRouterService.generateFlashcards", () => {
 
   describe("Timeout handling", () => {
     it("should timeout after 30 seconds", async () => {
-      // Use real timers for this test to avoid unhandled rejection warnings
-      vi.useRealTimers();
-
       // Arrange
       const request: GenerateFlashcardsRequest = {
         sourceText: "Test text",
@@ -348,13 +345,16 @@ describe("OpenRouterService.generateFlashcards", () => {
       });
 
       // Act & Assert - should timeout after 30 seconds
-      await expect(service.generateFlashcards(request)).rejects.toThrow(
+      const promise = expect(service.generateFlashcards(request)).rejects.toThrow(
         "Request timeout - AI service took too long to respond"
       );
 
-      // Restore fake timers for other tests
-      vi.useFakeTimers();
-    }, 31000); // Set test timeout slightly higher than service timeout
+      // Fast-forward time to trigger timeout
+      await vi.advanceTimersByTimeAsync(30000);
+
+      // Wait for assertion to complete
+      await promise;
+    });
 
     it("should clear timeout on successful response", async () => {
       // Arrange
