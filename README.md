@@ -53,8 +53,9 @@ Utwórz plik `.env` w głównym katalogu projektu:
 
 ```env
 PUBLIC_SUPABASE_URL=twoj-supabase-url
-PUBLIC_SUPABASE_ANON_KEY=twoj-supabase-anon-key
+PUBLIC_SUPABASE_KEY=twoj-supabase-key
 OPENROUTER_API_KEY=twoj-openrouter-api-key
+OPENROUTER_MODEL=llm-model
 SITE_URL=twoj_site_url
 ```
 
