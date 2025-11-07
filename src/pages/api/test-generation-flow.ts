@@ -6,6 +6,10 @@
 export const prerender = false;
 
 import type { APIRoute } from "astro";
+import { createGenerationSchema } from "../../../lib/validation/generation.validation";
+import { OpenRouterService } from "../../../lib/services/openrouter.service";
+import { GenerationService } from "../../../lib/services/generation.service";
+import { hashText } from "../../../lib/utils/hash";
 
 export const GET: APIRoute = async (context) => {
   const results: Record<string, unknown> = {
@@ -47,11 +51,6 @@ export const GET: APIRoute = async (context) => {
 
     // Step 5: Test imports
     try {
-      const { createGenerationSchema } = await import("../../../lib/validation/generation.validation");
-      const { OpenRouterService } = await import("../../../lib/services/openrouter.service");
-      const { GenerationService } = await import("../../../lib/services/generation.service");
-      const { hashText } = await import("../../../lib/utils/hash");
-
       results.step5_imports = {
         hasSchema: !!createGenerationSchema,
         hasOpenRouterService: !!OpenRouterService,
