@@ -22,7 +22,7 @@ export function LogoutButton() {
       });
 
       // Redirect to login page
-      window.location.href = "/login";
+      window.location.assign("/login");
     } catch {
       // Reset loading state on error (user can try again)
       setIsLoggingOut(false);

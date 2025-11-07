@@ -125,7 +125,7 @@ export function ReviewMode() {
 
   // Handle exit
   const handleExit = useCallback(() => {
-    window.location.href = "/manage";
+    window.location.assign("/manage");
   }, []);
 
   // Keyboard navigation
@@ -217,7 +217,7 @@ export function ReviewMode() {
                   ręcznie.
                 </p>
               </div>
-              <Button onClick={() => (window.location.href = "/")}>
+              <Button onClick={() => window.location.assign("/")}>
                 <Plus className="mr-2 h-4 w-4" />
                 Stwórz pierwszą fiszkę
               </Button>

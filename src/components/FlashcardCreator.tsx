@@ -11,7 +11,7 @@ export function FlashcardCreator() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      window.location.href = "/login";
+      window.location.assign("/login");
     }
   }, [isLoading, isAuthenticated]);
 

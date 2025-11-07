@@ -161,7 +161,7 @@ export function ManageFlashcards() {
 
   // Handle create flashcard button click (from EmptyState)
   const handleCreateClick = useCallback(() => {
-    window.location.href = "/";
+    window.location.assign("/");
   }, []);
 
   // Handle clear filters
