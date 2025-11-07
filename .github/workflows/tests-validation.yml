@@ -1,4 +1,4 @@
-name: Pull Request CI
+name: Tests Validation
 
 on:
   workflow_dispatch:
@@ -121,4 +121,5 @@ jobs:
               repo: context.repo.repo,
               body: message
             });
+
 

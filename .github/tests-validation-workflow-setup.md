@@ -1,8 +1,8 @@
 # GitHub Actions Setup
 
-## Konfiguracja Pull Request CI Workflow
+## Konfiguracja Tests Validation Workflow
 
-Ten dokument opisuje jak skonfigurować środowisko GitHub Actions dla workflow `pull-request.yml`.
+Ten dokument opisuje jak skonfigurować środowisko GitHub Actions dla workflow `tests-validation.yml`.
 
 ## Wymagane sekrety
 
@@ -42,7 +42,7 @@ Jeśli chcesz używać Codecov (obecnie wyłączone w workflow):
 
 ## Struktura workflow
 
-Workflow `pull-request.yml` składa się z 4 etapów:
+Workflow `tests-validation.yml` składa się z 4 etapów:
 
 ```
 ┌─────────┐
@@ -122,7 +122,7 @@ Workflow generuje następujące artefakty (dostępne w zakładce Actions):
 
 **Rozwiązanie:**
 1. Sprawdź czy Pull Request jest skierowany do brancha `master`
-2. Sprawdź czy plik `.github/workflows/pull-request.yml` jest w branchu `master`
+2. Sprawdź czy plik `.github/workflows/tests-validation.yml` jest w branchu `master`
 3. Sprawdź logi w zakładce Actions
 
 ## Lokalne testowanie
