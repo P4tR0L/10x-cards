@@ -15,7 +15,8 @@ import { CompletionScreen } from "./CompletionScreen";
 import { FlashcardNavigator } from "./FlashcardNavigator";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Loader2, Plus } from "lucide-react";
 import { toast } from "sonner";
 
 export function ReviewMode() {
@@ -57,22 +58,12 @@ export function ReviewMode() {
           currentPage++;
         }
 
-        if (allFlashcards.length === 0) {
-          // No flashcards - redirect to manage with toast
-          toast.info("Brak fiszek do nauki. Utwórz najpierw jakieś fiszki!");
-          window.location.href = "/manage";
-          return;
-        }
-
+        // Set flashcards (even if empty - we'll show empty state)
         setFlashcards(allFlashcards);
       } catch (error) {
         toast.error("Nie udało się załadować fiszek", {
           description: error instanceof Error ? error.message : "Spróbuj ponownie później",
         });
-        // Redirect to manage on error
-        setTimeout(() => {
-          window.location.href = "/manage";
-        }, 2000);
       } finally {
         setIsLoading(false);
       }
@@ -197,7 +188,39 @@ export function ReviewMode() {
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center space-y-4">
               <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
-              <p className="text-muted-foreground">Ładowanie fiszek...</p>
+              <p className="text-muted-foreground">Ładowanie...</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show empty state if no flashcards
+  if (flashcards.length === 0) {
+    return (
+      <div className="max-w-6xl mx-auto">
+        <Card className="backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="text-3xl">Ucz się</CardTitle>
+            <CardDescription>Przeglądaj i ucz się swoich fiszek</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center justify-center py-12 px-4 text-center space-y-4">
+              <div className="rounded-full bg-primary/10 p-6">
+                <Plus className="h-12 w-12 text-primary" />
+              </div>
+              <div className="space-y-2 select-none">
+                <h3 className="text-lg font-semibold">Nie masz jeszcze żadnych fiszek</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Zacznij tworzyć fiszki, aby budować swoją kolekcję. Możesz generować je automatycznie z AI lub dodawać
+                  ręcznie.
+                </p>
+              </div>
+              <Button onClick={() => (window.location.href = "/")}>
+                <Plus className="mr-2 h-4 w-4" />
+                Stwórz pierwszą fiszkę
+              </Button>
             </div>
           </CardContent>
         </Card>
