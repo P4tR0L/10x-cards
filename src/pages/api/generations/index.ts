@@ -150,7 +150,7 @@ export const POST: APIRoute = async (context) => {
     // ============================================================================
 
     // Hash source text for privacy-preserving storage
-    const sourceTextHash = hashText(source_text);
+    const sourceTextHash = await hashText(source_text);
     const sourceTextLength = source_text.length;
 
     // Start timing
