@@ -16,7 +16,7 @@ interface CompletionScreenProps {
 
 export function CompletionScreen({ totalCards, onRestart, onExit }: CompletionScreenProps) {
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-auto" data-testid="completion-screen">
       <Card className="backdrop-blur-sm animate-in fade-in-50 zoom-in-95 duration-500">
         <CardHeader className="text-center space-y-4 pb-8">
           <div className="mx-auto w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center">
@@ -51,6 +51,7 @@ export function CompletionScreen({ totalCards, onRestart, onExit }: CompletionSc
             onClick={onRestart}
             className="w-full sm:w-auto min-w-[180px]"
             aria-label="Rozpocznij naukę od nowa"
+            data-testid="completion-restart-button"
           >
             <RotateCcw className="mr-2 h-5 w-5" />
             Zacznij od nowa
@@ -62,6 +63,7 @@ export function CompletionScreen({ totalCards, onRestart, onExit }: CompletionSc
             onClick={onExit}
             className="w-full sm:w-auto min-w-[180px]"
             aria-label="Wróć do kolekcji fiszek"
+            data-testid="completion-exit-button"
           >
             <ArrowLeft className="mr-2 h-5 w-5" />
             Wróć do kolekcji

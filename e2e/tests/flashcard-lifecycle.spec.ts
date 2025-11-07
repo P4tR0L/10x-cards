@@ -69,8 +69,7 @@ test.describe("Flashcard Lifecycle", () => {
     expect(backContent).toContain(flashcardBack);
 
     // Act 6: Move to next (since there's only one flashcard, button will say "Ukończ")
-    const nextButton = page.locator("button", { hasText: /Następna|Next|Ukończ|Complete|Finish/i });
-    await nextButton.click();
+    await reviewPage.nextButton.click();
 
     // Assert 6: Review session is completed (completion screen shown)
     await expect(reviewPage.completionScreen).toBeVisible({ timeout: 5000 });
@@ -150,8 +149,7 @@ test.describe("Flashcard Lifecycle", () => {
     await reviewPage.showAnswer();
 
     // Navigate to next flashcard
-    const nextButton = page.locator("button", { hasText: /Następna|Next|Ukończ|Complete|Finish/i });
-    await nextButton.click();
+    await reviewPage.nextButton.click();
 
     // Assert: Progress should update to show we're on card 2 of 3
     const updatedProgress = await reviewPage.getProgress();

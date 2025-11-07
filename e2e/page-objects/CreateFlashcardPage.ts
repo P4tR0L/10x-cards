@@ -16,11 +16,11 @@ export class CreateFlashcardPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.manualTab = page.locator('button[role="tab"]', { hasText: "Dodaj własne" });
-    this.frontTextarea = page.locator("textarea#front");
-    this.backTextarea = page.locator("textarea#back");
-    this.submitButton = page.locator('button[type="submit"]', { hasText: /Dodaj fiszkę/ });
-    this.successMessage = page.locator('[role="status"]');
+    this.manualTab = page.getByTestId("manual-tab");
+    this.frontTextarea = page.getByTestId("flashcard-front-input");
+    this.backTextarea = page.getByTestId("flashcard-back-input");
+    this.submitButton = page.getByTestId("flashcard-submit-button");
+    this.successMessage = page.getByTestId("flashcard-success-message");
     this.reviewButton = page.locator('a[href="/review"]');
   }
 

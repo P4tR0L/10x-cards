@@ -200,8 +200,9 @@ In CI environments, tests:
 3. Use helpers from `e2e/helpers/` for common tasks (auth, database cleanup)
 4. Follow the Arrange-Act-Assert pattern
 5. Add descriptive test names
-6. Use `data-testid` selectors where needed
-7. Use `test.describe.configure({ mode: "serial" })` for tests that share database state
+6. **ALWAYS use `data-testid` selectors** - see [E2E Testing Conventions](../.cursor/rules/e2e-testing-conventions.mdc)
+7. Use Page Object pattern with `getByTestId()` for maintainable tests
+8. Use `test.describe.configure({ mode: "serial" })` for tests that share database state
 
 Example:
 
@@ -261,6 +262,11 @@ test.describe('Feature Name', () => {
 
 ## Resources
 
+### Internal Documentation
+- [E2E Testing Conventions](../.cursor/rules/e2e-testing-conventions.mdc) - **Required reading for all contributors**
+- [Setup Guide](./SETUP.md) - Initial setup and configuration
+
+### External Resources
 - [Playwright Documentation](https://playwright.dev/)
 - [Page Object Model Pattern](https://playwright.dev/docs/pom)
 - [Best Practices](https://playwright.dev/docs/best-practices)

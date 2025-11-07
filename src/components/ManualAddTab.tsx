@@ -85,6 +85,7 @@ export function ManualAddTab() {
           className="min-h-[120px]"
           aria-describedby={errors.front ? "front-error" : undefined}
           aria-invalid={!!errors.front}
+          data-testid="flashcard-front-input"
           {...register("front")}
         />
         <div className="flex justify-between items-center">
@@ -114,6 +115,7 @@ export function ManualAddTab() {
           className="min-h-[120px]"
           aria-describedby={errors.back ? "back-error" : undefined}
           aria-invalid={!!errors.back}
+          data-testid="flashcard-back-input"
           {...register("back")}
         />
         <div className="flex justify-between items-center">
@@ -141,12 +143,13 @@ export function ManualAddTab() {
           className="p-3 bg-green-950/30 border border-green-500/50 rounded-md text-green-400 text-sm"
           role="status"
           aria-live="polite"
+          data-testid="flashcard-success-message"
         >
           {successMessage}
         </div>
       )}
 
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full" disabled={isSubmitting} data-testid="flashcard-submit-button">
         {isSubmitting ? "Dodawanie..." : "Dodaj fiszkę"}
       </Button>
     </form>

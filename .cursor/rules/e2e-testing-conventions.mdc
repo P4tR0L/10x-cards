@@ -1,0 +1,249 @@
+# E2E Testing Conventions
+
+## Data Test IDs (`data-testid`)
+
+All interactive elements and key UI components that are tested in E2E tests **MUST** have a `data-testid` attribute. This is the preferred selector strategy for E2E tests as it:
+
+- Provides stable, semantic identifiers independent of styling/structure changes
+- Makes tests more readable and maintainable
+- Clearly indicates which elements are part of the testing contract
+- Works seamlessly with React Hook Form and other React libraries
+
+### Naming Convention
+
+Use kebab-case with a descriptive hierarchy:
+
+```
+[component-name]-[element-type]
+```
+
+**Examples:**
+- `login-email` - Email input in login form
+- `login-password` - Password input in login form  
+- `login-submit` - Submit button in login form
+- `flashcard-front-input` - Front textarea in flashcard form
+- `flashcard-back-input` - Back textarea in flashcard form
+- `flashcard-submit-button` - Submit button in flashcard form
+- `review-next-button` - Next button in review mode
+- `review-previous-button` - Previous button in review mode
+- `completion-screen` - Completion screen container
+
+### Implementation Guidelines
+
+#### 1. Form Components
+
+Always add `data-testid` to:
+- All input fields (text, email, password, textarea)
+- All buttons (submit, cancel, action buttons)
+- Success/error message containers
+- Form containers (if the form itself needs to be targeted)
+
+**Example:**
+
+```tsx
+<Input
+  id="email"
+  type="email"
+  data-testid="login-email"
+  {...register("email")}
+/>
+
+<Button 
+  type="submit" 
+  data-testid="login-submit"
+>
+  Submit
+</Button>
+```
+
+#### 2. React Hook Form Compatibility
+
+When using React Hook Form, `data-testid` works perfectly with `{...register()}`:
+
+```tsx
+<Input
+  id="front"
+  data-testid="flashcard-front-input"
+  {...register("front")}
+/>
+```
+
+The `data-testid` doesn't interfere with React Hook Form's registration.
+
+#### 3. Interactive Components
+
+Add `data-testid` to:
+- Cards that are clickable (flashcards, proposal cards)
+- Navigation elements (tabs, buttons, links)
+- Modal dialogs and their action buttons
+- State-dependent UI (loading states, empty states, completion screens)
+
+**Example:**
+
+```tsx
+<Card data-testid="flashcard-front">
+  <CardContent>
+    {flashcard.front}
+  </CardContent>
+</Card>
+
+<TabsTrigger value="manual" data-testid="manual-tab">
+  Add Manual
+</TabsTrigger>
+```
+
+#### 4. Containers and Screens
+
+Add `data-testid` to main containers/screens that tests need to verify:
+
+```tsx
+<div className="completion-screen" data-testid="completion-screen">
+  <h1>Congratulations!</h1>
+  {/* ... */}
+</div>
+```
+
+### Page Object Pattern
+
+Use `getByTestId()` in Page Objects for cleaner, more maintainable tests:
+
+**Good:**
+```typescript
+export class LoginPage {
+  readonly emailInput: Locator;
+  readonly passwordInput: Locator;
+  readonly submitButton: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+    this.emailInput = page.getByTestId("login-email");
+    this.passwordInput = page.getByTestId("login-password");
+    this.submitButton = page.getByTestId("login-submit");
+  }
+}
+```
+
+**Bad:**
+```typescript
+// Avoid brittle CSS selectors
+this.emailInput = page.locator("input#email");
+this.submitButton = page.locator('button[type="submit"]');
+```
+
+### When NOT to Use data-testid
+
+- **Static text content**: Use `page.getByText()` for headings, labels, static content
+- **Built-in roles**: Use `page.getByRole()` for standard HTML elements with implicit roles
+- **One-off assertions**: For simple checks that won't be reused
+
+**Example:**
+```typescript
+// Good - static content
+await expect(page.getByText("Welcome back!")).toBeVisible();
+
+// Good - standard role
+await page.getByRole("heading", { name: "Login" }).click();
+
+// Bad - unnecessary data-testid for static content
+await page.getByTestId("welcome-heading").toBeVisible();
+```
+
+### Migration Checklist
+
+When adding E2E tests to a new component:
+
+- [ ] Add `data-testid` to all interactive elements
+- [ ] Create/update Page Object with `getByTestId()` locators
+- [ ] Update E2E tests to use Page Object methods
+- [ ] Document component's test IDs in component file or test documentation
+- [ ] Run linter to ensure no errors
+- [ ] Verify all E2E tests pass
+
+### Example: Complete Component
+
+```tsx
+/**
+ * LoginForm Component
+ * 
+ * Test IDs:
+ * - login-email: Email input field
+ * - login-password: Password input field
+ * - login-submit: Submit button
+ */
+
+export function LoginForm() {
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        id="email"
+        type="email"
+        data-testid="login-email"
+        {...register("email")}
+      />
+      
+      <Input
+        id="password"
+        type="password"
+        data-testid="login-password"
+        {...register("password")}
+      />
+      
+      <Button 
+        type="submit" 
+        data-testid="login-submit"
+      >
+        Login
+      </Button>
+    </form>
+  );
+}
+```
+
+### Components with data-testid
+
+Current components with `data-testid` attributes:
+
+#### Authentication
+- **LoginForm**: `login-email`, `login-password`, `login-submit`
+- **RegisterForm**: `register-email`, `register-password`, `register-confirm-password`, `register-submit`
+
+#### Flashcard Creation
+- **FlashcardCreator**: `manual-tab`, `generate-tab`
+- **ManualAddTab**: `flashcard-front-input`, `flashcard-back-input`, `flashcard-submit-button`, `flashcard-success-message`
+
+#### Flashcard Review
+- **ReviewCard**: `flashcard-front`, `flashcard-back`
+- **ReviewControls**: `review-next-button`, `review-previous-button`
+- **CompletionScreen**: `completion-screen`, `completion-restart-button`, `completion-exit-button`
+
+### Best Practices
+
+1. **Be Consistent**: Use the same naming pattern across the entire application
+2. **Be Descriptive**: Names should clearly indicate what the element is
+3. **Be Specific**: Include component context to avoid conflicts (e.g., `login-email` vs `register-email`)
+4. **Document**: Add a comment block listing test IDs in complex components
+5. **Test Early**: Add `data-testid` when creating the component, not as an afterthought
+6. **Keep in Sync**: Update Page Objects when component `data-testid` attributes change
+
+### Testing with React Hook Form
+
+For components using React Hook Form, always use standard Playwright methods after setting `data-testid`:
+
+```typescript
+// In Page Object
+this.emailInput = page.getByTestId("login-email");
+
+// In test - use fill() for React Hook Form compatibility
+await loginPage.emailInput.fill("user@example.com");
+
+// Wait for React hydration if using client:load
+await page.waitForLoadState("networkidle");
+```
+
+**Important**: When testing Astro components with `client:load`, wait for the component to be fully hydrated before interacting with it.
+
+### References
+
+- [Playwright Best Practices - Test IDs](https://playwright.dev/docs/best-practices#use-data-testid)
+- [Testing Library - Priority](https://testing-library.com/docs/queries/about/#priority)
+- [React Hook Form Testing](https://react-hook-form.com/faqs#Howtotestform)

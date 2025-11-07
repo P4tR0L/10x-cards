@@ -35,8 +35,8 @@ export default defineConfig({
 
   // Shared settings for all projects
   use: {
-    // Base URL for tests
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000",
+    // Base URL for tests - use separate port to avoid conflicts with dev server
+    baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3001",
 
     // Collect trace when retrying the failed test
     trace: "on-first-retry",
@@ -58,14 +58,11 @@ export default defineConfig({
 
   // Run local dev server before starting the tests (optional)
   webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
+    // Use dotenv-cli to load .env.test and run on port 3001 to avoid conflicts
+    // This ensures the dev server uses the test database instead of the local one
+    command: "npx dotenv -e .env.test -- npx astro dev --port 3001",
+    url: "http://localhost:3001",
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
-    env: {
-      // Pass test environment variables to the dev server
-      PUBLIC_SUPABASE_URL: process.env.PUBLIC_SUPABASE_URL || "",
-      PUBLIC_SUPABASE_KEY: process.env.PUBLIC_SUPABASE_KEY || "",
-    },
   },
 });

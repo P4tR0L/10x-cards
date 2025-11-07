@@ -136,6 +136,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "register-email-error" : undefined}
           className={errors.email ? "border-destructive" : ""}
+          data-testid="register-email"
           {...register("email")}
         />
         {errors.email && (
@@ -158,6 +159,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             aria-invalid={!!errors.password}
             aria-describedby={errors.password ? "register-password-error" : "register-password-hint"}
             className={errors.password ? "border-destructive pr-10" : "pr-10"}
+            data-testid="register-password"
             {...register("password")}
           />
           <button
@@ -194,6 +196,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
             aria-invalid={!!errors.confirmPassword}
             aria-describedby={errors.confirmPassword ? "register-confirm-password-error" : undefined}
             className={errors.confirmPassword ? "border-destructive pr-10" : "pr-10"}
+            data-testid="register-confirm-password"
             {...register("confirmPassword")}
           />
           <button
@@ -213,7 +216,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
       </div>
 
       {/* Submit button */}
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full" disabled={isSubmitting} data-testid="register-submit">
         {isSubmitting ? "Tworzenie konta..." : "Zarejestruj się"}
       </Button>
 

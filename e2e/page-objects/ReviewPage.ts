@@ -12,17 +12,21 @@ export class ReviewPage {
   readonly showAnswerButton: Locator;
   readonly progressText: Locator;
   readonly completionScreen: Locator;
+  readonly nextButton: Locator;
+  readonly previousButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.flashcardFront = page.locator('[data-testid="flashcard-front"]');
-    this.flashcardBack = page.locator('[data-testid="flashcard-back"]');
+    this.flashcardFront = page.getByTestId("flashcard-front");
+    this.flashcardBack = page.getByTestId("flashcard-back");
     // The card itself is clickable to flip
-    this.showAnswerButton = page.locator('[data-testid="flashcard-front"]');
+    this.showAnswerButton = page.getByTestId("flashcard-front");
     // Polish: "Fiszka 1 z 3", English: "Card 1 of 3" or "1/3"
     // Use .first() to skip sr-only element and get the visible one
     this.progressText = page.locator("text=/Fiszka \\d+ z \\d+|Card \\d+ of \\d+|\\d+\\/\\d+/").first();
-    this.completionScreen = page.locator("text=/Gratulacje|Congratulations/i");
+    this.completionScreen = page.getByTestId("completion-screen");
+    this.nextButton = page.getByTestId("review-next-button");
+    this.previousButton = page.getByTestId("review-previous-button");
   }
 
   /**

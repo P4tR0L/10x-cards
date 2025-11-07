@@ -120,6 +120,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "email-error" : undefined}
           className={errors.email ? "border-destructive" : ""}
+          data-testid="login-email"
           {...register("email")}
         />
         {errors.email && (
@@ -142,6 +143,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
             aria-invalid={!!errors.password}
             aria-describedby={errors.password ? "password-error" : undefined}
             className={errors.password ? "border-destructive pr-10" : "pr-10"}
+            data-testid="login-password"
             {...register("password")}
           />
           <button
@@ -161,7 +163,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
       </div>
 
       {/* Submit button */}
-      <Button type="submit" className="w-full" disabled={isSubmitting}>
+      <Button type="submit" className="w-full" disabled={isSubmitting} data-testid="login-submit">
         {isSubmitting ? "Logowanie..." : "Zaloguj się"}
       </Button>
 

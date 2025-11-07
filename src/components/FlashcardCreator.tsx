@@ -55,8 +55,8 @@ export function FlashcardCreator() {
         <CardContent>
           <Tabs defaultValue="generate" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="generate">Generuj z AI</TabsTrigger>
-              <TabsTrigger value="manual">Dodaj własne</TabsTrigger>
+              <TabsTrigger value="generate" data-testid="generate-tab">Generuj z AI</TabsTrigger>
+              <TabsTrigger value="manual" data-testid="manual-tab">Dodaj własne</TabsTrigger>
             </TabsList>
 
             <TabsContent value="generate" className="space-y-4">
