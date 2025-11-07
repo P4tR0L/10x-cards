@@ -1,85 +1,47 @@
+/**
+ * ManualAddTab Component
+ * Form for manually adding flashcards with React Hook Form + Zod validation
+ */
+
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { fetchAPI } from "@/lib/api-client";
+import { flashcardFormSchema, type FlashcardFormData } from "@/lib/validation/flashcard.schema";
 import type { CreateFlashcardCommand } from "@/types";
 
-interface ValidationErrors {
-  front?: string;
-  back?: string;
-}
-
 export function ManualAddTab() {
-  const [front, setFront] = useState("");
-  const [back, setBack] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
 
-  const validateField = (field: "front" | "back", value: string): string | undefined => {
-    const trimmedValue = value.trim();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm<FlashcardFormData>({
+    resolver: zodResolver(flashcardFormSchema),
+    defaultValues: {
+      front: "",
+      back: "",
+    },
+  });
 
-    if (trimmedValue.length === 0) {
-      return undefined; // Empty is okay, we just disable the button
-    }
+  // Watch field values for character count
+  const frontValue = watch("front");
+  const backValue = watch("back");
 
-    if (trimmedValue.length < 1) {
-      return "Pole nie może być puste";
-    }
-
-    if (trimmedValue.length > 5000) {
-      return "Maksymalnie 5000 znaków";
-    }
-
-    return undefined;
-  };
-
-  const handleFrontChange = (value: string) => {
-    setFront(value);
-    const error = validateField("front", value);
-    setValidationErrors((prev) => ({ ...prev, front: error }));
-    setSuccessMessage(null);
-  };
-
-  const handleBackChange = (value: string) => {
-    setBack(value);
-    const error = validateField("back", value);
-    setValidationErrors((prev) => ({ ...prev, back: error }));
-    setSuccessMessage(null);
-  };
-
-  const isFormValid = (): boolean => {
-    const trimmedFront = front.trim();
-    const trimmedBack = back.trim();
-
-    // Both fields must be non-empty
-    if (trimmedFront.length === 0 || trimmedBack.length === 0) {
-      return false;
-    }
-
-    // No validation errors
-    if (validationErrors.front || validationErrors.back) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!isFormValid()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    setValidationErrors({});
+  const onSubmit = async (data: FlashcardFormData) => {
+    setApiError(null);
     setSuccessMessage(null);
 
     try {
       const command: CreateFlashcardCommand = {
-        front: front.trim(),
-        back: back.trim(),
+        front: data.front,
+        back: data.back,
       };
 
       const response = await fetchAPI("/api/flashcards", {
@@ -93,8 +55,7 @@ export function ManualAddTab() {
       }
 
       // Success - clear form and show success message
-      setFront("");
-      setBack("");
+      reset();
       setSuccessMessage("✓ Fiszka została dodana pomyślnie!");
 
       // Hide success message after 3 seconds
@@ -103,16 +64,13 @@ export function ManualAddTab() {
       }, 3000);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Wystąpił błąd podczas dodawania fiszki";
-      setValidationErrors({
-        front: errorMessage,
-      });
-    } finally {
-      setIsSubmitting(false);
+      setApiError(errorMessage);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Front field */}
       <div className="space-y-2">
         <label
           htmlFor="front"
@@ -123,25 +81,25 @@ export function ManualAddTab() {
         <Textarea
           id="front"
           placeholder="Wpisz treść przodu fiszki..."
-          value={front}
-          onChange={(e) => handleFrontChange(e.target.value)}
           disabled={isSubmitting}
           className="min-h-[120px]"
-          aria-describedby={validationErrors.front ? "front-error" : undefined}
-          aria-invalid={!!validationErrors.front}
+          aria-describedby={errors.front ? "front-error" : undefined}
+          aria-invalid={!!errors.front}
+          {...register("front")}
         />
         <div className="flex justify-between items-center">
           <div className="min-h-[20px]">
-            {validationErrors.front && (
+            {errors.front && (
               <p id="front-error" className="text-sm text-red-400" role="alert">
-                {validationErrors.front}
+                {errors.front.message}
               </p>
             )}
           </div>
-          <p className="text-xs text-foreground select-none">{front.length} / 5000</p>
+          <p className="text-xs text-foreground select-none">{frontValue.length} / 5000</p>
         </div>
       </div>
 
+      {/* Back field */}
       <div className="space-y-2">
         <label
           htmlFor="back"
@@ -152,25 +110,32 @@ export function ManualAddTab() {
         <Textarea
           id="back"
           placeholder="Wpisz treść tyłu fiszki..."
-          value={back}
-          onChange={(e) => handleBackChange(e.target.value)}
           disabled={isSubmitting}
           className="min-h-[120px]"
-          aria-describedby={validationErrors.back ? "back-error" : undefined}
-          aria-invalid={!!validationErrors.back}
+          aria-describedby={errors.back ? "back-error" : undefined}
+          aria-invalid={!!errors.back}
+          {...register("back")}
         />
         <div className="flex justify-between items-center">
           <div className="min-h-[20px]">
-            {validationErrors.back && (
+            {errors.back && (
               <p id="back-error" className="text-sm text-red-400" role="alert">
-                {validationErrors.back}
+                {errors.back.message}
               </p>
             )}
           </div>
-          <p className="text-xs text-foreground select-none">{back.length} / 5000</p>
+          <p className="text-xs text-foreground select-none">{backValue.length} / 5000</p>
         </div>
       </div>
 
+      {/* API Error */}
+      {apiError && (
+        <div className="p-3 bg-red-950/30 border border-red-500/50 rounded-md text-red-400 text-sm" role="alert">
+          {apiError}
+        </div>
+      )}
+
+      {/* Success Message */}
       {successMessage && (
         <div
           className="p-3 bg-green-950/30 border border-green-500/50 rounded-md text-green-400 text-sm"
@@ -181,7 +146,7 @@ export function ManualAddTab() {
         </div>
       )}
 
-      <Button type="submit" className="w-full" disabled={!isFormValid() || isSubmitting}>
+      <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? "Dodawanie..." : "Dodaj fiszkę"}
       </Button>
     </form>

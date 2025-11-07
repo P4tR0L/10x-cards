@@ -1,70 +1,53 @@
+/**
+ * GenerateTab Component
+ * Form for generating flashcards using AI with React Hook Form + Zod validation
+ */
+
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { ProposalsList } from "./ProposalsList";
 import { BatchActionsBar } from "./BatchActionsBar";
 import { fetchAPI } from "@/lib/api-client";
+import { sourceTextSchema, type SourceTextFormData } from "@/lib/validation/flashcard.schema";
 import type { ProposalData } from "./ProposalCard";
 import type { GenerateFlashcardsResponse, CreateBatchFlashcardsCommand, BatchFlashcardItem } from "@/types";
 
 export function GenerateTab() {
-  const [sourceText, setSourceText] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [validationError, setValidationError] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [generationId, setGenerationId] = useState<number | null>(null);
   const [proposals, setProposals] = useState<ProposalData[]>([]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const validateSourceText = (text: string): string | null => {
-    const trimmedText = text.trim();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<SourceTextFormData>({
+    resolver: zodResolver(sourceTextSchema),
+    defaultValues: {
+      sourceText: "",
+    },
+  });
 
-    if (trimmedText.length === 0) {
-      return null; // Empty is okay, we just disable the button
-    }
+  // Watch field value for character count and hints
+  const sourceTextValue = watch("sourceText");
+  const trimmedLength = sourceTextValue.trim().length;
 
-    if (trimmedText.length < 100) {
-      return `Tekst musi mieć co najmniej 100 znaków (obecnie: ${trimmedText.length})`;
-    }
-
-    if (trimmedText.length > 1000) {
-      return `Tekst nie może przekraczać 1000 znaków (obecnie: ${trimmedText.length})`;
-    }
-
-    return null;
-  };
-
-  const handleSourceTextChange = (value: string) => {
-    setSourceText(value);
-    const error = validateSourceText(value);
-    setValidationError(error);
-  };
-
-  const isFormValid = (): boolean => {
-    const trimmedText = sourceText.trim();
-    return trimmedText.length >= 100 && trimmedText.length <= 1000 && !validationError;
-  };
-
-  const getCharacterCountColor = (): string => {
-    return "text-foreground";
-  };
-
-  const handleGenerate = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!isFormValid()) {
-      return;
-    }
-
-    setIsGenerating(true);
-    setValidationError(null);
+  const onSubmit = async (data: SourceTextFormData) => {
+    setApiError(null);
 
     try {
       const response = await fetchAPI("/api/generations", {
         method: "POST",
         body: JSON.stringify({
-          source_text: sourceText.trim(),
+          source_text: data.sourceText,
         }),
       });
 
@@ -74,10 +57,10 @@ export function GenerateTab() {
       }
 
       const result = await response.json();
-      const data: GenerateFlashcardsResponse = result.data;
+      const responseData: GenerateFlashcardsResponse = result.data;
 
       // Convert proposals to ProposalData format
-      const proposalData: ProposalData[] = data.proposals.map((proposal, index) => ({
+      const proposalData: ProposalData[] = responseData.proposals.map((proposal, index) => ({
         id: `proposal-${index}`,
         front: proposal.front,
         back: proposal.back,
@@ -85,14 +68,12 @@ export function GenerateTab() {
         isEdited: false,
       }));
 
-      setGenerationId(data.generation_id);
+      setGenerationId(responseData.generation_id);
       setProposals(proposalData);
-      setSourceText("");
+      reset();
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Wystąpił błąd podczas generowania fiszek";
-      setValidationError(errorMessage);
-    } finally {
-      setIsGenerating(false);
+      setApiError(errorMessage);
     }
   };
 
@@ -121,7 +102,7 @@ export function GenerateTab() {
     }
 
     setIsSaving(true);
-    setValidationError(null);
+    setApiError(null);
 
     try {
       const flashcards: BatchFlashcardItem[] = acceptedProposals.map((p) => ({
@@ -162,7 +143,7 @@ export function GenerateTab() {
       }, 3000);
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : "Wystąpił błąd podczas zapisywania fiszek";
-      setValidationError(errorMessage);
+      setApiError(errorMessage);
     } finally {
       setIsSaving(false);
     }
@@ -171,7 +152,7 @@ export function GenerateTab() {
   const handleRejectAll = () => {
     setProposals([]);
     setGenerationId(null);
-    setValidationError(null);
+    setApiError(null);
   };
 
   const handleAcceptAll = () => {
@@ -186,9 +167,9 @@ export function GenerateTab() {
       <div className="space-y-6">
         {isSaving && <LoadingOverlay message="Zapisywanie fiszek..." />}
 
-        {validationError && (
+        {apiError && (
           <div className="p-3 bg-red-950/30 border border-red-500/50 rounded-md text-red-400 text-sm" role="alert">
-            {validationError}
+            {apiError}
           </div>
         )}
 
@@ -219,9 +200,9 @@ export function GenerateTab() {
   // Show generation form if no proposals
   return (
     <>
-      {isGenerating && <LoadingOverlay message="Generuję fiszki..." />}
+      {isSubmitting && <LoadingOverlay message="Generuję fiszki..." />}
 
-      <form onSubmit={handleGenerate} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {successMessage && (
           <div
             className="p-3 bg-green-950/30 border border-green-500/50 rounded-md text-green-400 text-sm"
@@ -242,36 +223,42 @@ export function GenerateTab() {
           <Textarea
             id="source-text"
             placeholder="Wklej tekst, z którego chcesz wygenerować fiszki (min. 100, max. 1000 znaków)..."
-            value={sourceText}
-            onChange={(e) => handleSourceTextChange(e.target.value)}
-            disabled={isGenerating}
+            disabled={isSubmitting}
             className="min-h-[200px]"
-            aria-describedby={validationError ? "source-text-error" : "source-text-hint"}
-            aria-invalid={!!validationError}
+            aria-describedby={errors.sourceText ? "source-text-error" : "source-text-hint"}
+            aria-invalid={!!errors.sourceText}
+            {...register("sourceText")}
           />
           <div className="flex justify-between items-center">
             <div className="min-h-[20px]">
-              {validationError && (
+              {errors.sourceText && (
                 <p id="source-text-error" className="text-sm text-red-400" role="alert">
-                  {validationError}
+                  {errors.sourceText.message}
                 </p>
               )}
-              {!validationError && sourceText.trim().length > 0 && (
+              {!errors.sourceText && trimmedLength > 0 && trimmedLength < 100 && (
                 <p id="source-text-hint" className="text-sm text-muted-foreground">
-                  {sourceText.trim().length < 100
-                    ? `Jeszcze ${100 - sourceText.trim().length} znaków do minimum`
-                    : "Gotowe do generowania!"}
+                  Jeszcze {100 - trimmedLength} znaków do minimum
+                </p>
+              )}
+              {!errors.sourceText && trimmedLength >= 100 && (
+                <p id="source-text-hint" className="text-sm text-muted-foreground">
+                  Gotowe do generowania!
                 </p>
               )}
             </div>
-            <p className={`text-xs font-medium select-none ${getCharacterCountColor()}`}>
-              {sourceText.trim().length} / 1000
-            </p>
+            <p className="text-xs font-medium select-none text-foreground">{trimmedLength} / 1000</p>
           </div>
         </div>
 
-        <Button type="submit" className="w-full" disabled={!isFormValid() || isGenerating}>
-          {isGenerating ? "Generowanie..." : "Generuj fiszki"}
+        {apiError && (
+          <div className="p-3 bg-red-950/30 border border-red-500/50 rounded-md text-red-400 text-sm" role="alert">
+            {apiError}
+          </div>
+        )}
+
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? "Generowanie..." : "Generuj fiszki"}
         </Button>
       </form>
     </>

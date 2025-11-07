@@ -23,14 +23,11 @@ export async function deleteAllFlashcards(page: Page) {
   let hasMore = true;
 
   while (hasMore) {
-    const response = await page.request.get(
-      `/api/flashcards?page=${currentPage}&limit=100&sort=created_at&order=asc`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await page.request.get(`/api/flashcards?page=${currentPage}&limit=100&sort=created_at&order=asc`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!response.ok()) {
       const errorText = await response.text().catch(() => "");
@@ -68,7 +65,6 @@ export async function deleteAllFlashcards(page: Page) {
  * Wait for database operation to complete
  * Sometimes there's a small delay between API response and data being available
  */
-export async function waitForDatabaseSync(ms: number = 500) {
+export async function waitForDatabaseSync(ms = 500) {
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
-

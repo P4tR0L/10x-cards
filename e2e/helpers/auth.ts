@@ -14,9 +14,7 @@ export async function loginAsTestUser(page: Page) {
   const password = process.env.E2E_PASSWORD;
 
   if (!email || !password) {
-    throw new Error(
-      "E2E_USERNAME and E2E_PASSWORD must be set in .env.test file"
-    );
+    throw new Error("E2E_USERNAME and E2E_PASSWORD must be set in .env.test file");
   }
 
   const loginPage = new LoginPage(page);
