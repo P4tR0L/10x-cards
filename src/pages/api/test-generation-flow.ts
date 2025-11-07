@@ -8,7 +8,7 @@ export const prerender = false;
 import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async (context) => {
-  const results: Record<string, any> = {
+  const results: Record<string, unknown> = {
     step1_contextLocals: false,
     step2_supabase: false,
     step3_auth: false,
