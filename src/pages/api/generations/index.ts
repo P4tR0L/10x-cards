@@ -46,7 +46,7 @@ import type {
 export const POST: APIRoute = async (context) => {
   // eslint-disable-next-line no-console
   console.log("[GENERATION] Request received");
-  
+
   try {
     // ============================================================================
     // 1. AUTHENTICATION
