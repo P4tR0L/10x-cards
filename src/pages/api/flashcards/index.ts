@@ -115,17 +115,10 @@ export const POST: APIRoute = async (context) => {
       status: 201,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch {
     // ========================================================================
     // 6. HANDLE UNEXPECTED ERRORS
     // ========================================================================
-    // Log error details for debugging (never expose to user)
-    console.error("[POST /api/flashcards] Error creating flashcard:", {
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    });
-
     // Return generic error response (don't leak implementation details)
     const errorResponse: ErrorResponse = {
       error: "Internal server error",
@@ -240,16 +233,10 @@ export const GET: APIRoute = async (context) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
+  } catch {
     // ========================================================================
     // 7. HANDLE UNEXPECTED ERRORS
     // ========================================================================
-    console.error("[GET /api/flashcards] Error listing flashcards:", {
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    });
-
     const errorResponse: ErrorResponse = {
       error: "Internal server error",
       message: "An unexpected error occurred",

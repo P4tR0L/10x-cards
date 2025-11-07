@@ -4,6 +4,16 @@ import type { Page } from "@playwright/test";
  * Database helper utilities for E2E tests
  */
 
+interface FlashcardData {
+  id: number;
+  front: string;
+  back: string;
+  source: string;
+  generation_id: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
 /**
  * Delete all flashcards for the authenticated user
  * This should be called in test setup/teardown to ensure test isolation
@@ -13,12 +23,12 @@ export async function deleteAllFlashcards(page: Page) {
   const token = await page.evaluate(() => localStorage.getItem("supabase_auth_token"));
 
   if (!token) {
-    console.warn("No auth token found, skipping flashcard cleanup");
+    // No auth token - skip cleanup silently
     return;
   }
 
   // Get all flashcards (paginate if needed)
-  let allFlashcards: any[] = [];
+  let allFlashcards: FlashcardData[] = [];
   let currentPage = 1;
   let hasMore = true;
 
@@ -30,8 +40,7 @@ export async function deleteAllFlashcards(page: Page) {
     });
 
     if (!response.ok()) {
-      const errorText = await response.text().catch(() => "");
-      console.warn(`Failed to fetch flashcards for cleanup: ${response.status()} - ${errorText}`);
+      // Failed to fetch - skip this batch
       break;
     }
 
@@ -44,7 +53,6 @@ export async function deleteAllFlashcards(page: Page) {
 
     // Safety check to prevent infinite loop
     if (currentPage > 100) {
-      console.warn("Hit maximum page limit during cleanup");
       break;
     }
   }
@@ -57,8 +65,6 @@ export async function deleteAllFlashcards(page: Page) {
       },
     });
   }
-
-  console.log(`✓ Cleaned up ${allFlashcards.length} flashcards`);
 }
 
 /**

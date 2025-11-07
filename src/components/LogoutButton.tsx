@@ -23,8 +23,8 @@ export function LogoutButton() {
 
       // Redirect to login page
       window.location.href = "/login";
-    } catch (error) {
-      console.error("Logout error:", error);
+    } catch {
+      // Reset loading state on error (user can try again)
       setIsLoggingOut(false);
     }
   };

@@ -36,14 +36,10 @@ export class GenerationService {
    */
   async logError(errorData: GenerationErrorLogInsert): Promise<void> {
     try {
-      const { error } = await this.supabase.from("generation_error_logs").insert(errorData);
-
-      if (error) {
-        console.error("Failed to log generation error:", error);
-      }
-    } catch (error) {
+      await this.supabase.from("generation_error_logs").insert(errorData);
       // Silent fail - we don't want to throw when logging an error
-      console.error("Exception while logging error:", error);
+    } catch {
+      // Silent fail - we don't want to throw when logging an error
     }
   }
 

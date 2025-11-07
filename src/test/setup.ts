@@ -4,7 +4,7 @@
  * This file runs before all tests to configure the test environment.
  */
 
-import { expect, afterEach, vi } from "vitest";
+import { afterEach, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
 
 // Extend Vitest matchers with jest-dom matchers

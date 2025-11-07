@@ -19,10 +19,18 @@ import { FlashcardService } from "../flashcard.service";
 import type { SupabaseClient } from "@/db/supabase.client";
 import type { FlashcardListQueryInput } from "@/lib/validation/flashcard.validation";
 
+interface MockQuery {
+  select: ReturnType<typeof vi.fn>;
+  or: ReturnType<typeof vi.fn>;
+  eq: ReturnType<typeof vi.fn>;
+  order: ReturnType<typeof vi.fn>;
+  range: ReturnType<typeof vi.fn>;
+}
+
 describe("FlashcardService.listFlashcards", () => {
   let service: FlashcardService;
   let mockSupabase: SupabaseClient;
-  let mockQuery: any;
+  let mockQuery: MockQuery;
 
   beforeEach(() => {
     // Create a chainable mock query object
@@ -784,27 +792,27 @@ describe("FlashcardService.listFlashcards", () => {
 
       const callOrder: string[] = [];
 
-      mockQuery.select.mockImplementation((...args: any[]) => {
+      mockQuery.select.mockImplementation(() => {
         callOrder.push("select");
         return mockQuery;
       });
 
-      mockQuery.or.mockImplementation((...args: any[]) => {
+      mockQuery.or.mockImplementation(() => {
         callOrder.push("or");
         return mockQuery;
       });
 
-      mockQuery.eq.mockImplementation((...args: any[]) => {
+      mockQuery.eq.mockImplementation(() => {
         callOrder.push("eq");
         return mockQuery;
       });
 
-      mockQuery.order.mockImplementation((...args: any[]) => {
+      mockQuery.order.mockImplementation(() => {
         callOrder.push("order");
         return mockQuery;
       });
 
-      mockQuery.range.mockImplementation((...args: any[]) => {
+      mockQuery.range.mockImplementation(() => {
         callOrder.push("range");
         return Promise.resolve({
           data: [],

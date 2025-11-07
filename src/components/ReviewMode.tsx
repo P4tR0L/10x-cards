@@ -66,8 +66,9 @@ export function ReviewMode() {
 
         setFlashcards(allFlashcards);
       } catch (error) {
-        console.error("Failed to load flashcards:", error);
-        toast.error("Nie udało się załadować fiszek");
+        toast.error("Nie udało się załadować fiszek", {
+          description: error instanceof Error ? error.message : "Spróbuj ponownie później",
+        });
         // Redirect to manage on error
         setTimeout(() => {
           window.location.href = "/manage";

@@ -54,7 +54,6 @@ export function ManageFlashcards() {
       setFlashcards(response.data);
       setPagination(response.pagination);
     } catch (error) {
-      console.error("Failed to fetch flashcards:", error);
       toast.error("Nie udało się pobrać fiszek", {
         description: error instanceof Error ? error.message : "Spróbuj ponownie później",
       });
@@ -116,7 +115,6 @@ export function ManageFlashcards() {
         });
       } catch (error) {
         // Rollback on error
-        console.error("Failed to update flashcard:", error);
         toast.error("Nie udało się zaktualizować fiszki", {
           description: error instanceof Error ? error.message : "Spróbuj ponownie",
         });
@@ -150,7 +148,6 @@ export function ManageFlashcards() {
         fetchFlashcardsData();
       } catch (error) {
         // Rollback on error
-        console.error("Failed to delete flashcard:", error);
         toast.error("Nie udało się usunąć fiszki", {
           description: error instanceof Error ? error.message : "Spróbuj ponownie",
         });

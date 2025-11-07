@@ -44,8 +44,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
-    console.error("Error setting session:", error);
+  } catch {
     return new Response(
       JSON.stringify({
         error: "Internal server error",

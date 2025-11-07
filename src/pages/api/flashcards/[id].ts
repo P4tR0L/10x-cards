@@ -147,18 +147,10 @@ export const PUT: APIRoute = async (context) => {
       // Re-throw to be caught by outer catch block
       throw error;
     }
-  } catch (error) {
+  } catch {
     // ========================================================================
     // 6. HANDLE UNEXPECTED ERRORS
     // ========================================================================
-    // Log error details for debugging (never expose to user)
-    console.error("[PUT /api/flashcards/{id}] Error updating flashcard:", {
-      flashcardId: context.params.id,
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    });
-
     // Return generic error response (don't leak implementation details)
     const errorResponse: ErrorResponse = {
       error: "Internal server error",
@@ -257,18 +249,10 @@ export const DELETE: APIRoute = async (context) => {
       // Re-throw to be caught by outer catch block
       throw error;
     }
-  } catch (error) {
+  } catch {
     // ========================================================================
     // 4. HANDLE UNEXPECTED ERRORS
     // ========================================================================
-    // Log error details for debugging (never expose to user)
-    console.error("[DELETE /api/flashcards/{id}] Error deleting flashcard:", {
-      flashcardId: context.params.id,
-      error: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-      timestamp: new Date().toISOString(),
-    });
-
     // Return generic error response (don't leak implementation details)
     const errorResponse: ErrorResponse = {
       error: "Internal server error",

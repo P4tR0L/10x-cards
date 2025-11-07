@@ -30,9 +30,9 @@ export function DeleteConfirmationModal({ flashcard, isOpen, onClose, onConfirm 
     try {
       await onConfirm(flashcard.id);
       onClose();
-    } catch (error) {
+    } catch {
       // Error handling is done in parent component
-      console.error("Failed to delete flashcard:", error);
+      // Errors are handled via toast in ManageFlashcards
     } finally {
       setIsDeleting(false);
     }
