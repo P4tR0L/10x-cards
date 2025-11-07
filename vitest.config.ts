@@ -10,7 +10,15 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
-      exclude: ["node_modules/", "src/test/", "*.config.ts", "*.config.js", "src/env.d.ts", "src/db/database.types.ts", "e2e/"],
+      exclude: [
+        "node_modules/",
+        "src/test/",
+        "*.config.ts",
+        "*.config.js",
+        "src/env.d.ts",
+        "src/db/database.types.ts",
+        "e2e/",
+      ],
     },
   },
   resolve: {
