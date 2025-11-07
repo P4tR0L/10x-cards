@@ -62,22 +62,26 @@ export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProp
         </div>
 
         {/* Front side */}
-        <div className="space-y-1 flex-1">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Przód</div>
-          <p className="text-sm leading-relaxed line-clamp-3" title={flashcard.front}>
-            {flashcard.front}
-          </p>
+        <div className="space-y-1 flex-1 min-h-0 flex flex-col">
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide shrink-0">Przód</div>
+          <div className="h-[4.25rem] overflow-y-auto scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+              {flashcard.front}
+            </p>
+          </div>
         </div>
 
         {/* Divider */}
         <div className="border-t shrink-0" />
 
         {/* Back side */}
-        <div className="space-y-1 flex-1">
-          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Tył</div>
-          <p className="text-sm leading-relaxed line-clamp-3" title={flashcard.back}>
-            {flashcard.back}
-          </p>
+        <div className="space-y-1 flex-1 min-h-0 flex flex-col">
+          <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide shrink-0">Tył</div>
+          <div className="h-[4.25rem] overflow-y-auto scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+              {flashcard.back}
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>
