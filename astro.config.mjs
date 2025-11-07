@@ -9,12 +9,14 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
   output: "server",
+  site: process.env.SITE_URL || "http://localhost:3000",
   integrations: [react(), sitemap()],
   server: { port: 3000 },
   vite: {
     plugins: [tailwindcss()],
   },
   adapter: cloudflare({
+    mode: "directory",
     platformProxy: {
       enabled: true,
     },

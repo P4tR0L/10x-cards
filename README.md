@@ -90,6 +90,28 @@ npm run dev
 - `npm run test:e2e:headed` - Uruchamia testy E2E z widoczną przeglądarką
 - `npm run test:e2e:debug` - Uruchamia testy E2E w trybie debugowania
 
+## 🚀 Deployment na Cloudflare Pages
+
+Aplikacja jest skonfigurowana do automatycznego wdrażania na Cloudflare Pages przy użyciu GitHub Actions.
+
+### Szybki start
+
+1. **Skonfiguruj secrets w GitHub** (8 zmiennych - zobacz [CLOUDFLARE_DEPLOYMENT.md](.github/CLOUDFLARE_DEPLOYMENT.md))
+2. **Dodaj zmienne środowiskowe w Cloudflare Pages** (5 zmiennych)
+3. **Uruchom workflow** ręcznie lub push do `master`
+
+### Dokumentacja
+
+- 📖 [Pełna dokumentacja deployment](.github/CLOUDFLARE_DEPLOYMENT.md)
+- 🚑 [Szybka naprawa problemów](.github/QUICK_FIX.md)
+
+### Workflow CI/CD
+
+Projekt ma dwa workflow:
+
+- **tests-validation.yml** - Uruchamiane przy PR do master (lint, unit tests, E2E tests)
+- **master.yml** - Automatyczny deployment na Cloudflare Pages (lint, unit tests, build, deploy)
+
 ## 📁 Struktura Projektu
 
 ```md

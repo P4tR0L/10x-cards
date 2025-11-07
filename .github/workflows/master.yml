@@ -49,6 +49,14 @@ jobs:
     name: Build Application
     runs-on: ubuntu-latest
     needs: unit-test
+    environment: production
+    
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      PUBLIC_SUPABASE_URL: ${{ secrets.PUBLIC_SUPABASE_URL }}
+      PUBLIC_SUPABASE_KEY: ${{ secrets.PUBLIC_SUPABASE_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      OPENROUTER_MODEL: ${{ vars.OPENROUTER_MODEL }}
     
     steps:
       - name: Checkout code
