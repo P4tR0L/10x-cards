@@ -82,10 +82,11 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         if (onSuccess) {
           onSuccess();
         } else {
-          window.location.href = "/";
+          // Use location.assign instead of direct assignment for React Compiler compatibility
+          window.location.assign("/");
         }
       }
-    } catch (error) {
+    } catch {
       setGeneralError("Wystąpił błąd podczas logowania. Spróbuj ponownie.");
     }
   };

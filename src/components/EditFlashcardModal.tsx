@@ -67,7 +67,7 @@ export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditF
         back: data.back,
       });
       onClose();
-    } catch (error) {
+    } catch {
       // Error handling is done in parent component
       // Errors are handled via toast in ManageFlashcards
     }

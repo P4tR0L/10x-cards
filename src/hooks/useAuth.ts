@@ -43,8 +43,8 @@ export function useAuth(): UseAuthReturn {
           // No token found
           setToken(null);
         }
-      } catch (error) {
-        console.error("Error checking auth:", error);
+      } catch {
+        // Error checking auth - set as not authenticated
         setToken(null);
       } finally {
         setIsLoading(false);

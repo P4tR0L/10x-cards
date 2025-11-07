@@ -23,9 +23,7 @@ export const POST: APIRoute = async ({ cookies, locals }) => {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
-  } catch (error) {
-    console.error("Error during logout:", error);
-
+  } catch {
     // Even if there's an error, clear the cookies
     cookies.delete("sb-access-token", { path: "/" });
     cookies.delete("sb-refresh-token", { path: "/" });

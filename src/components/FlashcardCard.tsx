@@ -65,9 +65,7 @@ export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProp
         <div className="space-y-1 flex-1 min-h-0 flex flex-col">
           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide shrink-0">Przód</div>
           <div className="h-[4.25rem] overflow-y-auto scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
-            <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
-              {flashcard.front}
-            </p>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{flashcard.front}</p>
           </div>
         </div>
 
@@ -78,9 +76,7 @@ export function FlashcardCard({ flashcard, onEdit, onDelete }: FlashcardCardProp
         <div className="space-y-1 flex-1 min-h-0 flex flex-col">
           <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide shrink-0">Tył</div>
           <div className="h-[4.25rem] overflow-y-auto scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
-            <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
-              {flashcard.back}
-            </p>
+            <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{flashcard.back}</p>
           </div>
         </div>
       </CardContent>

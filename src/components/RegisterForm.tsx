@@ -88,7 +88,8 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
         if (onSuccess) {
           onSuccess();
         } else {
-          window.location.href = "/";
+          // Use location.assign instead of direct assignment for React Compiler compatibility
+          window.location.assign("/");
         }
       } else if (authData.user) {
         // Email confirmation required
@@ -97,7 +98,7 @@ export function RegisterForm({ onSuccess }: RegisterFormProps) {
           type: "success",
         });
       }
-    } catch (error) {
+    } catch {
       setGeneralMessage({ text: "Wystąpił błąd podczas rejestracji. Spróbuj ponownie.", type: "error" });
     }
   };
