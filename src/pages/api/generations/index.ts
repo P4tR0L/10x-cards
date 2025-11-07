@@ -174,6 +174,14 @@ export const POST: APIRoute = async (context) => {
         count: 12,
       });
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("OpenRouter API error:", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        model: openRouterModel,
+        siteUrl: siteUrl,
+      });
+
       // Log error to database
       await generationService.logError({
         user_id: user.id,
@@ -186,7 +194,10 @@ export const POST: APIRoute = async (context) => {
 
       const errorResponse: ErrorResponse = {
         error: "Service unavailable",
-        message: "AI generation service is currently unavailable. Please try again later.",
+        message:
+          error instanceof Error
+            ? `AI generation failed: ${error.message}`
+            : "AI generation service is currently unavailable. Please try again later.",
       };
 
       return new Response(JSON.stringify(errorResponse), {
