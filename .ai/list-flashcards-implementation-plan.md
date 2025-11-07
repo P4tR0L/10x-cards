@@ -973,8 +973,8 @@ Update the status of the endpoint from planned to implemented, and add implement
 ### Deployment Notes
 
 1. **Environment Variables:**
-   - Ensure `SUPABASE_URL` is set
-   - Ensure `SUPABASE_KEY` is set
+   - Ensure `PUBLIC_SUPABASE_URL` is set
+   - Ensure `PUBLIC_SUPABASE_KEY` is set
    - Verify JWT secret is configured in Supabase
 
 2. **Database Migrations:**

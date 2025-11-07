@@ -961,7 +961,7 @@ async createManualFlashcard(
 **Przed wdrożeniem na produkcję:**
 
 1. **Environment variables:**
-   - `SUPABASE_URL` ustawiony
+   - `PUBLIC_SUPABASE_URL` ustawiony
    - `SUPABASE_ANON_KEY` ustawiony
    - Supabase project skonfigurowany
 
