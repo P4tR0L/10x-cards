@@ -81,7 +81,7 @@ export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditF
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto mx-4">
         <DialogHeader>
           <DialogTitle>Edytuj fiszkę</DialogTitle>
           <DialogDescription>Wprowadź zmiany w treści fiszki. Pamiętaj, że oba pola są wymagane.</DialogDescription>
@@ -142,11 +142,11 @@ export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditF
             </div>
           </div>
 
-          <DialogFooter>
-            <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting}>
+          <DialogFooter className="flex-col sm:flex-row gap-2">
+            <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting} className="w-full sm:w-auto">
               Anuluj
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
               {isSubmitting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />

@@ -89,15 +89,15 @@ export function ProposalCard({ proposal, onAccept, onRemove, onEdit }: ProposalC
         {proposal.isEdited && <p className="text-xs text-amber-400 mt-2 italic">✎ Edytowano</p>}
       </CardContent>
 
-      <CardFooter className="flex gap-2 pt-3 mt-auto">
+      <CardFooter className="flex flex-col sm:flex-row gap-2 pt-3 mt-auto">
         <Dialog open={isDialogOpen} onOpenChange={handleDialogOpenChange}>
           <DialogTrigger asChild>
-            <Button variant="outline" size="sm" className="flex-1" aria-label="Edytuj propozycję">
+            <Button variant="outline" size="sm" className="w-full sm:flex-1" aria-label="Edytuj propozycję">
               <Pencil className="h-4 w-4 mr-1" />
               Edytuj
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto mx-4">
             <DialogHeader>
               <DialogTitle>Edytuj propozycję</DialogTitle>
               <DialogDescription>
@@ -130,38 +130,40 @@ export function ProposalCard({ proposal, onAccept, onRemove, onEdit }: ProposalC
                 <p className="text-xs text-muted-foreground text-right select-none">{editedBack.length} / 5000</p>
               </div>
             </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+            <DialogFooter className="flex-col sm:flex-row gap-2">
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">
                 Anuluj
               </Button>
-              <Button onClick={handleEditSubmit} disabled={!isEditFormValid}>
+              <Button onClick={handleEditSubmit} disabled={!isEditFormValid} className="w-full sm:w-auto">
                 Zapisz zmiany
               </Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
 
-        <Button
-          variant={proposal.isAccepted ? "default" : "outline"}
-          size="sm"
-          className="flex-1"
-          onClick={() => onAccept(proposal.id)}
-          aria-label={proposal.isAccepted ? "Cofnij akceptację" : "Akceptuj propozycję"}
-          aria-pressed={proposal.isAccepted}
-        >
-          <Check className="h-4 w-4 mr-1" />
-          {proposal.isAccepted ? "Zaakceptowano" : "Akceptuj"}
-        </Button>
+        <div className="flex gap-2 w-full sm:flex-1">
+          <Button
+            variant={proposal.isAccepted ? "default" : "outline"}
+            size="sm"
+            className="flex-1"
+            onClick={() => onAccept(proposal.id)}
+            aria-label={proposal.isAccepted ? "Cofnij akceptację" : "Akceptuj propozycję"}
+            aria-pressed={proposal.isAccepted}
+          >
+            <Check className="h-4 w-4 mr-1" />
+            {proposal.isAccepted ? "Zaakceptowano" : "Akceptuj"}
+          </Button>
 
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => onRemove(proposal.id)}
-          aria-label="Usuń propozycję"
-          className="text-red-400 hover:bg-red-950/30 hover:border-red-500/50"
-        >
-          <X className="h-4 w-4" />
-        </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onRemove(proposal.id)}
+            aria-label="Usuń propozycję"
+            className="text-red-400 hover:bg-red-950/30 hover:border-red-500/50 px-3"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

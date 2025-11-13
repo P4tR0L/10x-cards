@@ -50,7 +50,7 @@ export function DeleteConfirmationModal({ flashcard, isOpen, onClose, onConfirm 
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] mx-4">
         <DialogHeader>
           <div className="flex items-center gap-2">
             <div className="rounded-full bg-destructive/10 p-2">
@@ -62,7 +62,7 @@ export function DeleteConfirmationModal({ flashcard, isOpen, onClose, onConfirm 
         </DialogHeader>
 
         <div className="py-4">
-          <div className="rounded-lg bg-muted p-4 space-y-2">
+          <div className="rounded-lg bg-muted p-3 sm:p-4 space-y-2">
             <div className="space-y-1">
               <p className="text-xs font-semibold text-muted-foreground uppercase">Przód</p>
               <p className="text-sm line-clamp-2">{flashcard.front}</p>
@@ -74,11 +74,11 @@ export function DeleteConfirmationModal({ flashcard, isOpen, onClose, onConfirm 
           </div>
         </div>
 
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={handleClose} disabled={isDeleting}>
+        <DialogFooter className="flex-col sm:flex-row gap-2">
+          <Button type="button" variant="outline" onClick={handleClose} disabled={isDeleting} className="w-full sm:w-auto">
             Anuluj
           </Button>
-          <Button type="button" variant="destructive" onClick={handleConfirm} disabled={isDeleting}>
+          <Button type="button" variant="destructive" onClick={handleConfirm} disabled={isDeleting} className="w-full sm:w-auto">
             {isDeleting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

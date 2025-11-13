@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
 import { Loader2 } from "lucide-react";
@@ -20,6 +20,9 @@ import type {
 export function ManageFlashcards() {
   const { isLoading: authLoading, isAuthenticated } = useAuth();
 
+  // Ref for scrolling to flashcards grid
+  const flashcardsGridRef = useRef<HTMLDivElement>(null);
+
   // State management
   const [flashcards, setFlashcards] = useState<FlashcardListItemDTO[]>([]);
   const [pagination, setPagination] = useState<PaginationMetadata>({
@@ -40,6 +43,7 @@ export function ManageFlashcards() {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [shouldScrollToGrid, setShouldScrollToGrid] = useState(false);
 
   // Modal state
   const [editModalOpen, setEditModalOpen] = useState(false);
@@ -53,6 +57,14 @@ export function ManageFlashcards() {
       const response = await getFlashcards(filters);
       setFlashcards(response.data);
       setPagination(response.pagination);
+
+      // Scroll to grid after data is loaded (small delay for DOM update)
+      if (shouldScrollToGrid && flashcardsGridRef.current) {
+        setTimeout(() => {
+          flashcardsGridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+          setShouldScrollToGrid(false);
+        }, 100);
+      }
     } catch (error) {
       toast.error("Nie udało się pobrać fiszek", {
         description: error instanceof Error ? error.message : "Spróbuj ponownie później",
@@ -61,7 +73,7 @@ export function ManageFlashcards() {
       setIsLoading(false);
       setIsInitialLoad(false);
     }
-  }, [filters]);
+  }, [filters, shouldScrollToGrid]);
 
   // Fetch on mount and when filters change
   useEffect(() => {
@@ -78,6 +90,7 @@ export function ManageFlashcards() {
 
   // Handle page change
   const handlePageChange = useCallback((page: number) => {
+    setShouldScrollToGrid(true);
     setFilters((prev) => ({ ...prev, page }));
   }, []);
 
@@ -249,7 +262,10 @@ export function ManageFlashcards() {
                 )}
 
                 {/* FlashcardGrid */}
-                <div className={pagination.total_pages > 1 ? "pb-24" : ""}>
+                <div
+                  ref={flashcardsGridRef}
+                  className={pagination.total_pages > 1 ? "pb-24 scroll-mt-20" : "scroll-mt-20"}
+                >
                   <FlashcardGrid flashcards={flashcards} onEdit={handleEditClick} onDelete={handleDeleteClick} />
                 </div>
 

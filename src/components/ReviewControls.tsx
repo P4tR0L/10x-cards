@@ -18,35 +18,37 @@ export function ReviewControls({ onPrevious, onNext, canGoPrevious, canGoNext }:
   return (
     <div>
       {/* Navigation buttons */}
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-2 sm:gap-4">
         {/* Previous button */}
         <Button
           variant="outline"
           size="default"
           onClick={onPrevious}
           disabled={!canGoPrevious}
-          className="min-w-[140px]"
+          className="flex-1 sm:min-w-[140px] sm:flex-none"
           aria-label="Poprzednia fiszka"
           data-testid="review-previous-button"
         >
-          <ChevronLeft className="mr-2 h-4 w-4" />
-          Poprzednia
+          <ChevronLeft className="mr-1 sm:mr-2 h-4 w-4" />
+          <span className="hidden xs:inline">Poprzednia</span>
+          <span className="inline xs:hidden">Poprz.</span>
         </Button>
 
         {/* Spacer */}
-        <div className="flex-1" />
+        <div className="hidden sm:block flex-1" />
 
         {/* Next button */}
         <Button
           variant="default"
           size="default"
           onClick={onNext}
-          className="min-w-[140px]"
+          className="flex-1 sm:min-w-[140px] sm:flex-none"
           aria-label={canGoNext ? "Następna fiszka" : "Ukończ sesję i zobacz podsumowanie"}
           data-testid="review-next-button"
         >
-          {canGoNext ? "Następna" : "Ukończ"}
-          <ChevronRight className="ml-2 h-4 w-4" />
+          <span className="hidden xs:inline">{canGoNext ? "Następna" : "Ukończ"}</span>
+          <span className="inline xs:hidden">{canGoNext ? "Nast." : "Ukończ"}</span>
+          <ChevronRight className="ml-1 sm:ml-2 h-4 w-4" />
         </Button>
       </div>
     </div>

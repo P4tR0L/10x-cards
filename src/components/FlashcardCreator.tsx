@@ -48,17 +48,19 @@ export function FlashcardCreator() {
   return (
     <div className="max-w-6xl mx-auto">
       <Card className="backdrop-blur-sm">
-        <CardHeader>
-          <CardTitle className="text-3xl">Twórz fiszki</CardTitle>
-          <CardDescription>Generuj fiszki automatycznie z pomocą AI lub dodaj własne</CardDescription>
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="text-2xl sm:text-3xl">Twórz fiszki</CardTitle>
+          <CardDescription className="text-sm sm:text-base">
+            Generuj fiszki automatycznie z pomocą AI lub dodaj własne
+          </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-4 sm:px-6">
           <Tabs defaultValue="generate" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="generate" data-testid="generate-tab">
+              <TabsTrigger value="generate" data-testid="generate-tab" className="text-sm sm:text-base">
                 Generuj z AI
               </TabsTrigger>
-              <TabsTrigger value="manual" data-testid="manual-tab">
+              <TabsTrigger value="manual" data-testid="manual-tab" className="text-sm sm:text-base">
                 Dodaj własne
               </TabsTrigger>
             </TabsList>
