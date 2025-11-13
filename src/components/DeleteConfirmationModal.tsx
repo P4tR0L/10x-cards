@@ -75,10 +75,22 @@ export function DeleteConfirmationModal({ flashcard, isOpen, onClose, onConfirm 
         </div>
 
         <DialogFooter className="flex-col sm:flex-row gap-2">
-          <Button type="button" variant="outline" onClick={handleClose} disabled={isDeleting} className="w-full sm:w-auto">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleClose}
+            disabled={isDeleting}
+            className="w-full sm:w-auto"
+          >
             Anuluj
           </Button>
-          <Button type="button" variant="destructive" onClick={handleConfirm} disabled={isDeleting} className="w-full sm:w-auto">
+          <Button
+            type="button"
+            variant="destructive"
+            onClick={handleConfirm}
+            disabled={isDeleting}
+            className="w-full sm:w-auto"
+          >
             {isDeleting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

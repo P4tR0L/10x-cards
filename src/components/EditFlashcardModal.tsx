@@ -143,7 +143,13 @@ export function EditFlashcardModal({ flashcard, isOpen, onClose, onSave }: EditF
           </div>
 
           <DialogFooter className="flex-col sm:flex-row gap-2">
-            <Button type="button" variant="outline" onClick={handleClose} disabled={isSubmitting} className="w-full sm:w-auto">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleClose}
+              disabled={isSubmitting}
+              className="w-full sm:w-auto"
+            >
               Anuluj
             </Button>
             <Button type="submit" disabled={isSubmitting} className="w-full sm:w-auto">
