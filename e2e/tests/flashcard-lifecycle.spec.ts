@@ -57,7 +57,8 @@ test.describe("Flashcard Lifecycle", () => {
     const reviewPage = new ReviewPage(page);
 
     // Assert 4: Flashcard content is visible
-    const frontContent = await page.textContent("body");
+    await expect(reviewPage.flashcardFront).toBeVisible();
+    const frontContent = await reviewPage.flashcardFront.textContent();
     expect(frontContent).toContain(flashcardFront);
 
     // Act 5: Show answer (flip card)
