@@ -126,8 +126,6 @@ test.describe("Flashcard Lifecycle", () => {
     for (const flashcard of flashcards) {
       await createPage.createFlashcard(flashcard.front, flashcard.back);
       await createPage.waitForSuccess();
-      // Wait for success message to disappear before creating next one
-      await page.waitForTimeout(500);
     }
 
     // Wait for database sync

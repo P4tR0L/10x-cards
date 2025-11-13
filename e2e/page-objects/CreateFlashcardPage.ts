@@ -42,9 +42,20 @@ export class CreateFlashcardPage {
 
   /**
    * Wait for flashcard creation success
+   * If the success message is already visible from a previous creation,
+   * wait for it to disappear first, then wait for the new one to appear
    */
   async waitForSuccess() {
-    await this.successMessage.waitFor({ state: "visible" });
+    // Check if message is currently visible
+    const isVisible = await this.successMessage.isVisible().catch(() => false);
+
+    if (isVisible) {
+      // Wait for it to disappear first (timeout 5s)
+      await this.successMessage.waitFor({ state: "hidden", timeout: 5000 });
+    }
+
+    // Now wait for the new success message to appear
+    await this.successMessage.waitFor({ state: "visible", timeout: 10000 });
   }
 
   /**
