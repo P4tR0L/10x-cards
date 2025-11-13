@@ -54,51 +54,168 @@ Nowoczesna aplikacja do nauki z fiszkami wspomagana sztuczną inteligencją. Tw�
 
 ## 📋 Wymagania
 
+### Wymagania podstawowe
+
 - Node.js v22.14.0 (lub nowszy)
 - npm (dostarczany z Node.js)
-- Konto Supabase
 - Klucz API OpenRouter (do generowania fiszek z AI)
+
+### Wymagania dla Supabase
+
+Możesz użyć **jednej z dwóch opcji**:
+
+#### Opcja A: Supabase Cloud (łatwiejsza)
+- Konto Supabase ([utwórz za darmo](https://supabase.com))
+- Projekt Supabase w cloudzie
+
+#### Opcja B: Lokalne Supabase (dla developmentu offline)
+- **Docker Desktop** - [Pobierz tutaj](https://www.docker.com/products/docker-desktop/)
+  - ⚠️ **Windows/Mac**: Docker Desktop jest wymagany
+  - Linux: Docker Engine wystarcza
+- Supabase CLI (instalowane automatycznie przez `npm install`)
 
 ## 🚀 Rozpoczęcie Pracy
 
-1. Sklonuj repozytorium:
+### Kroki Wspólne
+
+1. **Sklonuj repozytorium:**
 
 ```bash
 git clone <repository-url>
 cd 10x-cards
 ```
 
-2. Zainstaluj zależności:
+2. **Zainstaluj zależności:**
 
 ```bash
 npm install
 ```
 
-3. Skonfiguruj zmienne środowiskowe:
+---
+
+### Opcja A: Supabase Cloud (Zalecaną dla nowych użytkowników)
+
+3. **Utwórz projekt w Supabase Cloud:**
+   - Przejdź na [supabase.com](https://supabase.com)
+   - Utwórz nowy projekt
+   - Zapisz URL i klucz anon (znajdziesz w Project Settings → API)
+
+4. **Skonfiguruj zmienne środowiskowe:**
 
 Utwórz plik `.env` w głównym katalogu projektu:
 
 ```env
-PUBLIC_SUPABASE_URL=twoj-supabase-url
-PUBLIC_SUPABASE_KEY=twoj-supabase-key
+# Supabase Cloud
+PUBLIC_SUPABASE_URL=https://twoj-projekt.supabase.co
+PUBLIC_SUPABASE_KEY=twoj-anon-key
+
+# OpenRouter AI
 OPENROUTER_API_KEY=twoj-openrouter-api-key
-OPENROUTER_MODEL=llm-model
-SITE_URL=twoj_site_url
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+
+# Site URL
+SITE_URL=http://localhost:4321
 ```
 
-4. Uruchom migracje bazy danych:
+5. **Uruchom migracje bazy danych:**
 
 ```bash
-npx supabase db push
+npx supabase db push --db-url "postgresql://postgres:[YOUR-PASSWORD]@db.[YOUR-PROJECT-REF].supabase.co:5432/postgres"
 ```
 
-5. Uruchom serwer deweloperski:
+*(Zamień `[YOUR-PASSWORD]` i `[YOUR-PROJECT-REF]` na dane z Supabase Dashboard)*
+
+6. **Uruchom serwer deweloperski:**
 
 ```bash
 npm run dev
 ```
 
-6. Otwórz [http://localhost:4321](http://localhost:4321) w przeglądarce
+7. **Otwórz aplikację:**
+
+Przejdź na [http://localhost:4321](http://localhost:4321) w przeglądarce
+
+---
+
+### Opcja B: Lokalne Supabase (Dla zaawansowanych)
+
+3. **Zainstaluj i uruchom Docker Desktop:**
+   - Pobierz ze strony [docker.com](https://www.docker.com/products/docker-desktop/)
+   - Zainstaluj i uruchom aplikację
+   - Upewnij się, że Docker Desktop działa (ikona w tray)
+   - ⚠️ **Windows**: Docker Desktop musi być uruchomiony **przed** następnymi krokami
+
+4. **Zainicjalizuj lokalne Supabase:**
+
+```bash
+npx supabase start
+```
+
+*Pierwsze uruchomienie może zająć kilka minut (pobieranie obrazów Docker)*
+
+5. **Skonfiguruj zmienne środowiskowe:**
+
+Po uruchomieniu `supabase start` otrzymasz dane dostępowe. Utwórz plik `.env`:
+
+```env
+# Lokalne Supabase (domyślne wartości)
+PUBLIC_SUPABASE_URL=http://127.0.0.1:54321
+PUBLIC_SUPABASE_KEY=twoj-anon-key
+
+# OpenRouter AI
+OPENROUTER_API_KEY=twoj-openrouter-api-key
+OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
+
+# Site URL
+SITE_URL=http://localhost:4321
+```
+
+6. **Uruchom migracje bazy danych:**
+
+```bash
+npx supabase db push
+```
+
+7. **Uruchom serwer deweloperski:**
+
+```bash
+npm run dev
+```
+
+8. **Otwórz aplikację:**
+
+Przejdź na [http://localhost:4321](http://localhost:4321) w przeglądarce
+
+**Przydatne komendy lokalne Supabase:**
+```bash
+npx supabase status          # Sprawdź status i dane dostępowe
+npx supabase stop            # Zatrzymaj Supabase
+npx supabase db reset        # Zresetuj bazę danych do czystego stanu
+```
+
+**Supabase Studio (lokalne dashboard):**
+Po uruchomieniu `supabase start` możesz zarządzać bazą przez web interface:
+- URL: http://127.0.0.1:54323
+- Przeglądaj tabele, uruchamiaj query SQL, zarządzaj użytkownikami
+
+---
+
+### 🆘 Problemy z Konfiguracją?
+
+**Docker nie działa:**
+- Windows: Upewnij się, że WSL 2 jest zainstalowany i włączony
+- Sprawdź czy Docker Desktop jest uruchomiony (ikona w tray)
+- Restart Docker Desktop i spróbuj ponownie
+
+**Supabase nie uruchamia się lokalnie:**
+```bash
+npx supabase stop
+npx supabase start
+```
+
+**Błąd migracji:**
+- Upewnij się, że Supabase (cloud lub lokalny) jest uruchomiony
+- Sprawdź poprawność connection stringa / zmiennych środowiskowych
 
 ## 📦 Dostępne Skrypty
 
@@ -209,9 +326,9 @@ Aplikacja udostępnia REST API endpoints:
 
 - `GET /api/flashcards` - Pobieranie listy fiszek (z paginacją i filtrowaniem)
 - `POST /api/flashcards` - Tworzenie nowej fiszki
+- `POST /api/flashcards/batch` - Tworzenie wielu fiszek (batch create z AI)
 - `PATCH /api/flashcards/[id]` - Aktualizacja fiszki
 - `DELETE /api/flashcards/[id]` - Usuwanie fiszki
-- `DELETE /api/flashcards/batch` - Usuwanie wielu fiszek
 
 ### Generowanie AI
 
@@ -377,6 +494,14 @@ Podczas dodawania zmian:
 2. Dodawaj testy dla nowej funkcjonalności
 3. Upewnij się, że linter przechodzi (`npm run lint`)
 4. Formatuj kod (`npm run format`)
+
+## 🔗 Powiązane Dokumenty
+
+- [PRD - Dokument Wymagań Produktu](./.ai/prd.md) - Oryginalny dokument wymagań MVP
+- [PRD vs Implementacja - Przegląd](./.ai/prd-implementation-review.md) - Porównanie PRD z faktyczną implementacją
+- [Dokumentacja Testów E2E](./e2e/README.md)
+- [Setup Guide dla Testów E2E](./e2e/SETUP.md)
+- [Dokumentacja Deployment](./.github/CLOUDFLARE_DEPLOYMENT.md)
 
 ## 📄 License
 
