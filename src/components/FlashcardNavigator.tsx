@@ -32,7 +32,7 @@ export function FlashcardNavigator({ totalCards, currentIndex, onNavigate }: Fla
       {/* Scrollable container - max 2 rows */}
       <div
         ref={scrollContainerRef}
-        className="flex flex-wrap max-h-[5.5rem] overflow-y-clip overflow-x-auto gap-1.5 py-3 px-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent"
+        className="flex flex-wrap max-h-[5.15rem] md:max-h-24 overflow-y-auto overflow-x-hidden gap-1.5 py-2 md:py-3 px-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent"
         role="navigation"
         aria-label="Nawigacja po fiszkach"
       >
