@@ -14,16 +14,43 @@ Nowoczesna aplikacja do nauki z fiszkami wspomagana sztuczną inteligencją. Tw�
 
 ## 🛠️ Stack Technologiczny
 
+### Frontend
+
 - [Astro](https://astro.build/) v5 - Nowoczesny framework dla szybkich aplikacji webowych
 - [React](https://react.dev/) v19 - Biblioteka do tworzenia interaktywnych komponentów
 - [TypeScript](https://www.typescriptlang.org/) v5 - Typebezpieczny JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) v4 - Utility-first CSS framework
 - [Shadcn/ui](https://ui.shadcn.com/) - Komponenty UI oparte na Radix UI
-- [Supabase](https://supabase.com/) - Backend-as-a-Service (baza danych, autentykacja)
+- [Lucide React](https://lucide.dev/) - Ikony SVG
+- [Sonner](https://sonner.emilkowal.ski/) - Toast notifications
+
+### Backend & Baza Danych
+
+- [Supabase](https://supabase.com/) - Backend-as-a-Service (PostgreSQL, autentykacja)
 - [OpenRouter](https://openrouter.ai/) - API do modeli AI
-- [Vitest](https://vitest.dev/) - Nowoczesny framework do testów jednostkowych
-- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - Biblioteka do testowania komponentów React
-- [Playwright](https://playwright.dev/) - Framework do testów E2E
+
+### Formularze & Walidacja
+
+- [React Hook Form](https://react-hook-form.com/) - Zarządzanie formularzami
+- [Zod](https://zod.dev/) - Walidacja schematów TypeScript
+
+### Testowanie
+
+- [Vitest](https://vitest.dev/) - Framework do testów jednostkowych
+- [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - Testowanie komponentów React
+- [Playwright](https://playwright.dev/) - Testy E2E
+
+### Narzędzia Deweloperskie
+
+- [ESLint](https://eslint.org/) - Linter dla JavaScript/TypeScript
+- [Prettier](https://prettier.io/) - Formatowanie kodu
+- [Husky](https://typicode.github.io/husky/) - Git hooks
+- [Lint-staged](https://github.com/okonet/lint-staged) - Pre-commit linting
+
+### Deployment
+
+- [Cloudflare Pages](https://pages.cloudflare.com/) - Hosting aplikacji
+- [GitHub Actions](https://github.com/features/actions) - CI/CD pipeline
 
 ## 📋 Wymagania
 
@@ -116,29 +143,43 @@ Projekt ma dwa workflow:
 
 ```md
 .
+├── .cursor/
+│ └── rules/ # Reguły AI dla Cursor IDE
+├── .github/
+│ └── workflows/ # GitHub Actions (CI/CD)
 ├── src/
-│   ├── components/         # Komponenty UI (Astro & React)
-│   │   └── ui/            # Komponenty Shadcn/ui
-│   ├── db/                # Klienty Supabase i typy bazy danych
-│   ├── hooks/             # Custom React hooks
-│   ├── layouts/           # Layouty Astro
-│   ├── lib/               # Serwisy i helpery
-│   │   ├── services/      # Logika biznesowa (flashcards, AI generation)
-│   │   ├── utils/         # Funkcje pomocnicze
-│   │   └── validation/    # Schematy walidacji Zod
-│   ├── middleware/        # Middleware Astro (autentykacja)
-│   ├── pages/             # Strony Astro
-│   │   └── api/          # Endpointy API
-│   ├── styles/            # Globalne style
-│   └── types.ts           # Wspólne typy TypeScript
+│ ├── components/ # Komponenty UI (Astro & React)
+│ │ └── ui/ # Komponenty Shadcn/ui
+│ ├── db/ # Klienty Supabase i typy bazy danych
+│ ├── hooks/ # Custom React hooks
+│ ├── layouts/ # Layouty Astro
+│ ├── lib/ # Serwisy i helpery
+│ │ ├── client/ # Logika po stronie klienta
+│ │ ├── services/ # Logika biznesowa (flashcards, AI generation)
+│ │ │ └── **tests**/ # Testy jednostkowe serwisów
+│ │ ├── utils/ # Funkcje pomocnicze
+│ │ ├── validation/ # Schematy walidacji Zod
+│ │ ├── api-client.ts # Klient API
+│ │ └── utils.ts # Funkcje pomocnicze (cn, itp.)
+│ ├── middleware/ # Middleware Astro (autentykacja)
+│ ├── pages/ # Strony Astro
+│ │ ├── api/ # Endpointy API
+│ │ │ ├── auth/ # Autentykacja (logout, set-session)
+│ │ │ ├── flashcards/ # CRUD fiszek
+│ │ │ └── generations/ # Generowanie AI i metryki
+│ │ └── auth/ # Strony autentykacji (callback)
+│ ├── styles/ # Globalne style
+│ ├── test/ # Konfiguracja testów
+│ └── types.ts # Wspólne typy TypeScript
 ├── e2e/
-│   ├── tests/             # Testy E2E Playwright
-│   ├── page-objects/      # Page Object Model
-│   └── helpers/           # Helpery testowe
+│ ├── tests/ # Testy E2E Playwright
+│ ├── page-objects/ # Page Object Model
+│ └── helpers/ # Helpery testowe
 ├── supabase/
-│   ├── migrations/        # Migracje bazy danych
-│   └── config.toml        # Konfiguracja Supabase
-└── public/                # Assety publiczne
+│ ├── migrations/ # Migracje bazy danych
+│ ├── templates/ # Szablony emaili
+│ └── config.toml # Konfiguracja Supabase
+└── public/ # Assety publiczne
 ```
 
 ## 🗄️ Baza Danych
@@ -153,11 +194,36 @@ Row Level Security (RLS) jest włączone dla wszystkich tabel zapewniając bezpi
 
 ## 🔐 Autentykacja
 
-Aplikacja używa Supabase Auth do zarządzania użytkownikami. Middleware Astro chroni chronione trasy i automatycznie przekierowuje niezalogowanych użytkowników.
+Aplikacja używa Supabase Auth do zarządzania użytkownikami. Middleware Astro zabezpiecza routes wymagające uwierzytelnienia i automatycznie przekierowuje niezalogowanych użytkowników.
+
+## 🌐 API Endpoints
+
+Aplikacja udostępnia REST API endpoints:
+
+### Autentykacja
+
+- `POST /api/auth/logout` - Wylogowanie użytkownika
+- `POST /api/auth/set-session` - Ustawienie sesji po callback
+
+### Fiszki
+
+- `GET /api/flashcards` - Pobieranie listy fiszek (z paginacją i filtrowaniem)
+- `POST /api/flashcards` - Tworzenie nowej fiszki
+- `PATCH /api/flashcards/[id]` - Aktualizacja fiszki
+- `DELETE /api/flashcards/[id]` - Usuwanie fiszki
+- `DELETE /api/flashcards/batch` - Usuwanie wielu fiszek
+
+### Generowanie AI
+
+- `POST /api/generations` - Generowanie fiszek z AI
+- `GET /api/generations` - Pobieranie metryk generowania
+
+Wszystkie endpointy wymagają autentykacji (z wyjątkiem `/api/auth/set-session`).
 
 ## 🤖 Generowanie AI
 
 Fiszki mogą być generowane automatycznie z tekstu źródłowego przy użyciu różnych modeli AI przez OpenRouter. Aplikacja śledzi:
+
 - Liczbę wygenerowanych fiszek
 - Akceptację bez edycji
 - Akceptację po edycji
@@ -177,11 +243,18 @@ Testy jednostkowe wykorzystują Vitest i React Testing Library:
 - **jsdom** / **happy-dom** - Środowiska do testowania kodu wirtualnego DOM
 - **Vitest Coverage** - Do generowania raportów pokrycia kodu testami
 
-Testy jednostkowe znajdują się w katalogach `__tests__` obok testowanych plików.
+Testy jednostkowe znajdują się w katalogu `src/lib/services/__tests__/` z dokumentacją testów w plikach `.md`.
 
 **Aktualne pokrycie:**
+
 - Serwisy (flashcard.service, openrouter.service)
 - Walidacje Zod
+
+**Struktura testów:**
+
+- `src/lib/services/__tests__/flashcard.service.*.test.ts` - Testy serwisu fiszek
+- `src/lib/services/__tests__/openrouter.service.*.test.ts` - Testy generowania AI
+- Każdy test ma plik README.md z opisem strategii testowania
 
 ### Testy E2E
 
@@ -195,11 +268,13 @@ Testy E2E wykorzystują Playwright dla kompleksowego testowania przepływów uż
 - **Serial mode** - Testy wykonują się sekwencyjnie dla uniknięcia konfliktów bazy danych
 
 **Aktualne pokrycie:**
+
 - Flashcard lifecycle (login → create → review)
 - Multiple flashcards handling
 - Immediate review availability
 
 Testy E2E znajdują się w katalogu `e2e/`:
+
 - `e2e/tests/` - Specyfikacje testów
 - `e2e/page-objects/` - Page Objects (LoginPage, CreateFlashcardPage, ReviewPage)
 - `e2e/helpers/` - Helpery testowe (auth, database cleanup)
@@ -223,16 +298,68 @@ Szczegółowa dokumentacja: [E2E Setup Guide](./e2e/SETUP.md)
 
 Projekt wykorzystuje Tailwind CSS 4 z komponentami Shadcn/ui. Wszystkie komponenty są w pełni dostosowywalne i responsywne.
 
+## 🛠️ Narzędzia Deweloperskie
+
+Projekt wykorzystuje nowoczesne narzędzia do zapewnienia wysokiej jakości kodu:
+
+### Linting i Formatowanie
+
+- **ESLint** - Statyczna analiza kodu TypeScript/React/Astro
+  - Konfiguracja: `eslint.config.js`
+  - Plugins: React, React Hooks, JSX a11y, Import, Prettier
+  - `npm run lint` - Sprawdzenie kodu
+  - `npm run lint:fix` - Automatyczna naprawa błędów
+
+- **Prettier** - Automatyczne formatowanie kodu
+  - Integracja z ESLint
+  - `npm run format` - Formatowanie wszystkich plików
+  - Obsługa: TypeScript, React, Astro, JSON, CSS, Markdown
+
+### Git Hooks
+
+- **Husky** - Automatyczne uruchamianie skryptów przed commitem
+  - Pre-commit hook dla lint-staged
+
+- **Lint-staged** - Linting i formatowanie tylko zmienionych plików
+  - `*.{ts,tsx,astro}` → ESLint fix
+  - `*.{json,css,md}` → Prettier format
+
+### Środowiska Testowe
+
+- **Vitest** - Framework do testów jednostkowych (config: `vitest.config.ts`)
+- **Playwright** - Framework do testów E2E (config: `playwright.config.ts`)
+- **jsdom/happy-dom** - Wirtualny DOM dla testów
+
 ## 🧪 Najlepsze Praktyki
 
 Projekt przestrzega najlepszych praktyk zdefiniowanych w regułach AI:
 
-- Clean code z wczesnym zwracaniem i obsługą błędów
-- Rozdzielenie logiki biznesowej (services) od UI (components)
-- Walidacja danych z Zod
-- Typebezpieczeństwo z TypeScript
-- Dostępność (ARIA, semantyczny HTML)
-- Responsywność (mobile-first)
+### Architektura i Kod
+
+- **Clean Code** - Wczesne zwracanie, obsługa błędów na początku funkcji
+- **Separation of Concerns** - Rozdzielenie logiki biznesowej (services) od UI (components)
+- **Type Safety** - Pełne wykorzystanie TypeScript z strictNullChecks
+- **Validation** - Walidacja danych z Zod na froncie i backendzie
+- **Error Handling** - Jednolite obsługiwanie błędów z custom error types
+
+### UI/UX
+
+- **Accessibility** - ARIA labels, semantyczny HTML, keyboard navigation
+- **Responsive Design** - Mobile-first approach z Tailwind CSS
+- **User Feedback** - Toast notifications dla wszystkich akcji użytkownika
+- **Loading States** - Wyraźne stany ładowania i błędów
+
+### Testowanie
+
+- **Test Coverage** - Testy jednostkowe dla logiki biznesowej
+- **E2E Tests** - Kompleksowe testy przepływów użytkownika
+- **Page Object Pattern** - Utrzymywalne i reużywalne testy E2E
+
+### Git i CI/CD
+
+- **Pre-commit Hooks** - Automatyczny lint i format przed commitem
+- **Continuous Integration** - Automatyczne testy przy PR
+- **Continuous Deployment** - Automatyczny deployment do Cloudflare Pages
 
 ## 📝 Wsparcie AI Development
 
