@@ -1,3 +1,6 @@
+[![pl](https://img.shields.io/badge/lang-pl-green.svg)](README.md)
+[![en](https://img.shields.io/badge/lang-en-red.svg)](README_EN.md)
+
 # 10x Cards
 
 Nowoczesna aplikacja do nauki z fiszkami wspomagana sztuczną inteligencją. Twórz fiszki ręcznie lub generuj je automatycznie z dowolnego tekstu przy użyciu AI.

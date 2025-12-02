@@ -1,3 +1,6 @@
+[![pl](https://img.shields.io/badge/lang-pl-red.svg)](README.md)
+[![en](https://img.shields.io/badge/lang-en-green.svg)](README_EN.md)
+
 # 10x Cards
 
 A modern AI-powered flashcard learning application. Create flashcards manually or generate them automatically from any text using AI.
